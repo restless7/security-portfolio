@@ -99,7 +99,16 @@ export type SecurityPosture = z.infer<typeof securityPostureSchema>
  * Rate limiting schema for API endpoints
  */
 export const rateLimitSchema = z.object({
-  ip: z.string().ip(),
+  // Use a conservative IP validator compatible with current Zod version
+  // Accepts IPv4 (simple check) or any value containing ':' as a proxy for IPv6
+  ip: z
+    .string()
+    .min(3)
+    .max(45)
+    .refine(
+      (v) => /^(?:\d{1,3}\.){3}\d{1,3}$/.test(v) || v.includes(':'),
+      'Invalid IP address'
+    ),
   endpoint: z.string(),
   limit: z.number().positive(),
   window: z.number().positive(), // in seconds
