@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* Guardian Silent - Cybersecurity Professional Theme */
+@theme inline {
+  /* Cybersecurity color palette */
+  --color-primary: #00ffff; /* Cyan */
+  --color-secondary: #00ff88; /* Green */
+  --color-accent: #1a1a1a;
+  --color-border: #333333;
+  --color-card: #111111;
+  --color-muted: #888888;
+  --color-danger: #ff4444;
+  --color-success: #00ff88;
+  --color-warning: #ffaa00;
+  --color-background: #0a0a0a;
+  --color-foreground: #e5e5e5;
+  
+  /* Font configuration */
+  --font-family-mono: ui-monospace, 'JetBrains Mono', 'Fira Code', Monaco, Menlo, monospace;
+}
+
+/* Base styles */
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-family-mono);
+  line-height: 1.6;
+}
+
+/* Terminal-like scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary);
+}
+
+/* Security-focused utility classes */
+.terminal-border {
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.security-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.security-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.cyber-glow {
+  text-shadow: 0 0 10px currentColor;
+}
+
+.matrix-bg {
+  background: linear-gradient(45deg, var(--color-background), var(--color-accent));
+}
