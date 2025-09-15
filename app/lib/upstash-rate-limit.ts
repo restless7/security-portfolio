@@ -14,6 +14,7 @@ interface RateLimitResult {
   limit: number
   remaining: number
   reset: number
+  resetTime?: number // for compatibility
   retryAfter?: number
 }
 
@@ -56,7 +57,7 @@ export class UpstashRateLimit {
     }
   }
 
-  private async redisCommand(command: string[]): Promise<any> {
+  private async redisCommand(command: string[]): Promise<unknown> {
     if (!this.isConfigured()) {
       throw new Error('Upstash Redis not configured')
     }
@@ -86,21 +87,28 @@ export class UpstashRateLimit {
       // Fall back to in-memory rate limiting
       const { default: fallbackLimit } = await import('./rate-limit')
       const windowMs = this.windowToSeconds(config.window) * 1000
-      return fallbackLimit(identifier, config.limit, windowMs)
+      const result = await fallbackLimit(identifier, config.limit, windowMs)
+      return {
+        success: result.success,
+        limit: result.limit,
+        remaining: result.remaining,
+        reset: Math.floor(result.resetTime / 1000),
+        retryAfter: result.retryAfter
+      }
     }
 
     const key = `${this.prefix}:${identifier}`
     const windowSeconds = this.windowToSeconds(config.window)
     const now = Math.floor(Date.now() / 1000)
-    const windowStart = now - (now % windowSeconds)
-    const windowEnd = windowStart + windowSeconds
+    // const windowStart = now - (now % windowSeconds)
+    // const windowEnd = windowStart + windowSeconds
 
     try {
       // Use Redis pipeline for atomic operations
       const pipeline = [
         ['MULTI'],
         ['INCR', key],
-        ['EXPIRE', key, windowSeconds],
+        ['EXPIRE', key, windowSeconds.toString()],
         ['TTL', key],
         ['EXEC']
       ]
@@ -111,7 +119,8 @@ export class UpstashRateLimit {
 
       // Extract results from EXEC response
       const [, , , , execResult] = results
-      const [count, , ttl] = execResult
+      const execArray = execResult as number[]
+      const [count, , ttl] = execArray
 
       const remaining = Math.max(0, config.limit - count)
       const reset = now + (ttl > 0 ? ttl : windowSeconds)
@@ -129,7 +138,14 @@ export class UpstashRateLimit {
       // Fall back to in-memory on Redis errors
       const { default: fallbackLimit } = await import('./rate-limit')
       const windowMs = windowSeconds * 1000
-      return fallbackLimit(identifier, config.limit, windowMs)
+      const result = await fallbackLimit(identifier, config.limit, windowMs)
+      return {
+        success: result.success,
+        limit: result.limit,
+        remaining: result.remaining,
+        reset: Math.floor(result.resetTime / 1000),
+        retryAfter: result.retryAfter
+      }
     }
   }
 
@@ -157,8 +173,8 @@ export class UpstashRateLimit {
       ])
 
       return {
-        count: parseInt(count || '0', 10),
-        ttl: ttl || 0
+        count: parseInt(String(count || '0'), 10),
+        ttl: Number(ttl) || 0
       }
     } catch (error) {
       console.error('Redis usage check error:', error)

@@ -150,13 +150,8 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
-  // Experimental features for better security
-  experimental: {
-    // Enable strict mode for better error handling
-    strictNextHead: true,
-    // Server components by default reduce client-side attack surface
-    serverComponentsExternalPackages: ['bcrypt', 'crypto'],
-  }
+  // Server external packages (moved from experimental)
+  serverExternalPackages: ['bcrypt', 'crypto']
 }
 
 module.exports = nextConfig

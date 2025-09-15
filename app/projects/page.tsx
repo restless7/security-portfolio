@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useMemo, useState } from "react"
-import { ArrowLeft, Shield, Lock, PanelLeftClose, Cog, Globe, Server, KeyRound, Bug, Network, Database, ExternalLink } from "lucide-react"
+import { ArrowLeft, Shield, Lock, PanelLeftClose, Cog, Globe, Bug, ExternalLink } from "lucide-react"
 import { cn } from "@/app/lib/utils"
 
 type Project = {

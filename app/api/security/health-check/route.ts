@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 /**
  * Security Health Check Endpoint
@@ -30,9 +30,9 @@ async function performHealthChecks(): Promise<HealthCheckResult['checks']> {
   const checks: HealthCheckResult['checks'] = []
   
   // Check 1: Environment Variables
-  const envCheck = {
+  const envCheck: { name: string; status: 'pass' | 'fail' | 'warning'; message: string; responseTime?: number } = {
     name: 'Environment Variables',
-    status: 'pass' as const,
+    status: 'pass',
     message: 'All required environment variables present',
     responseTime: 0
   }
@@ -95,9 +95,9 @@ async function performHealthChecks(): Promise<HealthCheckResult['checks']> {
   }
   
   // Check 3: Rate Limiting Service
-  const rateLimitCheck = {
+  const rateLimitCheck: { name: string; status: 'pass' | 'fail' | 'warning'; message: string; responseTime?: number } = {
     name: 'Rate Limiting Service',
-    status: 'pass' as const,
+    status: 'pass',
     message: 'Rate limiting service operational'
   }
   
@@ -117,7 +117,7 @@ async function performHealthChecks(): Promise<HealthCheckResult['checks']> {
         rateLimitCheck.status = 'warning'
         rateLimitCheck.message = 'Redis connection issues - falling back to in-memory'
       }
-    } catch (error) {
+    } catch {
       rateLimitCheck.status = 'warning'
       rateLimitCheck.message = 'Redis unavailable - using in-memory rate limiting'
     }
@@ -149,7 +149,7 @@ async function performHealthChecks(): Promise<HealthCheckResult['checks']> {
         ? 'All security headers present' 
         : `Missing headers: ${missingHeaders.join(', ')}`
     })
-  } catch (error) {
+  } catch {
     checks.push({
       name: 'Security Headers',
       status: 'fail',
@@ -249,7 +249,7 @@ async function sendHealthAlert(result: HealthCheckResult) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const startTime = Date.now()
   
   try {
@@ -319,6 +319,6 @@ export async function GET(request: NextRequest) {
 }
 
 // Allow POST for manual health checks
-export async function POST(request: NextRequest) {
-  return GET(request)
+export async function POST() {
+  return GET()
 }

@@ -40,8 +40,9 @@ export default function SecurityPosturePage() {
         if (!res.ok) throw new Error(`Request failed: ${res.status}`)
         const json = (await res.json()) as SecurityPosture
         if (!cancelled) setData(json)
-      } catch (e: any) {
-        if (!cancelled) setError(e.message || "Failed to load security posture")
+      } catch (e: unknown) {
+        const errorMessage = e instanceof Error ? e.message : "Failed to load security posture"
+        if (!cancelled) setError(errorMessage)
       } finally {
         if (!cancelled) setLoading(false)
       }
@@ -197,7 +198,9 @@ export default function SecurityPosturePage() {
             <div className="space-y-4 text-sm text-gray-300">
               <div>
                 <p className="font-semibold text-cyan-400 mb-1">Security Headers</p>
-                <code className="block bg-gray-900/60 border border-gray-700 rounded p-3 overflow-auto">curl -I $(printf "%s" {typeof window === 'undefined' ? 'http://localhost:3000' : window.location.origin})</code>
+                <code className="block bg-gray-900/60 border border-gray-700 rounded p-3 overflow-auto">
+                  curl -I {typeof window === 'undefined' ? 'http://localhost:3000' : window.location.origin}
+                </code>
               </div>
               <div>
                 <p className="font-semibold text-cyan-400 mb-1">Mozilla Observatory</p>

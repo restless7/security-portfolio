@@ -35,7 +35,7 @@ export default function Home() {
               <span className="text-[#00ff88] font-semibold">penetration testing</span>,{" "}
               <span className="text-[#00ffff] font-semibold">secure code review</span>, and{" "}
               <span className="text-[#00ff88] font-semibold">cloud security architecture</span>.
-              Every line of code is a potential entry point—I make sure it's not.
+              Every line of code is a potential entry point&mdash;I make sure it&rsquo;s not.
             </p>
           </div>
 
@@ -124,7 +124,7 @@ export default function Home() {
               Recent Security Projects
             </h2>
             <p className="text-lg text-[#888888] max-w-2xl mx-auto">
-              A selection of applications and systems I've secured, analyzed, and hardened.
+              A selection of applications and systems I&rsquo;ve secured, analyzed, and hardened.
             </p>
           </div>
 

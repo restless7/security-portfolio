@@ -201,7 +201,7 @@ export default function AboutPage() {
                 <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-400 via-green-400 to-purple-400"></div>
                 
                 <div className="space-y-8">
-                  {timeline.map((item, index) => {
+                  {timeline.map((item) => {
                     const Icon = item.icon
                     const isSelected = selectedTimelineItem === item.year
                     
@@ -301,8 +301,8 @@ export default function AboutPage() {
                   <div className="security-card p-8 mb-8">
                     <Quote className="w-12 h-12 text-cyan-400 mx-auto mb-6" />
                     <blockquote className="text-2xl font-light text-gray-300 leading-relaxed text-center italic">
-                      "Security is not a product, but a process. It's not a destination, but a journey. 
-                      Every line of code is a potential entry point—my mission is to ensure it's not."
+                      &ldquo;Security is not a product, but a process. It&rsquo;s not a destination, but a journey. 
+                      Every line of code is a potential entry point&mdash;my mission is to ensure it&rsquo;s not.&rdquo;
                     </blockquote>
                     <footer className="text-right mt-6">
                       <cite className="text-cyan-400 font-semibold">— Sebastian García</cite>
@@ -526,7 +526,7 @@ export default function AboutPage() {
                 <span className="text-green-400">Collaborate?</span>
               </h3>
               <p className="text-gray-400 mb-6">
-                Let's discuss how we can strengthen your organization's security posture and 
+                Let&rsquo;s discuss how we can strengthen your organization&rsquo;s security posture and 
                 build resilient systems that protect what matters most.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

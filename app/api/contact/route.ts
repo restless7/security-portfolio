@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
         {
           error: 'Validation failed',
           message: 'Invalid input data provided',
-          details: validationResult.error.errors.map(err => ({
+          details: validationResult.error.issues.map(err => ({
             field: err.path.join('.'),
             message: err.message,
             code: err.code
@@ -162,7 +162,7 @@ export async function POST(request: NextRequest) {
 }
 
 // OPTIONS handler for CORS preflight
-export async function OPTIONS(request: NextRequest) {
+export async function OPTIONS() {
   return NextResponse.json({}, {
     status: 200,
     headers: {

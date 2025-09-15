@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
+import { NextResponse } from 'next/server'
+// import { z } from 'zod'
 
 /**
  * Security Posture API
@@ -32,9 +32,9 @@ interface SecurityPosture {
 }
 
 // Simulate security scanner checks
-async function performSecurityChecks(request: NextRequest): Promise<SecurityCheck[]> {
+async function performSecurityChecks(): Promise<SecurityCheck[]> {
   const checks: SecurityCheck[] = []
-  const origin = request.headers.get('origin') || request.headers.get('host') || 'localhost'
+  // const origin = request.headers.get('origin') || request.headers.get('host') || 'localhost'
   
   // Security Headers Checks
   const securityHeaders = {
@@ -206,12 +206,12 @@ function calculateCompliance(checks: SecurityCheck[]) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const startTime = Date.now()
   
   try {
     // Perform security assessment
-    const checks = await performSecurityChecks(request)
+    const checks = await performSecurityChecks()
     const score = calculateSecurityScore(checks)
     const grade = getSecurityGrade(score)
     
@@ -260,9 +260,9 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   // Allow triggering manual security scans
-  return GET(request)
+  return GET()
 }
 
 // Reject other methods

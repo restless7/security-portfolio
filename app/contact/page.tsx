@@ -81,7 +81,7 @@ export default function ContactPage() {
       } else {
         throw new Error('Failed to send message')
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus('error')
       setSubmitMessage('Failed to send message. Please try again or contact me directly.')
     } finally {
@@ -89,22 +89,6 @@ export default function ContactPage() {
     }
   }
 
-  const getFieldIcon = (fieldName: keyof ContactFormData) => {
-    switch (fieldName) {
-      case 'name':
-        return User
-      case 'email':
-        return Mail
-      case 'company':
-        return Building
-      case 'subject':
-        return FileText
-      case 'message':
-        return MessageSquare
-      default:
-        return User
-    }
-  }
 
   return (
     <div className="min-h-screen matrix-bg py-16">
@@ -135,11 +119,11 @@ export default function ContactPage() {
             
             <div className="security-card p-6 max-w-4xl">
               <p className="text-lg text-gray-300 leading-relaxed">
-                Ready to discuss your cybersecurity needs? Whether you're looking for 
+                Ready to discuss your cybersecurity needs? Whether you&rsquo;re looking for
                 <span className="text-cyan-400 font-semibold"> penetration testing</span>,
                 <span className="text-green-400 font-semibold"> security consulting</span>, or
                 <span className="text-purple-400 font-semibold"> application security review</span>,
-                I'm here to help strengthen your digital defenses.
+                I&rsquo;m here to help strengthen your digital defenses.
               </p>
             </div>
           </div>

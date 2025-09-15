@@ -1,6 +1,6 @@
 "use client"
 
-import { Shield, ArrowLeft, Lock, Eye, Zap, Code, Cloud, Search, AlertTriangle, Terminal } from "lucide-react"
+import { Shield, ArrowLeft, Lock, Zap, Code, Cloud, Search, Terminal } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { cn } from "@/app/lib/utils"

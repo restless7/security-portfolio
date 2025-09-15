@@ -53,10 +53,11 @@ interface CSPViolation {
 /**
  * Determine violation severity based on the violation details
  */
-function calculateSeverity(report: any): 'low' | 'medium' | 'high' | 'critical' {
-  const directive = report['violated-directive'] || report.body?.effectiveDirective || ''
-  const blockedUri = report['blocked-uri'] || report.body?.blockedURL || ''
-  const scriptSample = report['script-sample'] || report.body?.sample || ''
+function calculateSeverity(report: unknown): 'low' | 'medium' | 'high' | 'critical' {
+  const reportData = report as Record<string, unknown>
+  const directive = String((reportData['violated-directive'] as string) || (reportData.body as Record<string, unknown>)?.effectiveDirective || '')
+  const blockedUri = String((reportData['blocked-uri'] as string) || (reportData.body as Record<string, unknown>)?.blockedURL || '')
+  const scriptSample = String((reportData['script-sample'] as string) || (reportData.body as Record<string, unknown>)?.sample || '')
   
   // Critical: Inline script/eval violations (potential XSS)
   if (directive.includes('script-src') && (
@@ -157,8 +158,7 @@ export async function POST(request: NextRequest) {
   try {
     // Get client information
     const userAgent = request.headers.get('user-agent') || 'unknown'
-    const ip = request.ip || 
-              request.headers.get('x-forwarded-for')?.split(',')[0] || 
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 
               request.headers.get('x-real-ip') || 
               'unknown'
     
@@ -169,7 +169,7 @@ export async function POST(request: NextRequest) {
     if (!validationResult.success) {
       console.warn('Invalid CSP report format:', {
         body,
-        errors: validationResult.error.errors
+        errors: validationResult.error.issues
       })
       return NextResponse.json(
         { error: 'Invalid report format' },
@@ -183,16 +183,18 @@ export async function POST(request: NextRequest) {
     const isLegacyFormat = 'csp-report' in report
     const cspData = isLegacyFormat ? report['csp-report'] : report.body
     
+    const cspRecord = cspData as Record<string, unknown>
+    
     const violation: CSPViolation = {
       timestamp: new Date().toISOString(),
       userAgent,
       ip,
-      documentUri: cspData.documentURL || cspData['document-uri'],
-      violatedDirective: cspData.effectiveDirective || cspData['violated-directive'],
-      blockedUri: cspData.blockedURL || cspData['blocked-uri'],
-      sourceFile: cspData.sourceFile || cspData['source-file'],
-      lineNumber: cspData.lineNumber || cspData['line-number'],
-      scriptSample: cspData.sample || cspData['script-sample'],
+      documentUri: (cspRecord.documentURL as string) || (cspRecord['document-uri'] as string) || '',
+      violatedDirective: (cspRecord.effectiveDirective as string) || (cspRecord['violated-directive'] as string) || '',
+      blockedUri: (cspRecord.blockedURL as string) || (cspRecord['blocked-uri'] as string),
+      sourceFile: (cspRecord.sourceFile as string) || (cspRecord['source-file'] as string),
+      lineNumber: (cspRecord.lineNumber as number) || (cspRecord['line-number'] as number),
+      scriptSample: (cspRecord.sample as string) || (cspRecord['script-sample'] as string),
       severity: calculateSeverity(isLegacyFormat ? cspData : { body: cspData })
     }
     
