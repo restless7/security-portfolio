@@ -37,8 +37,7 @@ jobs:
 
     - name: 📦 Install Dependencies
       run: |
-        npm ci --ignore-scripts
-        # Audit installation process
+        npm ci
         echo "Dependencies installed successfully"
 
     - name: 🚨 Dependency Vulnerability Scan
