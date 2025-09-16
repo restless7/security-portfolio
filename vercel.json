@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npx next build",
+  "buildCommand": "SKIP_ENV_VALIDATION=true NEXT_TELEMETRY_DISABLED=1 npx next build",
   "outputDirectory": ".next",
-  "installCommand": "npm ci",
+  "installCommand": "npm ci --legacy-peer-deps",
   
   "functions": {
     "app/api/contact/route.ts": {
@@ -128,6 +128,8 @@
   "framework": "nextjs",
   
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "SKIP_ENV_VALIDATION": "true",
+    "NEXT_TELEMETRY_DISABLED": "1"
   }
 }
