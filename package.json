@@ -56,5 +56,21 @@
     "jest-environment-jsdom": "^29.7.0",
     "tailwindcss": "^3.4.0",
     "typescript": "^5"
-  }
+  },
+  "description": "A professional cybersecurity portfolio website that demonstrates security best practices through its own implementation. This project serves as both a showcase of cybersecurity expertise and a practical demonstration of secure web development practices.",
+  "main": "jest.setup.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/restless7/security-portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/restless7/security-portfolio/issues"
+  },
+  "homepage": "https://github.com/restless7/security-portfolio#readme"
 }
