@@ -1,0 +1,132 @@
+name: 🔐 Security Health Check (Every 6 Hours)
+
+on:
+  schedule:
+    # Run every 6 hours at minutes 0 (00:00, 06:00, 12:00, 18:00 UTC)
+    - cron: '0 */6 * * *'
+  
+  # Allow manual triggering for testing
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual trigger'
+        required: false
+        default: 'Manual security check'
+
+jobs:
+  security-health-check:
+    name: 🛡️ Execute Security Health Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📋 Log Workflow Start
+        run: |
+          echo "🚀 Starting security health check..."
+          echo "📅 Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          echo "🔄 Trigger: ${{ github.event_name }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "📝 Reason: ${{ github.event.inputs.reason }}"
+          fi
+      
+      - name: 🔐 Verify Environment
+        run: |
+          if [ -z "${{ secrets.CRON_SECRET }}" ]; then
+            echo "❌ CRON_SECRET is not set in repository secrets"
+            echo "📖 Please add CRON_SECRET in Settings → Secrets and variables → Actions"
+            exit 1
+          fi
+          
+          if [ -z "${{ secrets.VERCEL_DEPLOYMENT_URL }}" ]; then
+            echo "⚠️ VERCEL_DEPLOYMENT_URL not set, using default"
+            echo "💡 Set VERCEL_DEPLOYMENT_URL in repository secrets for production"
+          fi
+          
+          echo "✅ Environment validation passed"
+      
+      - name: 🏥 Execute Health Check
+        run: |
+          DEPLOYMENT_URL="${{ secrets.VERCEL_DEPLOYMENT_URL }}"
+          if [ -z "$DEPLOYMENT_URL" ]; then
+            echo "⚠️ Using fallback URL - please set VERCEL_DEPLOYMENT_URL secret"
+            DEPLOYMENT_URL="https://your-portfolio.vercel.app"
+          fi
+          
+          echo "🌐 Target URL: $DEPLOYMENT_URL"
+          echo "🔍 Executing security health check..."
+          
+          RESPONSE=$(curl -s -w "\nHTTP_CODE:%{http_code}\nTOTAL_TIME:%{time_total}" \
+            -H "Authorization: ${{ secrets.CRON_SECRET }}" \
+            -H "User-Agent: GitHub-Actions-Cron/1.0 (Security-Portfolio)" \
+            -H "Accept: application/json" \
+            "$DEPLOYMENT_URL/api/cron" || echo "CURL_FAILED")
+          
+          # Extract HTTP code and response time
+          HTTP_CODE=$(echo "$RESPONSE" | grep "HTTP_CODE:" | cut -d: -f2)
+          TOTAL_TIME=$(echo "$RESPONSE" | grep "TOTAL_TIME:" | cut -d: -f2)
+          BODY=$(echo "$RESPONSE" | sed '/HTTP_CODE:/,$d')
+          
+          echo "📊 Response Details:"
+          echo "   Status Code: $HTTP_CODE"
+          echo "   Response Time: ${TOTAL_TIME}s"
+          echo "   Response Body: $BODY"
+          
+          # Check if the request was successful
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Security health check completed successfully!"
+            
+            # Parse and display task results if available
+            if echo "$BODY" | grep -q '"ok":true'; then
+              echo "🎯 All scheduled tasks completed successfully"
+              
+              # Extract task statuses if present
+              HEALTH_STATUS=$(echo "$BODY" | grep -o '"healthCheck":{[^}]*}' | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
+              POSTURE_STATUS=$(echo "$BODY" | grep -o '"securityPosture":{[^}]*}' | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
+              
+              if [ ! -z "$HEALTH_STATUS" ]; then
+                echo "🏥 Health Check Status: $HEALTH_STATUS"
+              fi
+              if [ ! -z "$POSTURE_STATUS" ]; then
+                echo "🛡️ Security Posture Status: $POSTURE_STATUS"
+              fi
+            fi
+          elif [ "$HTTP_CODE" = "401" ] || [ "$HTTP_CODE" = "403" ]; then
+            echo "❌ Authentication failed! Check CRON_SECRET configuration."
+            echo "🔧 Troubleshooting:"
+            echo "   1. Verify CRON_SECRET is set in GitHub repository secrets"
+            echo "   2. Verify CRON_SECRET is set in Vercel environment variables"
+            echo "   3. Ensure both secrets match exactly"
+            exit 1
+          elif [ "$HTTP_CODE" = "404" ]; then
+            echo "❌ Cron endpoint not found! Check deployment URL."
+            echo "🔧 Troubleshooting:"
+            echo "   1. Verify VERCEL_DEPLOYMENT_URL is correct"
+            echo "   2. Ensure /api/cron route is deployed"
+            echo "   3. Check Vercel deployment logs"
+            exit 1
+          elif [ "$HTTP_CODE" = "500" ]; then
+            echo "⚠️ Server error occurred during health check"
+            echo "📋 Response: $BODY"
+            echo "💡 This may indicate an issue with the health check tasks"
+            # Don't exit with error for 500s - log and continue
+          else
+            echo "⚠️ Unexpected response code: $HTTP_CODE"
+            echo "📋 Response: $BODY"
+            if [ "$RESPONSE" = "CURL_FAILED" ]; then
+              echo "❌ Network error - could not reach deployment"
+              exit 1
+            fi
+          fi
+      
+      - name: 📊 Log Completion
+        run: |
+          echo "🏁 Security health check workflow completed"
+          echo "📅 Finished at: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          echo "⏰ Next scheduled run: $(date -u -d '+6 hours' +"%Y-%m-%d %H:%M:%S UTC")"
+      
+      - name: 🚨 Notify on Failure
+        if: failure()
+        run: |
+          echo "🚨 Security health check workflow failed!"
+          echo "📧 Consider setting up notifications for critical security monitoring"
+          echo "🔍 Check the workflow logs for detailed error information"
+          echo "⚙️ Verify all secrets and environment variables are configured correctly"
