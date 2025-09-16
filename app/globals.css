@@ -1,7 +1,9 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Guardian Silent - Cybersecurity Professional Theme */
-@theme inline {
+:root {
   /* Cybersecurity color palette */
   --color-primary: #00ffff; /* Cyan */
   --color-secondary: #00ff88; /* Green */

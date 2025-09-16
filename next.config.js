@@ -154,9 +154,7 @@ const nextConfig = {
   serverExternalPackages: ['bcrypt', 'crypto'],
   
   // Skip error page generation to avoid React context issues
-  experimental: {
-    skipTrailingSlashRedirect: true,
-  },
+  skipTrailingSlashRedirect: true,
   
   // Try to avoid prerendering issues
   trailingSlash: false
