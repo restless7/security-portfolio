@@ -105,7 +105,11 @@ jobs:
         git log --all --full-history -- . | grep -E "(password|secret|key|token|api.key|private)" && echo "⚠️ Potential secrets found in git history" || echo "✅ No secrets detected in git history"
         
         # Check current files for secret patterns (basic check)
-        find . -type f -name "*.js" -o -name "*.ts" -o -name "*.jsx" -o -name "*.tsx" -o -name "*.json" | xargs grep -l "sk_live\\|pk_live\\|api[_-]?key\\|secret" && echo "⚠️ Potential secrets in source files" || echo "✅ No hardcoded secrets detected"
+        if find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.jsx" -o -name "*.tsx" -o -name "*.json" \) -exec grep -l "sk_live\|pk_live\|api[_-]\?key\|secret" {} \; 2>/dev/null | grep -q .; then
+          echo "⚠️ Potential secrets in source files"
+        else
+          echo "✅ No hardcoded secrets detected"
+        fi
 
   # Phase 2: Application Security Testing
   security-testing:
@@ -161,7 +165,12 @@ jobs:
         echo "🛡️ Validating build security..."
         
         # Check for client-side secrets in build output
-        find .next -name "*.js" -exec grep -l "sk_live\\|pk_live\\|secret\\|private" {} \\; && echo "❌ Secrets found in build output" && exit 1 || echo "✅ No secrets in build output"
+        if find .next -name "*.js" -exec grep -l "sk_live\|pk_live\|secret\|private" {} \; 2>/dev/null | grep -q .; then
+          echo "❌ Secrets found in build output"
+          exit 1
+        else
+          echo "✅ No secrets in build output"
+        fi
         
         # Verify security headers in build config
         if [ -f ".next/server/app/api/security-posture/route.js" ]; then
