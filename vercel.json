@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build",
+  "buildCommand": "npx next build",
   "outputDirectory": ".next",
   "installCommand": "npm ci",
   
@@ -16,6 +16,10 @@
     "app/api/security/csp-report/route.ts": {
       "maxDuration": 10,
       "memory": 256
+    },
+    "app/api/cron/route.ts": {
+      "maxDuration": 60,
+      "memory": 1024
     }
   },
   
@@ -119,7 +123,7 @@
   ],
   
   
-  "regions": ["iad1", "sfo1", "fra1"],
+  "regions": ["iad1"],
   
   "framework": "nextjs",
   
