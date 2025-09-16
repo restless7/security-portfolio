@@ -21,15 +21,6 @@ export function AnimatedTerminal() {
   useEffect(() => {
     setIsMounted(true)
   }, [])
-  
-  if (!isMounted) {
-    return (
-      <div className="font-mono text-sm">
-        <span className="text-green-400">whoami</span>
-        <span className="animate-pulse text-cyan-400">|</span>
-      </div>
-    )
-  }
 
   useEffect(() => {
     if (!isMounted) return
@@ -58,6 +49,15 @@ export function AnimatedTerminal() {
       return () => clearTimeout(timer)
     }
   }, [currentCommand, currentText, isTyping, isMounted])
+
+  if (!isMounted) {
+    return (
+      <div className="font-mono text-sm">
+        <span className="text-green-400">whoami</span>
+        <span className="animate-pulse text-cyan-400">|</span>
+      </div>
+    )
+  }
 
   return (
     <div className="font-mono text-sm">
