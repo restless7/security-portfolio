@@ -3,37 +3,16 @@
 @tailwind utilities;
 
 /* Guardian Silent - Cybersecurity Professional Theme */
-:root {
-  /* Cybersecurity color palette */
-  --color-primary: #00ffff; /* Cyan */
-  --color-secondary: #00ff88; /* Green */
-  --color-accent: #1a1a1a;
-  --color-border: #333333;
-  --color-card: #111111;
-  --color-muted: #888888;
-  --color-danger: #ff4444;
-  --color-success: #00ff88;
-  --color-warning: #ffaa00;
-  --color-background: #0a0a0a;
-  --color-foreground: #e5e5e5;
-  
-  /* Font configuration */
-  --font-family-mono: ui-monospace, 'JetBrains Mono', 'Fira Code', Monaco, Menlo, monospace;
-}
 
 /* Base styles */
-* {
-  border-color: var(--color-border);
-}
-
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-family-mono);
+  background-color: #000000;
+  color: #e5e5e5;
+  font-family: ui-monospace, 'JetBrains Mono', 'Fira Code', Monaco, Menlo, monospace;
   line-height: 1.6;
 }
 
@@ -43,33 +22,33 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-background);
+  background: #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
+  background: #00ffff;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-secondary);
+  background: #00ff88;
 }
 
 /* Security-focused utility classes */
 .terminal-border {
-  border: 1px solid var(--color-primary);
+  border: 1px solid #00ffff;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
 .security-card {
-  background-color: var(--color-card);
-  border: 1px solid var(--color-border);
+  background-color: #111111;
+  border: 1px solid #333333;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
 
 .security-card:hover {
-  border-color: var(--color-primary);
+  border-color: #00ffff;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
 }
 
@@ -78,5 +57,5 @@ body {
 }
 
 .matrix-bg {
-  background: linear-gradient(45deg, var(--color-background), var(--color-accent));
+  background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
 }

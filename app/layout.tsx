@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/app/components/Navigation";
 import { Toaster } from "sonner";
+import { ErrorBoundary } from "@/app/components/ErrorBoundary";
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -37,19 +38,21 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className={`${jetbrainsMono.variable} h-full antialiased`}>
-        <Navigation />
-        <main>{children}</main>
+        <ErrorBoundary>
+          <Navigation />
+          <main>{children}</main>
         <Toaster 
           theme="dark"
           position="bottom-right"
           toastOptions={{
             style: {
-              background: 'var(--card)',
-              color: 'var(--foreground)',
-              border: '1px solid var(--border)',
+              background: '#111111',
+              color: '#e5e5e5',
+              border: '1px solid #333333',
             },
           }}
         />
+        </ErrorBoundary>
       </body>
     </html>
   );
