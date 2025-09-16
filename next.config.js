@@ -21,10 +21,10 @@ const nextConfig = {
       "upgrade-insecure-requests"
     ].join('; ')
     
-    // Production CSP (strict, no unsafe-inline for scripts)
+    // Production CSP (secure but allows necessary Next.js inline scripts)
     const productionCSP = [
       "default-src 'self'",
-      "script-src 'self' https://va.vercel-scripts.com https://vercel.live",
+      "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://vercel.live",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "img-src 'self' data: https: blob: https://*.vercel.app https://*.vercel.com",
       "font-src 'self' data: https://fonts.gstatic.com",
