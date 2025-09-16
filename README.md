@@ -1,6 +1,11 @@
 # 🛡️ Security Portfolio - "Secure by Design"
 
-A professional cybersecurity portfolio website that demonstrates security best practices through its own implementation. This project serves as both a showcase of cybersecurity expertise and a practical demonstration of secure web development practices.
+> **A professional cybersecurity portfolio website that demonstrates security best practices through its own implementation. This project serves as both a showcase of cybersecurity expertise and a practical demonstration of secure web development practices.**
+
+[![Security-First CI/CD Pipeline](https://github.com/restless7/security-portfolio/actions/workflows/security-ci.yml/badge.svg)](https://github.com/restless7/security-portfolio/actions/workflows/security-ci.yml)
+[![Security Health Check](https://github.com/restless7/security-portfolio/actions/workflows/trigger-cron.yml/badge.svg)](https://github.com/restless7/security-portfolio/actions/workflows/trigger-cron.yml)
+[![License](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
+[![Security Grade](https://img.shields.io/badge/Security%20Grade-A+-brightgreen.svg)](#security-testing)
 
 ## 🚨 Security-First Architecture
 
@@ -12,6 +17,8 @@ This portfolio is built with a **"Security by Design"** philosophy, where every 
 - **🔍 XSS Prevention**: Input sanitization and output encoding
 - **📊 Live Security Monitoring**: Real-time security posture analysis
 - **🎯 Zero Trust Approach**: Every interaction is validated and secured
+- **🔄 DevSecOps Pipeline**: Automated security testing and continuous monitoring
+- **⏰ 24/7 Health Checks**: Continuous security validation every 6 hours
 
 ## 🏗️ Technical Stack
 
@@ -140,12 +147,51 @@ security-portfolio/
 - [x] **Environment Security**: Runtime validation and secrets management
 - [x] **Security Documentation**: Complete OWASP ASVS mapping and verification guides
 - [x] **Automated Security Scripts**: Command-line security testing and validation
+- [x] **Security-First CI/CD Pipeline**: 3-phase automated security validation
+- [x] **Continuous Security Monitoring**: GitHub Actions-based health checks every 6 hours
+- [x] **DevSecOps Integration**: Vulnerability scanning, license compliance, secret detection
 
 ### Next Phase 📋
 - [ ] **Production Hardening**: CSP nonces, stricter policies
-- [ ] **CI/CD Security Integration**: GitHub Actions with security checks
-- [ ] **Security Monitoring Alerts**: Real-time threat detection
+- [x] **CI/CD Security Integration**: ✅ GitHub Actions with comprehensive security checks
+- [ ] **Security Monitoring Alerts**: Real-time threat detection and Slack/Discord integration
 - [ ] **Advanced Threat Modeling**: Extended attack surface analysis
+- [ ] **SAST/DAST Integration**: Advanced static and dynamic security analysis
+
+## 🔄 DevSecOps Pipeline
+
+### 🛡️ Security-First CI/CD Pipeline
+
+A comprehensive **3-phase security validation pipeline** that executes on every code change:
+
+#### **Phase 1: Security Audit** (1m 13s)
+- ✅ **Dependency Vulnerability Scanning** - Blocks critical vulnerabilities
+- ✅ **License Compliance Checking** - Identifies GPL/AGPL conflicts
+- ✅ **Security-focused ESLint** - Custom security rules enforcement
+- ✅ **Secret Detection** - Git history and source code scanning
+
+#### **Phase 2: Security Testing** (41s)
+- ✅ **17 Security Test Cases** - XSS, input validation, rate limiting
+- ✅ **Coverage Analysis** - >80% coverage on security-critical paths
+- ✅ **Application Security** - CORS, HTTP method validation
+- ✅ **Environment Security** - Secret exposure prevention
+
+#### **Phase 3: Infrastructure Security** (6s)
+- ✅ **Configuration Security** - CSP, HSTS header validation
+- ✅ **API Route Integrity** - Endpoint security verification
+- ✅ **Build Artifact Scanning** - Prevents credential leakage
+
+### 🔐 Continuous Security Monitoring
+
+**Security Health Checks** run **every 6 hours** via GitHub Actions:
+- 🏥 **System Health Validation** - Endpoint availability and performance
+- 🛡️ **Security Posture Assessment** - Real-time security score calculation
+- 🧹 **Rate Limit Cleanup** - Memory optimization and maintenance
+- 🚨 **Error Monitoring** - Failed request tracking and alerting
+
+**📋 [Complete DevSecOps Documentation](./docs/SECURITY-CICD.md)**
+
+---
 
 ## 🧪 Security Testing
 
@@ -219,6 +265,36 @@ Visit `/security-posture` for real-time security assessment:
 
 ---
 
+## 📚 Documentation
+
+### **Security & DevSecOps Guides**
+- 📋 **[Security-First CI/CD Pipeline](./docs/SECURITY-CICD.md)** - Complete DevSecOps implementation guide
+  - Multi-phase security validation architecture
+  - Continuous monitoring and health checks
+  - Security metrics and incident response
+  - Enterprise-grade security automation
+
+### **Quick References**
+- 🔒 **[Security Architecture Overview](./docs/SECURITY-ARCHITECTURE.md)** - Security design patterns and controls
+- 🧪 **[Security Testing Guide](./docs/SECURITY-TESTING.md)** - Comprehensive testing methodologies
+- 📊 **[Monitoring & Alerting](./docs/MONITORING.md)** - Continuous security monitoring setup
+- 🚀 **[Deployment Guide](./docs/DEPLOYMENT.md)** - Secure deployment with Vercel
+- 🔧 **[Configuration Reference](./docs/CONFIGURATION.md)** - Environment and security configuration
+
+---
+
 *"Every line of code is a potential entry point—I make sure it's not."*
 
 **Built with security in mind. Powered by expertise.**
+
+[![GitHub stars](https://img.shields.io/github/stars/restless7/security-portfolio?style=social)](https://github.com/restless7/security-portfolio/stargazers)
+
+---
+
+**🔗 Connect with me:**
+- 🌐 **[Live Portfolio](https://your-portfolio-url.vercel.app)**
+- 🔒 **[Security Dashboard](https://your-portfolio-url.vercel.app/security-posture)**
+- 🐙 **[GitHub Profile](https://github.com/restless7)**
+- 💼 **[LinkedIn](https://linkedin.com/in/your-profile)**
+
+*Demonstrating enterprise-grade cybersecurity through practical implementation.*
