@@ -17,7 +17,7 @@ const customJestConfig = {
   moduleDirectories: ['node_modules', '<rootDir>/'],
   
   // Handle module aliases
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
 

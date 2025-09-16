@@ -185,9 +185,17 @@ describe('Security Utilities', () => {
     const maliciousInput = '<script>alert("xss")</script><p>Valid content</p>'
     const sanitized = security.sanitizeInput(maliciousInput)
     
+    // Should not contain dangerous HTML tags in their raw form
     expect(sanitized).not.toContain('<script>')
-    expect(sanitized).not.toContain('alert')
+    expect(sanitized).not.toContain('</script>')
+    
+    // Should encode dangerous characters
+    expect(sanitized).toContain('&lt;script&gt;')
+    expect(sanitized).toContain('&quot;')
+    
+    // Safe content should remain readable (HTML encoded but present)
     expect(sanitized).toContain('Valid content')
+    expect(sanitized).toContain('&lt;p&gt;')
   })
   
   it('should calculate security scores correctly', () => {
