@@ -151,7 +151,15 @@ const nextConfig = {
   },
 
   // Server external packages (moved from experimental)
-  serverExternalPackages: ['bcrypt', 'crypto']
+  serverExternalPackages: ['bcrypt', 'crypto'],
+  
+  // Skip error page generation to avoid React context issues
+  experimental: {
+    skipTrailingSlashRedirect: true,
+  },
+  
+  // Try to avoid prerendering issues
+  trailingSlash: false
 }
 
 module.exports = nextConfig
