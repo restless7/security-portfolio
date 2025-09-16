@@ -58,7 +58,8 @@ jobs:
             -H "Authorization: ${{ secrets.CRON_SECRET }}" \
             -H "User-Agent: GitHub-Actions-Cron/1.0 (Security-Portfolio)" \
             -H "Accept: application/json" \
-            "$DEPLOYMENT_URL/api/cron" || echo "CURL_FAILED")
+            -L \
+            "${DEPLOYMENT_URL%/}/api/cron" || echo "CURL_FAILED")
           
           # Extract HTTP code and response time
           HTTP_CODE=$(echo "$RESPONSE" | grep "HTTP_CODE:" | cut -d: -f2)

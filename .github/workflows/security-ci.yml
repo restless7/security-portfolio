@@ -37,7 +37,7 @@ jobs:
 
     - name: 📦 Install Dependencies
       run: |
-        npm ci
+        npm ci --legacy-peer-deps
         echo "Dependencies installed successfully"
 
     - name: 🚨 Dependency Vulnerability Scan
@@ -125,7 +125,7 @@ jobs:
         cache: 'npm'
 
     - name: 📦 Install Dependencies
-      run: npm ci
+      run: npm ci --legacy-peer-deps
 
     - name: 🧪 Security Test Suite
       run: |
