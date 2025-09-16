@@ -17,8 +17,16 @@ export function SecurityScorecard() {
     grade: 'Loading...',
     status: 'loading'
   })
+  const [isMounted, setIsMounted] = useState(false)
+  
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
+    if (!isMounted) return
+    
     // Simulate loading and then show a high security score
     // In production, this would fetch from your security posture API
     const timer = setTimeout(() => {
@@ -31,20 +39,20 @@ export function SecurityScorecard() {
     }, 1500)
 
     return () => clearTimeout(timer)
-  }, [])
+  }, [isMounted])
 
   const getScoreColor = (score: number) => {
-    if (score >= 95) return 'text-secondary'
-    if (score >= 90) return 'text-primary'
-    if (score >= 80) return 'text-warning'
-    return 'text-danger'
+    if (score >= 95) return 'text-[#00ff88]' // Green
+    if (score >= 90) return 'text-[#00ffff]' // Cyan  
+    if (score >= 80) return 'text-[#ffaa00]' // Warning
+    return 'text-[#ff4444]' // Danger
   }
 
   const getGradientColor = (score: number) => {
-    if (score >= 95) return 'from-secondary/20 to-secondary/5'
-    if (score >= 90) return 'from-primary/20 to-primary/5'
-    if (score >= 80) return 'from-warning/20 to-warning/5'
-    return 'from-danger/20 to-danger/5'
+    if (score >= 95) return 'from-[#00ff88]/20 to-[#00ff88]/5'
+    if (score >= 90) return 'from-[#00ffff]/20 to-[#00ffff]/5'
+    if (score >= 80) return 'from-[#ffaa00]/20 to-[#ffaa00]/5'
+    return 'from-[#ff4444]/20 to-[#ff4444]/5'
   }
 
   return (

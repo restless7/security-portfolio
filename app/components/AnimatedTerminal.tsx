@@ -15,8 +15,25 @@ export function AnimatedTerminal() {
   const [currentCommand, setCurrentCommand] = useState(0)
   const [currentText, setCurrentText] = useState("")
   const [isTyping, setIsTyping] = useState(true)
+  const [isMounted, setIsMounted] = useState(false)
+  
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+  
+  if (!isMounted) {
+    return (
+      <div className="font-mono text-sm">
+        <span className="text-green-400">whoami</span>
+        <span className="animate-pulse text-cyan-400">|</span>
+      </div>
+    )
+  }
 
   useEffect(() => {
+    if (!isMounted) return
+    
     const command = commands[currentCommand]
     
     if (isTyping && currentText.length < command.length) {
@@ -40,7 +57,7 @@ export function AnimatedTerminal() {
       
       return () => clearTimeout(timer)
     }
-  }, [currentCommand, currentText, isTyping])
+  }, [currentCommand, currentText, isTyping, isMounted])
 
   return (
     <div className="font-mono text-sm">

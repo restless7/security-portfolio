@@ -5,7 +5,7 @@ import { AnimatedTerminal } from "@/app/components/AnimatedTerminal"
 
 export default function Home() {
   return (
-    <div className="min-h-screen matrix-bg">
+    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
       {/* Hero Section */}
       <section className="relative px-6 py-20 sm:py-32 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
