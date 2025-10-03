@@ -127,6 +127,12 @@
   
   "framework": "nextjs",
   
+  "protectionBypass": [
+    {
+      "pathname": "/api/cron"
+    }
+  ],
+  
   "env": {
     "NODE_ENV": "production",
     "SKIP_ENV_VALIDATION": "true",
