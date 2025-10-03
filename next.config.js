@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Fix workspace root detection
+  outputFileTracingRoot: '/home/sebastiangarcia/planmaestro-ecosystem/packages/security-portfolio',
   // Security headers configuration for A+ rating
   async headers() {
     const isDevelopment = process.env.NODE_ENV === 'development'

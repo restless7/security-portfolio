@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      UserRole
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum UserRole {
+  OPERATOR
+  COORDINATOR  
+  AUDITOR
+}
+
+model Voter {
+  id             String        @id @default(uuid())
+  externalId     String?       // id origen (si aplica)
+  namePseudo     String        // no PII real by default in mock
+  age            Int?
+  gender         String?
+  address        String?
+  neighborhood   String?       // barrio
+  location       Json          // { lat, lng }
+  tags           String[]      @default([])
+  intentionScore Float         @default(0.0) // 0.0 - 100.0
+  lastContact    DateTime?
+  phoneNumber    String?       // pseudonimizado
+  email          String?       // pseudonimizado
+  consentFlag    Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  
+  interactions   Interaction[]
+  
+  @@map("voters")
+}
+
+model Interaction {
+  id          String          @id @default(uuid())
+  voterId     String
+  type        InteractionType
+  channel     String          // whatsapp, call, visit, survey
+  timestamp   DateTime        @default(now())
+  result      String?         // ejemplo: 'positivo', 'negativo', 'indeciso'
+  sentiment   Float?          // -1 .. 1
+  notes       String?
+  metadata    Json?           // libre para almacenar detalles
+  userId      String?         // quien registró
+  location    Json?           // geolocalización de la interacción
+  duration    Int?            // duración en minutos
+  
+  voter       Voter           @relation(fields: [voterId], references: [id])
+  
+  @@map("interactions")
+}
+
+enum InteractionType {
+  CALL
+  VISIT  
+  MESSAGE
+  SURVEY
+  SOCIAL
+  EMAIL
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actorId   String?
+  action    String   // ejemplo: 'voter_created', 'interaction_added', 'export_data'
+  resource  String?  // id del recurso afectado
+  payload   Json?    // datos adicionales de la acción
+  ip        String?  // IP del actor
+  userAgent String?  // user agent del navegador
+  createdAt DateTime @default(now())
+  
+  @@map("audit_logs")
+}
+
+model Campaign {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  status      CampaignStatus @default(ACTIVE)
+  targetArea  Json?     // GeoJSON del área objetivo
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("campaigns")
+}
+
+enum CampaignStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  DRAFT
+}
