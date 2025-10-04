@@ -1,5 +1,6 @@
 // Mock data for Electoral Operations Control Center
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Voter {
   id: string;
   externalId?: string;

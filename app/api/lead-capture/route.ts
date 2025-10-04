@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server"
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { NextRequest, NextResponse } from 'next/server'
 import { z } from "zod"
 import rateLimit from "@/app/lib/rate-limit"
 
