@@ -1,6 +1,6 @@
 "use client"
 
-/* eslint-disable react/no-unescaped-entities, @typescript-eslint/no-unused-vars */
+/* eslint-disable react/no-unescaped-entities, @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any */
 import { useState } from 'react'
 import { Download, Mail, CheckCircle, ArrowRight } from "lucide-react"
 import { cn } from "@/app/lib/utils"
