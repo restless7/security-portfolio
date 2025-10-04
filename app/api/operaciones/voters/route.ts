@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     const sortOrder = searchParams.get('sortOrder') || 'asc';
 
     // Filter voters
-    let filteredVoters = mockVoters.filter(voter => {
+    const filteredVoters = mockVoters.filter(voter => {
       // Search filter
       const matchesSearch = !search || 
         voter.namePseudo.toLowerCase().includes(search.toLowerCase()) ||
@@ -38,8 +38,8 @@ export async function GET(request: NextRequest) {
 
     // Sort voters
     filteredVoters.sort((a, b) => {
-      let aVal: any = a[sortBy as keyof Voter];
-      let bVal: any = b[sortBy as keyof Voter];
+      let aVal: unknown = a[sortBy as keyof Voter];
+      let bVal: unknown = b[sortBy as keyof Voter];
 
       if (sortBy === 'lastContact') {
         aVal = aVal ? new Date(aVal).getTime() : 0;

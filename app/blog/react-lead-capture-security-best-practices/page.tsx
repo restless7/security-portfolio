@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import Link from "next/link"
 import { ArrowLeft, Shield, Users, Code, Lock, CheckCircle, AlertTriangle, Zap } from "lucide-react"
 import LeadCaptureForm from "@/app/components/LeadCaptureForm"

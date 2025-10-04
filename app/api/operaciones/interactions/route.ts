@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     const sortOrder = searchParams.get('sortOrder') || 'desc';
 
     // Filter interactions
-    let filteredInteractions = mockInteractions.filter(interaction => {
+    const filteredInteractions = mockInteractions.filter(interaction => {
       // Voter filter
       const matchesVoter = !voterId || interaction.voterId === voterId;
 
@@ -41,8 +41,8 @@ export async function GET(request: NextRequest) {
 
     // Sort interactions
     filteredInteractions.sort((a, b) => {
-      let aVal: any = a[sortBy as keyof Interaction];
-      let bVal: any = b[sortBy as keyof Interaction];
+      let aVal: unknown = a[sortBy as keyof Interaction];
+      let bVal: unknown = b[sortBy as keyof Interaction];
 
       if (sortBy === 'timestamp') {
         aVal = new Date(aVal).getTime();
