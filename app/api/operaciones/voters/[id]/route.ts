@@ -3,10 +3,11 @@ import { mockVoters } from '@/app/operaciones/lib/mockData';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const voterId = params.id;
+    const resolvedParams = await params;
+    const voterId = resolvedParams.id;
     
     const voter = mockVoters.find(v => v.id === voterId);
     
@@ -42,10 +43,11 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const voterId = params.id;
+    const resolvedParams = await params;
+    const voterId = resolvedParams.id;
     const body = await request.json();
     
     const voterIndex = mockVoters.findIndex(v => v.id === voterId);
@@ -93,10 +95,11 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const voterId = params.id;
+    const resolvedParams = await params;
+    const voterId = resolvedParams.id;
     
     const voterIndex = mockVoters.findIndex(v => v.id === voterId);
     
