@@ -77,8 +77,8 @@ export default function LeadCaptureForm({
       setIsSubmitted(true)
       
       // Track conversion
-      if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('event', 'generate_lead', {
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'generate_lead', {
           lead_type: type,
           value: getLeadValue(type)
         })
