@@ -81,7 +81,7 @@ export default function BlogPost() {
           {/* Lead Magnet - Early Hook */}
           <div className="mb-12">
             <LeadCaptureForm
-              type="whitepaper"
+              type="whitepaper-download"
               title="Get the Complete React Security Checklist"
               description="50+ security best practices for React applications - used by 500+ developers"
               buttonText="Download Free Checklist"
