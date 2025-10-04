@@ -54,8 +54,11 @@ export async function GET(request: NextRequest) {
         bVal = (bVal && typeof bVal === 'string') ? bVal.toLowerCase() : '';
       }
 
-      if (aVal < bVal) return sortOrder === 'asc' ? -1 : 1;
-      if (aVal > bVal) return sortOrder === 'asc' ? 1 : -1;
+      const aComparable = aVal as string | number;
+      const bComparable = bVal as string | number;
+      
+      if (aComparable < bComparable) return sortOrder === 'asc' ? -1 : 1;
+      if (aComparable > bComparable) return sortOrder === 'asc' ? 1 : -1;
       return 0;
     });
 
