@@ -148,7 +148,9 @@ P.S. Need SOC2 certification fast? I offer done-with-you SOC2 implementation tha
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting
-    const identifier = request.ip ?? "127.0.0.1"
+    const identifier = request.headers.get('x-forwarded-for') || 
+                      request.headers.get('x-real-ip') || 
+                      "127.0.0.1"
     const { success } = await rateLimit(identifier, 10, 60000)
     
     if (!success) {
@@ -169,7 +171,7 @@ export async function POST(request: NextRequest) {
     const leadData = {
       ...validatedData,
       leadScore,
-      ipAddress: request.ip,
+      ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || "127.0.0.1",
       userAgent: request.headers.get("user-agent"),
       createdAt: new Date().toISOString()
     }
