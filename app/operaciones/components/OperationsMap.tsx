@@ -147,6 +147,7 @@ export function OperationsMap({ onVoterSelect, fullscreen = false }: OperationsM
         });
 
         // Initialize map
+        if (!mapRef.current) return;
         const map = L.map(mapRef.current).setView([4.7110, -74.0721], 11);
         mapInstanceRef.current = map;
 
@@ -188,7 +189,7 @@ export function OperationsMap({ onVoterSelect, fullscreen = false }: OperationsM
         // Add voter markers
         const addMarkers = async () => {
           const MarkerClusterGroup = (await import('leaflet.markercluster')).default;
-          const markerClusterGroup = new MarkerClusterGroup({
+          const markerClusterGroup = new (MarkerClusterGroup as any)({
             showCoverageOnHover: false,
             zoomToBoundsOnClick: true,
             maxClusterRadius: 50,
@@ -231,7 +232,7 @@ export function OperationsMap({ onVoterSelect, fullscreen = false }: OperationsM
             const marker = L.marker([voter.location.lat, voter.location.lng], {
               icon: createCustomIcon(voter.intentionScore),
               voter: voter
-            });
+            } as any);
 
             marker.bindPopup(`
               <div class="p-2">

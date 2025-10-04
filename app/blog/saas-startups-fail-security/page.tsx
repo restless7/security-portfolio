@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities, react/jsx-no-comment-textnodes */
+/* eslint-disable react/no-unescaped-entities, react/jsx-no-comment-textnodes, @typescript-eslint/no-unused-vars */
 import Link from "next/link"
 import { ArrowLeft, Download, Shield, AlertTriangle, DollarSign, Users, Clock, TrendingUp } from "lucide-react"
 import LeadCaptureForm from "@/app/components/LeadCaptureForm"
