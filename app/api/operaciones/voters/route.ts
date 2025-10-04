@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 
       if (typeof aVal === 'string') {
         aVal = aVal.toLowerCase();
-        bVal = bVal?.toLowerCase() || '';
+        bVal = (bVal && typeof bVal === 'string') ? bVal.toLowerCase() : '';
       }
 
       if (aVal < bVal) return sortOrder === 'asc' ? -1 : 1;
