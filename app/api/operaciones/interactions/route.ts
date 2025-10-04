@@ -45,8 +45,8 @@ export async function GET(request: NextRequest) {
       let bVal: unknown = b[sortBy as keyof Interaction];
 
       if (sortBy === 'timestamp') {
-        aVal = new Date(aVal).getTime();
-        bVal = new Date(bVal).getTime();
+        aVal = new Date(aVal as string).getTime();
+        bVal = new Date(bVal as string).getTime();
       }
 
       if (typeof aVal === 'string') {

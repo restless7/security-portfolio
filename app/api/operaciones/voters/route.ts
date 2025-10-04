@@ -42,8 +42,8 @@ export async function GET(request: NextRequest) {
       let bVal: unknown = b[sortBy as keyof Voter];
 
       if (sortBy === 'lastContact') {
-        aVal = aVal ? new Date(aVal).getTime() : 0;
-        bVal = bVal ? new Date(bVal).getTime() : 0;
+        aVal = aVal ? new Date(aVal as string).getTime() : 0;
+        bVal = bVal ? new Date(bVal as string).getTime() : 0;
       }
 
       if (typeof aVal === 'string') {
