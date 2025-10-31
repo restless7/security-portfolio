@@ -1,7 +1,10 @@
+"use client"
+
 import { Shield, Terminal, Lock, Eye, AlertTriangle } from "lucide-react"
 import Link from "next/link"
 import { SecurityScorecard } from "@/app/components/SecurityScorecard"
 import { AnimatedTerminal } from "@/app/components/AnimatedTerminal"
+import { openMatrix } from "@/app/lib/openMatrix"
 
 export default function Home() {
   return (
@@ -45,12 +48,18 @@ export default function Home() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex items-center justify-center gap-x-6">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
-              href="/projects"
+              href="/services"
               className="terminal-border rounded-md bg-[#00ffff] px-6 py-3 text-sm font-semibold text-black shadow-sm hover:bg-[#00ff88] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00ffff] transition-all duration-300"
             >
-              View Security Projects
+              View Services
+            </Link>
+            <Link
+              href="/projects"
+              className="security-card px-6 py-3 text-sm font-semibold leading-6 text-[#00ffff] hover:text-[#00ff88] transition-colors duration-300"
+            >
+              Security Projects <span aria-hidden="true">→</span>
             </Link>
             <Link
               href="/security-posture"
@@ -117,7 +126,23 @@ export default function Home() {
       </section>
 
       {/* Recent Work Preview */}
-      <section className="py-16 px-6 lg:px-8 bg-[#111111]/50">
+      <section className="py-16 px-6 lg:px-8 bg-[#111111]/50 relative group">
+        {/* Matrix Easter Egg */}
+        <span 
+          onClick={() => openMatrix("home")}
+          className="absolute top-4 right-4 text-[#00ff88] hover:text-[#00ffff] transition-colors duration-300 text-2xl font-mono animate-pulse cursor-pointer"
+          style={{
+            textShadow: '0 0 10px rgba(0, 255, 136, 0.8), 0 0 20px rgba(0, 255, 136, 0.5), 0 0 30px rgba(0, 255, 136, 0.3)'
+          }}
+          title="Enter the matrix"
+          aria-label="Enter the matrix"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openMatrix("home") }}
+        >
+          ⎔⎓⎔
+        </span>
+        
         <div className="mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight mb-4">
@@ -178,6 +203,47 @@ export default function Home() {
                 className="inline-flex items-center text-sm text-[#00ff88] hover:text-[#00ffff] transition-colors"
               >
                 Run security scan <span className="ml-1">→</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Blog & Services CTA Section */}
+      <section className="py-16 px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Services CTA */}
+            <div className="security-card p-8">
+              <h3 className="text-2xl font-bold mb-4 text-[#00ffff]">
+                Professional Security Services
+              </h3>
+              <p className="text-[#888888] mb-6 leading-relaxed">
+                From penetration testing to cloud security reviews, get enterprise-grade 
+                security expertise tailored for SMBs and startups.
+              </p>
+              <Link
+                href="/services"
+                className="inline-flex items-center text-[#00ff88] hover:text-[#00ffff] font-semibold transition-colors"
+              >
+                Explore Services <span className="ml-1">→</span>
+              </Link>
+            </div>
+
+            {/* Blog CTA */}
+            <div className="security-card p-8">
+              <h3 className="text-2xl font-bold mb-4 text-[#00ff88]">
+                Security Insights & Best Practices
+              </h3>
+              <p className="text-[#888888] mb-6 leading-relaxed">
+                Learn from real-world security implementations and get practical guides 
+                for securing modern web applications.
+              </p>
+              <Link
+                href="/blog"
+                className="inline-flex items-center text-[#00ffff] hover:text-[#00ff88] font-semibold transition-colors"
+              >
+                Read the Blog <span className="ml-1">→</span>
               </Link>
             </div>
           </div>

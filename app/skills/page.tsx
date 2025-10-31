@@ -4,6 +4,7 @@ import { Shield, ArrowLeft, Lock, Zap, Code, Cloud, Search, Terminal } from "luc
 import Link from "next/link"
 import { useState } from "react"
 import { cn } from "@/app/lib/utils"
+import { openMatrix } from "@/app/lib/openMatrix"
 
 // Skills data structured by security domains
 const skillCategories = [
@@ -124,7 +125,7 @@ export default function SkillsPage() {
   }
 
   return (
-    <div className="min-h-screen matrix-bg py-16">
+    <div className="min-h-screen matrix-bg py-16 relative">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -150,7 +151,19 @@ export default function SkillsPage() {
               </div>
             </div>
             
-            <div className="security-card p-6 max-w-4xl">
+            <div className="security-card p-6 max-w-4xl relative">
+              {/* Matrix Easter Egg - subtle inline */}
+              <span 
+                onClick={() => openMatrix("skills")}
+                className="absolute top-3 right-3 text-[#ffaa00]/30 hover:text-[#ffaa00] transition-all duration-500 text-lg cursor-pointer"
+                title="System override"
+                aria-label="Override"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openMatrix("skills") }}
+              >
+                ☢⚠☣
+              </span>
               <p className="text-lg text-gray-300 leading-relaxed">
                 A comprehensive arsenal of cybersecurity skills, tools, and methodologies developed through 
                 hands-on experience in <span className="text-cyan-400 font-semibold">offensive security</span>, 

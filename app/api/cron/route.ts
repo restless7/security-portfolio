@@ -14,11 +14,29 @@ export async function GET(request: NextRequest) {
     const authHeader = request.headers.get('authorization')
     const secretParam = new URL(request.url).searchParams.get('secret')
     const providedSecret = authHeader || secretParam
+    const expectedSecret = process.env.CRON_SECRET
     
-    if (!providedSecret || !process.env.CRON_SECRET) {
-      console.warn('[SECURITY] Unauthorized cron access attempt:', {
+    // Normalize both values - trim whitespace and handle undefined/null
+    const normalizedProvidedSecret = providedSecret?.trim() || ''
+    const normalizedExpectedSecret = expectedSecret?.trim() || ''
+    
+    // Debug logging (only log first/last chars for security)
+    console.log('[DEBUG] Cron auth check:', {
+      hasProvidedSecret: !!providedSecret,
+      hasExpectedSecret: !!expectedSecret,
+      providedSecretLength: normalizedProvidedSecret.length,
+      expectedSecretLength: normalizedExpectedSecret.length,
+      providedSecretPreview: normalizedProvidedSecret ? `${normalizedProvidedSecret.slice(0, 8)}...${normalizedProvidedSecret.slice(-8)}` : 'none',
+      expectedSecretPreview: normalizedExpectedSecret ? `${normalizedExpectedSecret.slice(0, 8)}...${normalizedExpectedSecret.slice(-8)}` : 'none',
+      timestamp: new Date().toISOString()
+    })
+    
+    if (!normalizedProvidedSecret || !normalizedExpectedSecret) {
+      console.warn('[SECURITY] Unauthorized cron access attempt - missing secret:', {
         ip: request.headers.get('x-forwarded-for') || 'unknown',
         userAgent: request.headers.get('user-agent') || 'unknown',
+        hasProvidedSecret: !!normalizedProvidedSecret,
+        hasExpectedSecret: !!normalizedExpectedSecret,
         timestamp: new Date().toISOString()
       })
       
@@ -35,10 +53,13 @@ export async function GET(request: NextRequest) {
       )
     }
     
-    if (providedSecret !== process.env.CRON_SECRET) {
+    if (normalizedProvidedSecret !== normalizedExpectedSecret) {
       console.warn('[SECURITY] Invalid cron secret provided:', {
         ip: request.headers.get('x-forwarded-for') || 'unknown',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        secretMismatch: true,
+        providedLength: normalizedProvidedSecret.length,
+        expectedLength: normalizedExpectedSecret.length
       })
       
       return NextResponse.json(

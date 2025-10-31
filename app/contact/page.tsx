@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { contactFormSchema, type ContactFormData } from "@/app/lib/validations"
 import { cn } from "@/app/lib/utils"
+import { openMatrix } from "@/app/lib/openMatrix"
 
 // Security features for demonstration
 const securityFeatures = [
@@ -91,7 +92,7 @@ export default function ContactPage() {
 
 
   return (
-    <div className="min-h-screen matrix-bg py-16">
+    <div className="min-h-screen matrix-bg py-16 relative">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -117,7 +118,19 @@ export default function ContactPage() {
               </div>
             </div>
             
-            <div className="security-card p-6 max-w-4xl">
+            <div className="security-card p-6 max-w-4xl relative">
+              {/* Matrix Easter Egg - subtle inline */}
+              <span 
+                onClick={() => openMatrix("contact")}
+                className="absolute top-3 right-3 text-[#ff3366]/30 hover:text-[#ff3366] transition-all duration-500 text-lg cursor-pointer"
+                title="Secure channel"
+                aria-label="Secure link"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openMatrix("contact") }}
+              >
+                ☭☸☯
+              </span>
               <p className="text-lg text-gray-300 leading-relaxed">
                 Ready to discuss your cybersecurity needs? Whether you&rsquo;re looking for
                 <span className="text-cyan-400 font-semibold"> penetration testing</span>,

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useMemo, useState } from "react"
 import { ArrowLeft, Shield, Lock, PanelLeftClose, Cog, Globe, Bug, ExternalLink } from "lucide-react"
 import { cn } from "@/app/lib/utils"
+import { openMatrix } from "@/app/lib/openMatrix"
 
 type Project = {
   id: string
@@ -15,7 +16,7 @@ type Project = {
   security: string[]
   metrics: { label: string; value: string; color: string }[]
   details: { heading: string; bullets: string[] }[]
-  links?: { label: string; href: string }[]
+  links?: { label: string; href: string; isMatrix?: boolean }[]
   badge?: string
 }
 
@@ -98,6 +99,7 @@ const projects: Project[] = [
     ],
     links: [
       { label: "Run Live Check", href: "/security-posture" },
+      { label: "[̲̅$̲̅(̲̅ ͡° ͜ʖ ͡°̲̅)̲̅$̲̅]", href: "/matrix-rain", isMatrix: true },
     ],
     badge: "Meta",
   },
@@ -323,9 +325,22 @@ export default function ProjectsPage() {
                 {p.links && p.links.length > 0 && (
                   <div className="mb-4 flex flex-wrap gap-3">
                     {p.links.map(l => (
-                      <Link key={l.href} href={l.href} className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-green-400 transition-colors">
-                        <ExternalLink className="w-4 h-4" /> {l.label}
-                      </Link>
+                      l.isMatrix ? (
+                        <span 
+                          key={l.href}
+                          onClick={() => openMatrix("projects")}
+                          className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-green-400 transition-colors cursor-pointer"
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openMatrix("projects") }}
+                        >
+                          <ExternalLink className="w-4 h-4" /> {l.label}
+                        </span>
+                      ) : (
+                        <Link key={l.href} href={l.href} className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-green-400 transition-colors">
+                          <ExternalLink className="w-4 h-4" /> {l.label}
+                        </Link>
+                      )
                     ))}
                   </div>
                 )}

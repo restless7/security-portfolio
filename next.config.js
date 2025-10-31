@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Fix workspace root detection
-  outputFileTracingRoot: '/home/sebastiangarcia/planmaestro-ecosystem/packages/security-portfolio',
   // Security headers configuration for A+ rating
   async headers() {
     const isDevelopment = process.env.NODE_ENV === 'development'
@@ -151,15 +149,30 @@ const nextConfig = {
     dangerouslyAllowSVG: false,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-
-  // Server external packages (moved from experimental)
-  serverExternalPackages: ['bcrypt', 'crypto'],
+  
+  // Webpack configuration for server optimizations
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Basic server-side optimizations
+      config.externals = config.externals || []
+      config.externals.push({
+        'source-map': 'commonjs source-map'
+      })
+    }
+    return config
+  },
   
   // Skip error page generation to avoid React context issues
   skipTrailingSlashRedirect: true,
   
   // Try to avoid prerendering issues
-  trailingSlash: false
+  trailingSlash: false,
+  
+  // Optimizations for serverless deployment
+  experimental: {
+    // Reduce bundle size for serverless functions
+    optimizePackageImports: ['lucide-react']
+  }
 }
 
 module.exports = nextConfig

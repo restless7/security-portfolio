@@ -4,6 +4,7 @@ import { User, ArrowLeft, Shield, Code, Target, Lightbulb, BookOpen, Users, Awar
 import Link from "next/link"
 import { useState } from "react"
 import { cn } from "@/app/lib/utils"
+import { openMatrix } from "@/app/lib/openMatrix"
 
 // Timeline data
 const timeline = [
@@ -134,7 +135,7 @@ export default function AboutPage() {
   const [activeSection, setActiveSection] = useState<string>("journey")
 
   return (
-    <div className="min-h-screen matrix-bg py-16">
+    <div className="min-h-screen matrix-bg py-16 relative">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -162,7 +163,19 @@ export default function AboutPage() {
           </div>
 
           {/* Navigation */}
-          <div className="mb-12">
+          <div className="mb-12 relative">
+            {/* Matrix Easter Egg - subtle corner */}
+            <span 
+              onClick={() => openMatrix("about")}
+              className="absolute -top-4 right-0 text-[#9966ff]/30 hover:text-[#9966ff] transition-all duration-500 text-xl cursor-pointer"
+              title="Decrypt identity"
+              aria-label="Hidden identity"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openMatrix("about") }}
+            >
+              ಠ_ಠ
+            </span>
             <div className="flex flex-wrap gap-4">
               {["journey", "philosophy", "approach", "stats"].map((section) => (
                 <button

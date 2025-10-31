@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/app/components/Navigation";
-import { Toaster } from "sonner";
-import { ErrorBoundary } from "@/app/components/ErrorBoundary";
+import { Footer } from "@/app/components/Footer";
+// import { Toaster } from "sonner";
+// import { ErrorBoundary } from "@/app/components/ErrorBoundary";
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -37,11 +38,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${jetbrainsMono.variable} h-full antialiased`}>
-        <ErrorBoundary>
-          <Navigation />
-          <main>{children}</main>
-        <Toaster 
+      <body className={`${jetbrainsMono.variable} h-full antialiased flex flex-col`}>
+        <Navigation />
+        <main className="flex-grow">{children}</main>
+        <Footer />
+        {/* <Toaster 
           theme="dark"
           position="bottom-right"
           toastOptions={{
@@ -51,8 +52,7 @@ export default function RootLayout({
               border: '1px solid #333333',
             },
           }}
-        />
-        </ErrorBoundary>
+        /> */}
       </body>
     </html>
   );

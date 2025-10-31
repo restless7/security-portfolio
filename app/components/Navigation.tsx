@@ -2,14 +2,16 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Shield, Terminal, User, Briefcase, Award, Mail, Eye, Menu, X } from "lucide-react"
+import { Shield, Terminal, User, Briefcase, Award, Mail, Eye, Menu, X, Wrench, BookOpen } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/app/lib/utils"
 
 const navigationItems = [
   { name: "Home", href: "/", icon: Terminal },
+  { name: "Services", href: "/services", icon: Wrench },
   { name: "Skills", href: "/skills", icon: Shield },
   { name: "Projects", href: "/projects", icon: Briefcase },
+  { name: "Blog", href: "/blog", icon: BookOpen },
   { name: "Certifications", href: "/certifications", icon: Award },
   { name: "Security Posture", href: "/security-posture", icon: Eye },
   { name: "About", href: "/about", icon: User },

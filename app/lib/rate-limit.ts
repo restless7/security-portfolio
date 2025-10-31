@@ -20,8 +20,9 @@ interface RateLimitResult {
 // In-memory store (in production, use Redis or similar)
 const rateLimitStore = new Map<string, RateLimitEntry>()
 
-// Cleanup old entries periodically to prevent memory leaks
-setInterval(() => {
+// Cleanup old entries on-demand to prevent memory leaks
+// Note: setInterval is not suitable for serverless environments
+function cleanupExpiredEntries() {
   const now = Date.now()
   const twoHoursAgo = now - (2 * 60 * 60 * 1000)
   
@@ -30,7 +31,7 @@ setInterval(() => {
       rateLimitStore.delete(key)
     }
   }
-}, 60 * 60 * 1000) // Cleanup every hour
+}
 
 /**
  * Sliding window rate limiter
@@ -40,6 +41,11 @@ export default async function rateLimit(
   limit: number, 
   windowMs: number = 60000 // 1 minute default
 ): Promise<RateLimitResult> {
+  // Cleanup expired entries periodically
+  if (Math.random() < 0.1) { // 10% chance to cleanup on each call
+    cleanupExpiredEntries()
+  }
+  
   const now = Date.now()
   const entry = rateLimitStore.get(key)
   

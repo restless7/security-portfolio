@@ -27,18 +27,38 @@ export function SecurityScorecard() {
   useEffect(() => {
     if (!isMounted) return
     
-    // Simulate loading and then show a high security score
-    // In production, this would fetch from your security posture API
-    const timer = setTimeout(() => {
-      setSecurityData({
-        score: 96,
-        grade: 'A+',
-        status: 'success',
-        lastScanned: new Date()
-      })
-    }, 1500)
-
-    return () => clearTimeout(timer)
+    let cancelled = false
+    
+    async function fetchSecurityScore() {
+      try {
+        const res = await fetch('/api/security-posture', { cache: 'no-store' })
+        if (!res.ok) throw new Error('Failed to fetch security score')
+        
+        const data = await res.json()
+        
+        if (!cancelled) {
+          setSecurityData({
+            score: data.score,
+            grade: data.grade,
+            status: 'success',
+            lastScanned: new Date(data.timestamp)
+          })
+        }
+      } catch (error) {
+        console.error('Security score fetch error:', error)
+        if (!cancelled) {
+          setSecurityData({
+            score: 0,
+            grade: 'Error',
+            status: 'error'
+          })
+        }
+      }
+    }
+    
+    fetchSecurityScore()
+    
+    return () => { cancelled = true }
   }, [isMounted])
 
   const getScoreColor = (score: number) => {
