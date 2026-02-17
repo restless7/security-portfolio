@@ -114,12 +114,12 @@ function getRandomTags(): string[] {
   const numTags = Math.floor(Math.random() * 4) + 1;
   const selectedTags = [];
   const availableTags = [...voterTags];
-  
+
   for (let i = 0; i < numTags; i++) {
     const index = Math.floor(Math.random() * availableTags.length);
     selectedTags.push(availableTags.splice(index, 1)[0]);
   }
-  
+
   return selectedTags;
 }
 
@@ -165,14 +165,51 @@ export const mockUsers: User[] = [
   }
 ];
 
-// Generate mock voters
-export const mockVoters: Voter[] = Array.from({ length: 500 }, (_, index) => {
+// Distribution centers (Strongholds) to create realistic clusters
+const strongholds = [
+  { name: 'Chapinero High', lat: 4.6500, lng: -74.0500, bias: 85, radius: 0.02 }, // Green Zone
+  { name: 'Kennedy Low', lat: 4.6200, lng: -74.1500, bias: 20, radius: 0.03 },    // Red Zone
+  { name: 'Suba Mixed', lat: 4.7400, lng: -74.0900, bias: 50, radius: 0.03 },     // Yellow Zone
+  { name: 'Centro Histórico', lat: 4.6000, lng: -74.0700, bias: 65, radius: 0.015 }, // Leaning Green
+  { name: 'Bosa Critical', lat: 4.6100, lng: -74.1900, bias: 15, radius: 0.025 }  // Deep Red
+];
+
+// Gaussian random for better distribution
+function gaussianRandom(mean: number, stdev: number) {
+  const u = 1 - Math.random();
+  const v = Math.random();
+  const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+  return z * stdev + mean;
+}
+
+// Generate mock voters with geographical clustering
+export const mockVoters: Voter[] = Array.from({ length: 2500 }, (_, index) => {
+  // Select a stronghold or random background noise
+  const useStronghold = Math.random() > 0.3; // 70% of voters are in clusters
+  let location: { lat: number; lng: number };
+  let intentionScore: number;
+  let neighborhood: string;
+
+  if (useStronghold) {
+    const stronghold = strongholds[Math.floor(Math.random() * strongholds.length)];
+    location = {
+      lat: gaussianRandom(stronghold.lat, stronghold.radius * 0.5),
+      lng: gaussianRandom(stronghold.lng, stronghold.radius * 0.5)
+    };
+    // Intention follows the stronghold bias but with variance
+    intentionScore = Math.min(100, Math.max(0, Math.floor(gaussianRandom(stronghold.bias, 20))));
+    neighborhood = stronghold.name.split(' ')[0]; // Approx neighborhood from stronghold
+  } else {
+    // Background noise (random scattered voters)
+    location = getRandomCoordinate();
+    intentionScore = Math.floor(Math.random() * 100);
+    neighborhood = neighborhoods[Math.floor(Math.random() * neighborhoods.length)];
+  }
+
   const id = `voter-${index + 1}`;
-  const neighborhood = neighborhoods[Math.floor(Math.random() * neighborhoods.length)];
-  const intentionScore = Math.floor(Math.random() * 100);
   const age = Math.floor(Math.random() * 60) + 18;
   const gender = Math.random() > 0.5 ? 'F' : 'M';
-  
+
   return {
     id,
     externalId: `EXT-${String(index + 1).padStart(6, '0')}`,
@@ -181,7 +218,7 @@ export const mockVoters: Voter[] = Array.from({ length: 500 }, (_, index) => {
     gender,
     address: `Calle ${Math.floor(Math.random() * 200) + 1} # ${Math.floor(Math.random() * 50) + 1}-${Math.floor(Math.random() * 99) + 1}`,
     neighborhood,
-    location: getRandomCoordinate(),
+    location,
     tags: getRandomTags(),
     intentionScore,
     lastContact: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000).toISOString(),
@@ -202,12 +239,12 @@ const results = ['positivo', 'negativo', 'indeciso', 'no-responde', 'reagendar']
 // Generate interactions for each voter
 mockVoters.forEach(voter => {
   const numInteractions = Math.floor(Math.random() * 5) + 1;
-  
+
   for (let i = 0; i < numInteractions; i++) {
     const type = interactionTypes[Math.floor(Math.random() * interactionTypes.length)];
     const channel = channels[Math.floor(Math.random() * channels.length)];
     const result = results[Math.floor(Math.random() * results.length)];
-    
+
     mockInteractions.push({
       id: `interaction-${mockInteractions.length + 1}`,
       voterId: voter.id,
@@ -286,32 +323,32 @@ export const calculateKPIs = () => {
   const recentInteractions = mockInteractions.filter(
     i => new Date(i.timestamp) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
   ).length;
-  
+
   const positiveInteractions = mockInteractions.filter(i => i.result === 'positivo').length;
   const negativeInteractions = mockInteractions.filter(i => i.result === 'negativo').length;
   const indecisiveInteractions = mockInteractions.filter(i => i.result === 'indeciso').length;
-  
+
   const averageIntention = mockVoters.reduce((sum, v) => sum + v.intentionScore, 0) / totalVoters;
-  
+
   const interactionsByDay = mockInteractions.reduce((acc, interaction) => {
     const date = new Date(interaction.timestamp).toISOString().split('T')[0];
     acc[date] = (acc[date] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
-  
+
   const intentionByNeighborhood = neighborhoods.map(neighborhood => {
     const votersInNeighborhood = mockVoters.filter(v => v.neighborhood === neighborhood);
-    const avgIntention = votersInNeighborhood.length > 0 
+    const avgIntention = votersInNeighborhood.length > 0
       ? votersInNeighborhood.reduce((sum, v) => sum + v.intentionScore, 0) / votersInNeighborhood.length
       : 0;
-    
+
     return {
       neighborhood,
       voters: votersInNeighborhood.length,
       averageIntention: Math.round(avgIntention * 100) / 100
     };
   });
-  
+
   return {
     totalVoters,
     contactedVoters,
@@ -339,10 +376,10 @@ export const generateRealtimeEvent = () => {
     'campaign_milestone',
     'system_alert'
   ];
-  
+
   const eventType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
   const voter = mockVoters[Math.floor(Math.random() * mockVoters.length)];
-  
+
   switch (eventType) {
     case 'new_interaction':
       return {
@@ -356,7 +393,7 @@ export const generateRealtimeEvent = () => {
         timestamp: new Date().toISOString(),
         severity: 'info'
       };
-      
+
     case 'high_intention_detected':
       return {
         type: 'high_intention_detected',
@@ -369,7 +406,7 @@ export const generateRealtimeEvent = () => {
         timestamp: new Date().toISOString(),
         severity: 'success'
       };
-      
+
     case 'system_alert':
       return {
         type: 'system_alert',
@@ -381,7 +418,7 @@ export const generateRealtimeEvent = () => {
         timestamp: new Date().toISOString(),
         severity: 'warning'
       };
-      
+
     default:
       return {
         type: 'info',

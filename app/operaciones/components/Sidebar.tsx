@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { 
+import {
   LayoutDashboard,
   Globe,
   Users,
@@ -15,6 +15,7 @@ import {
   Zap
 } from 'lucide-react';
 import clsx from 'clsx';
+import MapControls from './Navigation/MapControls';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -86,7 +87,7 @@ export function Sidebar({ isCollapsed, activeView, onViewChange }: SidebarProps)
         {navigationItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = activeView === item.id;
-          
+
           return (
             <motion.button
               key={item.id}
@@ -97,16 +98,16 @@ export function Sidebar({ isCollapsed, activeView, onViewChange }: SidebarProps)
               className={clsx(
                 'w-full group relative flex items-center rounded-xl transition-all duration-300 hover:scale-[1.02]',
                 isCollapsed ? 'p-3 justify-center' : 'px-4 py-3',
-                isActive 
-                  ? 'bg-gradient-to-r from-white/10 to-white/5 border border-white/20 shadow-lg' 
+                isActive
+                  ? 'bg-gradient-to-r from-white/10 to-white/5 border border-white/20 shadow-lg'
                   : 'hover:bg-white/5 border border-transparent hover:border-white/10'
               )}
             >
               <div className={clsx(
                 'flex items-center justify-center rounded-lg transition-all duration-300',
                 isCollapsed ? 'w-8 h-8' : 'w-10 h-10 mr-3',
-                isActive 
-                  ? `bg-gradient-to-r ${item.gradient} shadow-lg` 
+                isActive
+                  ? `bg-gradient-to-r ${item.gradient} shadow-lg`
                   : 'bg-white/5 group-hover:bg-white/10'
               )}>
                 <Icon className={clsx(
@@ -115,7 +116,7 @@ export function Sidebar({ isCollapsed, activeView, onViewChange }: SidebarProps)
                   isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'
                 )} />
               </div>
-              
+
               {!isCollapsed && (
                 <div className="flex-1 text-left">
                   <div className={clsx(
@@ -129,11 +130,11 @@ export function Sidebar({ isCollapsed, activeView, onViewChange }: SidebarProps)
                   </div>
                 </div>
               )}
-              
+
               {isActive && !isCollapsed && (
                 <div className="w-1 h-8 bg-gradient-to-b from-primary-400 to-secondary-400 rounded-full" />
               )}
-              
+
               {/* Tooltip for collapsed state */}
               {isCollapsed && (
                 <div className="absolute left-full ml-2 px-2 py-1 bg-slate-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
@@ -144,6 +145,13 @@ export function Sidebar({ isCollapsed, activeView, onViewChange }: SidebarProps)
           );
         })}
       </nav>
+
+      {/* Map-specific controls when map view is active */}
+      {activeView === 'map' && !isCollapsed && (
+        <div className="border-t border-slate-700/50 overflow-y-auto max-h-[calc(100vh-400px)]">
+          <MapControls />
+        </div>
+      )}
 
       {/* Bottom Section */}
       <div className={clsx(
@@ -183,7 +191,7 @@ export function Sidebar({ isCollapsed, activeView, onViewChange }: SidebarProps)
               Configuración
             </span>
           )}
-          
+
           {/* Tooltip for collapsed state */}
           {isCollapsed && (
             <div className="absolute left-full ml-2 px-2 py-1 bg-slate-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
@@ -205,7 +213,7 @@ export function Sidebar({ isCollapsed, activeView, onViewChange }: SidebarProps)
               Ayuda
             </span>
           )}
-          
+
           {/* Tooltip for collapsed state */}
           {isCollapsed && (
             <div className="absolute left-full ml-2 px-2 py-1 bg-slate-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">

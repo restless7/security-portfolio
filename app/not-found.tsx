@@ -6,7 +6,7 @@ export default function NotFound() {
       <div className="text-center">
         <h1 className="text-4xl">404</h1>
         <p>Page Not Found</p>
-        <Link href="/">Return Home</Link>
+        <a href="/">Return Home</a>
       </div>
     </div>
   )
