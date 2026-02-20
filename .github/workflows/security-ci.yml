@@ -29,6 +29,15 @@ jobs:
         # Full history for better security analysis
         fetch-depth: 0
 
+    - name: 🔍 Verify Lock File
+      run: |
+        if [ ! -f "package-lock.json" ]; then
+          echo "❌ package-lock.json not found!"
+          echo "💡 Run 'npm install --package-lock-only' locally and commit the result."
+          exit 1
+        fi
+        echo "✅ package-lock.json found"
+
     - name: 🔧 Setup Node.js
       uses: actions/setup-node@v4
       with:
