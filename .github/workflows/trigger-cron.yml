@@ -29,14 +29,17 @@ jobs:
           fi
       
       - name: 🔐 Verify Environment
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          VERCEL_DEPLOYMENT_URL: ${{ secrets.VERCEL_DEPLOYMENT_URL }}
         run: |
-          if [ -z "${{ secrets.CRON_SECRET }}" ]; then
+          if [ -z "$CRON_SECRET" ]; then
             echo "❌ CRON_SECRET is not set in repository secrets"
             echo "📖 Please add CRON_SECRET in Settings → Secrets and variables → Actions"
             exit 1
           fi
           
-          if [ -z "${{ secrets.VERCEL_DEPLOYMENT_URL }}" ]; then
+          if [ -z "$VERCEL_DEPLOYMENT_URL" ]; then
             echo "⚠️ VERCEL_DEPLOYMENT_URL not set, using default"
             echo "💡 Set VERCEL_DEPLOYMENT_URL in repository secrets for production"
           fi
@@ -44,8 +47,11 @@ jobs:
           echo "✅ Environment validation passed"
       
       - name: 🏥 Execute Health Check
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          DEPLOYMENT_URL_SECRET: ${{ secrets.VERCEL_DEPLOYMENT_URL }}
         run: |
-          DEPLOYMENT_URL="${{ secrets.VERCEL_DEPLOYMENT_URL }}"
+          DEPLOYMENT_URL="$DEPLOYMENT_URL_SECRET"
           if [ -z "$DEPLOYMENT_URL" ]; then
             echo "⚠️ Using fallback URL - please set VERCEL_DEPLOYMENT_URL secret"
             DEPLOYMENT_URL="https://your-portfolio.vercel.app"
@@ -55,7 +61,7 @@ jobs:
           echo "🔍 Executing security health check..."
           
           RESPONSE=$(curl -s -w "\nHTTP_CODE:%{http_code}\nTOTAL_TIME:%{time_total}" \
-            -H "Authorization: ${{ secrets.CRON_SECRET }}" \
+            -H "Authorization: $CRON_SECRET" \
             -H "User-Agent: GitHub-Actions-Cron/1.0 (Security-Portfolio)" \
             -H "Accept: application/json" \
             -L \
