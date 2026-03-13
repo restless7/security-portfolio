@@ -123,14 +123,25 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           {/* Copyright */}
-          <div className="text-sm text-[#666666] text-center md:text-left">
-            <p className="mb-1">
-              © {currentYear} Sebastian García. All rights reserved.
-            </p>
-            <p className="text-xs">
-              Built with <span className="text-[#00ffff]">security-first</span> architecture • 
-              Deployed on <span className="text-[#00ff88]">Vercel Edge</span>
-            </p>
+          <div className="text-sm text-[#666666] text-center md:text-left flex flex-col gap-4">
+            <div>
+              <p className="mb-1">
+                © {currentYear} Sebastian García. All rights reserved.
+              </p>
+              <p className="text-xs">
+                Built with <span className="text-[#00ffff]">security-first</span> architecture • 
+                Deployed on <span className="text-[#00ff88]">Vercel Edge</span>
+              </p>
+            </div>
+            <a
+              href="https://www.apexaisolutions.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 justify-center md:justify-start text-xs text-[#666666] hover:text-[#00ffff] transition-colors duration-300 font-sans"
+            >
+              <img src="/images/apex-logo.png" alt="Apex AI Solutions" className="w-4 h-4 object-contain brightness-0 invert opacity-50" />
+              Powered by Apex AI Solutions
+            </a>
           </div>
 
           {/* Social Links */}

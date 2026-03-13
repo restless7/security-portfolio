@@ -163,6 +163,69 @@ const projects: Project[] = [
       },
     ],
   },
+  {
+    id: "ice-system-ecosystem",
+    title: "ICE System Ecosystem",
+    subtitle: "Enterprise CRM, ERP & Health Monitoring",
+    summary:
+      "Comprehensive ecosystem integrating CRM, ERP, chat bot, and health monitoring with hardened APIs.",
+    type: "DevSecOps",
+    stack: ["Next.js", "Convex", "Tailwind", "Python", "Local LLM"],
+    security: [
+      "Secured APIs & Zero-trust data flow",
+      "Continuous Health Monitoring & Heartbeat",
+      "Zod Validation across the stack",
+      "Rate Limiting and Abuse Prevention",
+    ],
+    metrics: [
+      { label: "Services Deployed", value: "10+", color: "text-cyan-400" },
+      { label: "Active Projects", value: "30+", color: "text-purple-400" },
+      { label: "Monitoring", value: "24/7", color: "text-green-400" },
+    ],
+    details: [
+      {
+        heading: "Core Features",
+        bullets: [
+          "Integrated CRM and ERP modules",
+          "AI Chat bot for streamlined operations",
+          "Advanced API hardening protocols",
+        ],
+      },
+    ],
+  },
+  {
+    id: "openclaw-architecture",
+    title: "OpenClaw (Freya) Architecture",
+    subtitle: "Autonomous Local AI System Evolution",
+    summary:
+      "Implementation of a multi-tier AI agent grid maximizing local execution for privacy and $0 compute costs.",
+    type: "AppSec",
+    stack: ["OpenClaw", "Phi-3.5", "Qwen2.5", "LM Studio"],
+    security: [
+      "100% Local-Edge Model Execution",
+      "Secure Gateway Routing",
+      "Multi-tier Architecture Isolation",
+      "Isolated Subagent Workspaces",
+    ],
+    metrics: [
+      { label: "Autonomy Level", value: "Phase 5", color: "text-purple-400" },
+      { label: "Inference Cost", value: "$0", color: "text-green-400" },
+      { label: "Subagents", value: "9", color: "text-cyan-400" },
+    ],
+    details: [
+      {
+        heading: "System Capabilities",
+        bullets: [
+          "Phase 5 Full Autonomy Gradient with autonomous decision engine",
+          "Dream State, emotional state tracking, and auto-generated journaling",
+          "Delegation orchestration with parallel execution",
+        ],
+      },
+    ],
+    links: [
+      { label: "Mission Control", href: "https://mission-control-55npkrtx1-restless7s-projects.vercel.app" },
+    ],
+  },
 ]
 
 const typeOptions = ["All", "AppSec", "Pentest", "Cloud", "DevSecOps"] as const
@@ -326,7 +389,7 @@ export default function ProjectsPage() {
                   <div className="mb-4 flex flex-wrap gap-3">
                     {p.links.map(l => (
                       l.isMatrix ? (
-                        <span 
+                        <span
                           key={l.href}
                           onClick={() => openMatrix("projects")}
                           className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-green-400 transition-colors cursor-pointer"
