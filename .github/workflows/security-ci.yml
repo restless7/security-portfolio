@@ -1,4 +1,5 @@
 name: 🛡️ Security-First CI/CD Pipeline
+# Triggered refresh after ecosystem Git stabilization
 
 on:
   push:

@@ -97,14 +97,14 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-16">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="inline-flex items-center gap-2 text-cyan-400 hover:text-green-400 transition-colors mb-8"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Home
             </Link>
-            
+
             <div className="flex items-center gap-4 mb-6">
               <Mail className="w-10 h-10 text-cyan-400" />
               <div>
@@ -117,10 +117,10 @@ export default function ContactPage() {
                 </p>
               </div>
             </div>
-            
+
             <div className="security-card p-6 max-w-4xl relative">
               {/* Matrix Easter Egg - subtle inline */}
-              <span 
+              <span
                 onClick={() => openMatrix("contact")}
                 className="absolute top-3 right-3 text-[#ff3366]/30 hover:text-[#ff3366] transition-all duration-500 text-lg cursor-pointer"
                 title="Secure channel"
@@ -157,7 +157,7 @@ export default function ContactPage() {
                     <div className="text-sm">
                       <p className="text-cyan-400 font-semibold mb-1">Security Notice</p>
                       <p className="text-gray-300">
-                        This form implements comprehensive security measures including input validation, 
+                        This form implements comprehensive security measures including input validation,
                         sanitization, and rate limiting. Your data is processed securely and privately.
                       </p>
                     </div>
@@ -365,7 +365,7 @@ export default function ContactPage() {
                         </>
                       )}
                     </button>
-                    
+
                     <div className="text-sm text-gray-400">
                       Form validation: {isValid ? (
                         <span className="text-green-400">✓ Valid</span>
@@ -386,7 +386,8 @@ export default function ContactPage() {
                 <div className="space-y-4">
                   <div>
                     <p className="text-sm text-gray-400 mb-1">Email</p>
-                    <p className="text-gray-300 font-mono text-sm">security@example.com</p>
+                    <p className="text-gray-300 font-mono text-sm">[sebastian.garciacasanova@gmail.com
+                      ]</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-400 mb-1">Response Time</p>
@@ -405,7 +406,7 @@ export default function ContactPage() {
                 <div className="space-y-4">
                   {securityFeatures.map((feature) => {
                     const Icon = feature.icon
-                    
+
                     return (
                       <div key={feature.title} className="flex gap-3">
                         <div className={cn("p-2 rounded", feature.bgColor)}>
