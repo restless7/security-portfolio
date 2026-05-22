@@ -386,8 +386,7 @@ export default function ContactPage() {
                 <div className="space-y-4">
                   <div>
                     <p className="text-sm text-gray-400 mb-1">Email</p>
-                    <p className="text-gray-300 font-mono text-sm">[sebastian.garciacasanova@gmail.com
-                      ]</p>
+                    <p className="text-gray-300 font-mono text-sm">sebastian.garciacasanova@gmail.com</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-400 mb-1">Response Time</p>
