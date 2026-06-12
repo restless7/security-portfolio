@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { cn } from "@/app/lib/utils"
 import { openMatrix } from "@/app/lib/openMatrix"
+import { NextModuleCTA } from "@/app/components/NextModuleCTA"
 
 // Timeline data
 const timeline = [
@@ -558,6 +559,11 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
+          <NextModuleCTA 
+            href="/skills" 
+            title="Security Arsenal" 
+            description="Explore my technical expertise, tools, and methodologies in offensive and defensive security." 
+          />
         </div>
       </div>
     </div>

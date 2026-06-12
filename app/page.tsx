@@ -5,6 +5,7 @@ import Link from "next/link"
 import { SecurityScorecard } from "@/app/components/SecurityScorecard"
 import { AnimatedTerminal } from "@/app/components/AnimatedTerminal"
 import { openMatrix } from "@/app/lib/openMatrix"
+import { NextModuleCTA } from "@/app/components/NextModuleCTA"
 
 export default function Home() {
   return (
@@ -153,7 +154,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Project 1 - APEX AI */}
             <div className="security-card p-6">
               <div className="flex items-center mb-4">
@@ -205,6 +206,30 @@ export default function Home() {
                 Run security scan <span className="ml-1">→</span>
               </Link>
             </div>
+
+            {/* Project 3 - Apex Cyber Core */}
+            <div className="security-card p-6">
+              <div className="flex items-center mb-4">
+                <Terminal className="w-5 h-5 text-[#ffaa00] mr-2" />
+                <span className="text-sm font-medium text-[#ffaa00]">LOW-LEVEL SYSTEMS & EBPF</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Apex Cyber Core Engine</h3>
+              <p className="text-[#888888] mb-4 leading-relaxed">
+                A native, low-latency security kernel built in Rust. Intercepts kernel-level telemetry via eBPF, performs deterministic SAST, and executes cryptographic zero-knowledge data masking.
+              </p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                <span className="px-2 py-1 bg-[#ffaa00]/10 text-[#ffaa00] text-xs rounded">Rust & eBPF</span>
+                <span className="px-2 py-1 bg-[#00ffff]/10 text-[#00ffff] text-xs rounded">gRPC / UDS</span>
+                <span className="px-2 py-1 bg-[#00ff88]/10 text-[#00ff88] text-xs rounded">Ring 0</span>
+                <span className="px-2 py-1 bg-[#ffaa00]/10 text-[#ffaa00] text-xs rounded">SIMD</span>
+              </div>
+              <Link
+                href="/projects"
+                className="inline-flex items-center text-sm text-[#ffaa00] hover:text-[#00ffff] transition-colors"
+              >
+                View technical details <span className="ml-1">→</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -247,6 +272,12 @@ export default function Home() {
               </Link>
             </div>
           </div>
+          
+          <NextModuleCTA 
+            href="/about" 
+            title="About Me" 
+            description="Learn about my professional journey, security philosophy, and core principles." 
+          />
         </div>
       </section>
     </div>

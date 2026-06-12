@@ -18,6 +18,7 @@
 | **About** | `ಠ_ಠ` | Bottom-right of page title area | 30% → 100% on hover |
 | **Contact** | `☭☸☯` | Bottom-right of page title area | 30% → 100% on hover |
 | **Projects** | `( ͡° ͜ʖ ͡°)` | Meta-project card hover | Integrated in design |
+| **Security Posture** | `Eye Icon` | Next to page title | Cyan → Green on hover |
 
 ### Interaction Design
 - **Subtle Discovery**: No pulsating glows or obvious indicators
@@ -353,6 +354,40 @@ Only activates on significant collisions (impulse > 0.5):
 
 ---
 
+## 8️⃣ SECURITY POSTURE - "ZERO_TRUST"
+**Symbol**: Eye Icon | **Color**: `#FFFFFF` (Stark White)
+
+### Visual Characteristics
+- **Aesthetic**: Cold, rigid, and pure data auditing
+- **Character Set**:
+  - Binary ONLY (0, 1)
+  - Clustered strings (01010101)
+- **Particle Types**:
+  - 40 orbital particles (calculating rings)
+  - 80 independent particles (scanning agents)
+  - Dense, fast-falling rigid rain
+
+### Physics & Behavior
+- **Gravity**: 0.2 (moderate pull)
+- **Collision Intensity**: 1.0 (standard impacts)
+- **Morph Speed**: 4.0× (extremely fast binary flipping)
+- **Orbit Speed**: 2.0× (rapid calculation rings)
+- **Falling Speed**: 2.5× (fastest, most rigid vertical flow)
+- **Density**: 1.1 (solid coverage without being overwhelming)
+
+### Technical Details
+- **Attractor Pattern**: Moderate sinusoidal
+- **Collision Behavior**: Standard elastic collisions
+- **Visual Intensity**: High contrast stark white for pure unadulterated data streams
+
+### Storytelling Angles
+- "Zero Trust architecture visualized"
+- "Pure binary streams - no obfuscation, just raw data"
+- "The fastest morph speed - representing high-frequency auditing"
+- "Stark white against black - complete clarity and transparency"
+
+---
+
 ## 🎨 Universal Technical Features
 
 ### Performance Monitoring
@@ -501,6 +536,7 @@ Only activates on significant collisions (impulse > 0.5):
 | About | 200 | 60+ | Medium |
 | Contact | 100 | 60+ | Low |
 | Projects | 280 | 60+ | High |
+| Sec Posture | 120 | 60+ | Low-Medium |
 
 ### Performance Factors
 - **GPU**: Canvas rendering is GPU-accelerated
@@ -548,7 +584,7 @@ Only activates on significant collisions (impulse > 0.5):
 
 ---
 
-**Documentation Version**: 1.0  
-**Last Updated**: 2025-10-31  
+**Documentation Version**: 1.1  
+**Last Updated**: 2026-06-12  
 **Author**: Security Portfolio Project  
-**Status**: All 7 modes operational and documented
+**Status**: All 8 modes operational and documented

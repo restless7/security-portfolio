@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { cn } from "@/app/lib/utils"
 import { openMatrix } from "@/app/lib/openMatrix"
+import { NextModuleCTA } from "@/app/components/NextModuleCTA"
 
 // Skills data structured by security domains
 const skillCategories = [
@@ -335,6 +336,11 @@ export default function SkillsPage() {
               <p className="text-sm text-gray-400">Security Assessments</p>
             </div>
           </div>
+          <NextModuleCTA 
+            href="/projects" 
+            title="Security Projects" 
+            description="View real-world evidence of hardened systems and secure implementations." 
+          />
         </div>
       </div>
     </div>

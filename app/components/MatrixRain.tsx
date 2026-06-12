@@ -103,6 +103,19 @@ const PRESETS = {
     orbitSpeed: 2.5,
     fallingSpeed: 1.8
   },
+  "security-posture": {
+    density: 1.1,
+    orbitalParticles: 40,
+    independentParticles: 80,
+    glowColor: '#FFFFFF',
+    label: 'ZERO_TRUST',
+    characterSet: 'binary',
+    gravity: 0.2,
+    collisionIntensity: 1.0,
+    morphSpeed: 4.0,
+    orbitSpeed: 2.0,
+    fallingSpeed: 2.5
+  },
   default: {
     density: 0.9,
     orbitalParticles: 60,

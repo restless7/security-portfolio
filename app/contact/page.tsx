@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { contactFormSchema, type ContactFormData } from "@/app/lib/validations"
 import { cn } from "@/app/lib/utils"
 import { openMatrix } from "@/app/lib/openMatrix"
+import { NextModuleCTA } from "@/app/components/NextModuleCTA"
 
 // Security features for demonstration
 const securityFeatures = [
@@ -475,6 +476,11 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
+          <NextModuleCTA 
+            href="/" 
+            title="Home" 
+            description="Return to the beginning of the portfolio." 
+          />
         </div>
       </div>
     </div>

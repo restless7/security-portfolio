@@ -5,6 +5,7 @@ import { useMemo, useState } from "react"
 import { ArrowLeft, Shield, Lock, PanelLeftClose, Cog, Globe, Bug, ExternalLink, Bot, Database, Server } from "lucide-react"
 import { cn } from "@/app/lib/utils"
 import { openMatrix } from "@/app/lib/openMatrix"
+import { NextModuleCTA } from "@/app/components/NextModuleCTA"
 
 type Project = {
   id: string
@@ -66,6 +67,45 @@ const projects: Project[] = [
       { label: "Tech Stack", href: "/skills" },
     ],
     badge: "Featured",
+  },
+  {
+    id: "apex-cyber-core",
+    title: "Apex Cyber Core Engine",
+    subtitle: "Autonomous Sovereign Cyber-Security Engine",
+    summary:
+      "A native, low-latency security kernel built in Rust. It intercepts kernel-level telemetry via eBPF, performs deterministic SAST with Control Flow Graphs, and executes cryptographic zero-knowledge data masking.",
+    type: "Infrastructure",
+    stack: ["Rust", "eBPF", "gRPC", "Tokio", "SIMD"],
+    security: [
+      "eBPF Tracepoint Syscall Interception",
+      "Memory-Safe no_std Verification",
+      "Deterministic Taint Tracking (CFG)",
+      "Zero-Knowledge Blake3 Hashing",
+    ],
+    metrics: [
+      { label: "IPC Overhead", value: "<0.4ms", color: "text-green-400" },
+      { label: "Idle RAM", value: "~8MB", color: "text-cyan-400" },
+      { label: "Execution", value: "Ring 0", color: "text-purple-400" },
+    ],
+    details: [
+      {
+        heading: "Kernel Telemetry & EBPF",
+        bullets: [
+          "Leverages Aya Engine to trap process spawning operations before execution via sys_enter_execve tracepoints.",
+          "Memory records are mirrored from Kernel Space to Userspace utilizing an AsyncPerfEventArray.",
+          "Completely segregates the no_std Web Assembly/BPF binary compilation from the userspace Tokio runtime."
+        ],
+      },
+      {
+        heading: "AppSec Engine & Privacy",
+        bullets: [
+          "Models source code semantics into a Directed Graph (DiGraph) via petgraph to track data flows to sensitive Sinks.",
+          "Intercepts text chunks, strips PII, and applies irreversible SIMD-accelerated Blake3 hashing to enforce strict privacy.",
+          "gRPC over Unix Domain Sockets (AF_UNIX) eliminates local loopback network stack overhead."
+        ],
+      },
+    ],
+    badge: "Low-Level Systems",
   },
   {
     id: "portfolio-meta",
@@ -712,6 +752,11 @@ export default function ProjectsPage() {
               </Link>
             </div>
           </div>
+          <NextModuleCTA 
+            href="/services" 
+            title="Security Services" 
+            description="Discover how I can help protect your business with tailored security assessments." 
+          />
         </div>
       </div>
     </div>

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import { Eye, ArrowLeft, Shield, AlertTriangle } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/app/lib/utils"
+import { openMatrix } from "@/app/lib/openMatrix"
+import { NextModuleCTA } from "@/app/components/NextModuleCTA"
 
 interface SecurityCheck {
   name: string
@@ -69,7 +71,14 @@ export default function SecurityPosturePage() {
             </Link>
             
             <div className="flex items-center gap-3 mb-4">
-              <Eye className="w-8 h-8 text-cyan-400" />
+              <Eye 
+                className="w-8 h-8 text-cyan-400 cursor-pointer hover:text-green-400 transition-colors" 
+                onClick={() => openMatrix("security-posture")}
+                title="Enter the matrix"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openMatrix("security-posture") }}
+              />
               <h1 className="text-4xl font-bold">Security Posture Analysis</h1>
             </div>
             
@@ -208,6 +217,11 @@ export default function SecurityPosturePage() {
               </div>
             </div>
           </div>
+          <NextModuleCTA 
+            href="/contact" 
+            title="Secure Contact" 
+            description="Reach out securely to discuss your cybersecurity needs." 
+          />
         </div>
       </div>
     </div>

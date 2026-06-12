@@ -5,6 +5,7 @@ import { Shield, ArrowRight } from "lucide-react";
 import { ServiceCard } from "@/app/components/ServiceCard";
 import { servicesData } from "./servicesData";
 import { openMatrix } from "@/app/lib/openMatrix";
+import { NextModuleCTA } from "@/app/components/NextModuleCTA";
 
 export default function ServicesPage() {
   return (
@@ -137,6 +138,11 @@ export default function ServicesPage() {
               <p className="text-xs text-[#888888]">Security Essentials</p>
             </div>
           </div>
+          <NextModuleCTA 
+            href="/security-posture" 
+            title="Live Security Posture" 
+            description="See a real-time security assessment of this very portfolio to demonstrate my approach." 
+          />
         </div>
       </section>
     </div>
