@@ -71,14 +71,16 @@ export default function SecurityPosturePage() {
             </Link>
             
             <div className="flex items-center gap-3 mb-4">
-              <Eye 
-                className="w-8 h-8 text-cyan-400 cursor-pointer hover:text-green-400 transition-colors" 
+              <span
+                className="cursor-pointer hover:text-green-400 transition-colors text-cyan-400"
                 onClick={() => openMatrix("security-posture")}
                 title="Enter the matrix"
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openMatrix("security-posture") }}
-              />
+              >
+                <Eye className="w-8 h-8" />
+              </span>
               <h1 className="text-4xl font-bold">Security Posture Analysis</h1>
             </div>
             
