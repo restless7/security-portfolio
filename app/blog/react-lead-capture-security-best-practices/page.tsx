@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Building Secure React Lead Capture Forms: A Security-First Approach",
   description: "Learn how to build high-converting React lead capture forms with enterprise-grade security, progressive disclosure, and GDPR compliance. Complete code examples included.",
   keywords: "react lead capture form, secure forms, progressive disclosure, GDPR compliance, form security, react security, lead generation, conversion optimization",
+  alternates: {
+    canonical: "/blog/react-lead-capture-security-best-practices",
+  },
   openGraph: {
     title: "Building Secure React Lead Capture Forms: Security-First Approach",
     description: "Complete guide to building secure, high-converting lead capture forms with React",
@@ -27,14 +30,14 @@ export default function BlogPost() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-12">
-            <Link 
-              href="/blog" 
+            <Link
+              href="/blog"
               className="inline-flex items-center gap-2 text-cyan-400 hover:text-green-400 transition-colors mb-8"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Blog
             </Link>
-            
+
             <div className="mb-6">
               <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
                 <span>Sebastian Garcia</span>
@@ -43,37 +46,37 @@ export default function BlogPost() {
                 <span>•</span>
                 <span>12 min read</span>
               </div>
-              
+
               <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
                 Building <span className="text-cyan-400">Secure React</span>{" "}
                 <span className="text-green-400">Lead Capture Forms</span>{" "}
                 <span className="text-gray-300">with</span>{" "}
                 <span className="text-yellow-400">Progressive Disclosure</span>
               </h1>
-              
+
               <p className="text-xl text-gray-400 leading-relaxed">
-                A complete guide to building high-converting lead capture forms that prioritize security, 
+                A complete guide to building high-converting lead capture forms that prioritize security,
                 user experience, and GDPR compliance. Includes ready-to-use React components and best practices.
               </p>
             </div>
-            
-            {/* Article Stats */}
+
+            {/* Engineering Focus Areas */}
             <div className="security-card p-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
               <div>
-                <div className="text-2xl font-bold text-green-400">47%</div>
-                <p className="text-xs text-gray-400">Higher conversion rate</p>
+                <div className="text-sm font-mono font-bold text-green-400">Progressive UX</div>
+                <p className="text-xs text-gray-400">Multi-stage disclosure</p>
               </div>
               <div>
-                <div className="text-2xl font-bold text-cyan-400">100%</div>
-                <p className="text-xs text-gray-400">GDPR compliant</p>
+                <div className="text-sm font-mono font-bold text-cyan-400">Schema Validated</div>
+                <p className="text-xs text-gray-400">Strict Zod boundaries</p>
               </div>
               <div>
-                <div className="text-2xl font-bold text-yellow-400">3 min</div>
-                <p className="text-xs text-gray-400">Average completion time</p>
+                <div className="text-sm font-mono font-bold text-yellow-400">Rate Limited</div>
+                <p className="text-xs text-gray-400">Abuse protection</p>
               </div>
               <div>
-                <div className="text-2xl font-bold text-purple-400">0</div>
-                <p className="text-xs text-gray-400">Security vulnerabilities</p>
+                <div className="text-sm font-mono font-bold text-purple-400">Data Hygiene</div>
+                <p className="text-xs text-gray-400">Minimal collection scope</p>
               </div>
             </div>
           </div>
@@ -82,38 +85,37 @@ export default function BlogPost() {
           <div className="mb-12">
             <LeadCaptureForm
               type="whitepaper-download"
-              title="Get the Complete React Security Checklist"
-              description="50+ security best practices for React applications - used by 500+ developers"
-              buttonText="Download Free Checklist"
+              title="React Form Security Reference"
+              description="Interactive example of progressive disclosure and schema-validated form stages"
+              buttonText="Try Interactive Example"
               compact={true}
             />
           </div>
 
           {/* Article Content */}
           <article className="prose prose-lg prose-invert max-w-none">
-            
+
             {/* Introduction */}
             <section className="mb-16">
               <p className="text-lg leading-relaxed mb-6">
-                Lead capture forms are the lifeblood of B2B SaaS companies, but most are built with a "ship fast, secure later" 
-                mentality that leaves both conversions and security on the table. After analyzing form performance across 
-                50+ SaaS products and conducting security audits for enterprise clients, I've developed a framework that 
-                increases conversions by 47% while maintaining enterprise-grade security.
+                Lead capture forms are often treated as trivial UI widgets, built with a "ship fast, secure later"
+                mentality that leaves input boundaries and data handling under-specified. Pairing progressive disclosure
+                with explicit client and server validation creates cleaner UX while shrinking the attack surface.
               </p>
 
               <div className="security-card p-8 mb-8">
                 <blockquote className="text-xl text-cyan-400 font-semibold mb-4 border-l-4 border-cyan-400 pl-6">
-                  "Your lead capture form is often the first technical touchpoint prospects have with your product. 
-                  Make it count—both for conversions and security credibility."
+                  "Your lead capture form is often the first technical touchpoint visitors have with your system.
+                  Treat its validation and privacy boundaries with the same care as authenticated endpoints."
                 </blockquote>
-                <footer className="text-gray-400">— Key insight from 100+ form audits</footer>
+                <footer className="text-gray-400">— Engineering note on form boundaries</footer>
               </div>
 
               <h3 className="text-2xl font-bold mb-4 text-cyan-400">Why Most Lead Forms Fail</h3>
-              
+
               <p className="mb-6">
-                The average lead capture form has a conversion rate of just 2-3%. Enterprise prospects are even more cautious—
-                they're evaluating not just your product, but your security posture from the moment they interact with your form.
+                Long, unvalidated forms create unnecessary friction for users while exposing endpoints to automated spam,
+                oversized payloads, and injection attempts.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -146,13 +148,12 @@ export default function BlogPost() {
             <section className="mb-16">
               <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
                 <Users className="w-8 h-8 text-green-400" />
-                Progressive Disclosure: The 47% Conversion Boost
+                Progressive Disclosure Strategy
               </h2>
-              
+
               <p className="text-lg mb-6">
-                Progressive disclosure is the practice of showing only the most essential fields initially, 
-                then revealing additional fields based on user interaction. This technique alone increased 
-                conversion rates by 47% across our test portfolio.
+                Progressive disclosure keeps initial input minimal and reveals contextual fields only after
+                the user chooses to continue, reducing friction while keeping validation boundaries simple.
               </p>
 
               <h3 className="text-2xl font-bold mb-4 text-cyan-400">The Three-Stage Approach</h3>
@@ -166,13 +167,12 @@ export default function BlogPost() {
                     <div>
                       <h4 className="text-xl font-bold text-green-400 mb-2">Email Gate (Stage 1)</h4>
                       <p className="text-gray-300 mb-3">
-                        Start with just email and value proposition. Reduce friction to absolute minimum.
+                        Start with just an email field and clear purpose so initial validation stays minimal.
                       </p>
                       <div className="bg-gray-900/50 p-4 rounded-lg">
                         <code className="text-sm text-cyan-400">
-                          Fields: Email + Submit<br/>
-                          CTA: "Get Instant Access"<br/>
-                          Conversion: 23% avg
+                          Fields: Email + Submit<br />
+                          Validation: Strict email schema + rate limit
                         </code>
                       </div>
                     </div>
@@ -187,13 +187,12 @@ export default function BlogPost() {
                     <div>
                       <h4 className="text-xl font-bold text-yellow-400 mb-2">Qualification (Stage 2)</h4>
                       <p className="text-gray-300 mb-3">
-                        Once email is captured, reveal contextual fields based on lead magnet type.
+                        Once email is captured, reveal contextual fields based on inquiry type.
                       </p>
                       <div className="bg-gray-900/50 p-4 rounded-lg">
                         <code className="text-sm text-cyan-400">
-                          Fields: + Name, Company, Role<br/>
-                          Logic: Conditional based on type<br/>
-                          Conversion: 67% of stage 1 completers
+                          Fields: + Name, Company, Role<br />
+                          Logic: Conditional based on request type
                         </code>
                       </div>
                     </div>
@@ -212,8 +211,8 @@ export default function BlogPost() {
                       </p>
                       <div className="bg-gray-900/50 p-4 rounded-lg">
                         <code className="text-sm text-cyan-400">
-                          Fields: + Company size, Use case<br/>
-                          Optional: Clearly marked<br/>
+                          Fields: + Company size, Use case<br />
+                          Optional: Clearly marked<br />
                           Value: Better lead scoring
                         </code>
                       </div>
@@ -229,9 +228,9 @@ export default function BlogPost() {
                 <Shield className="w-8 h-8 text-cyan-400" />
                 Enterprise-Grade Security Implementation
               </h2>
-              
+
               <p className="text-lg mb-6">
-                Security isn't just about preventing attacks—it's about building trust with enterprise prospects 
+                Security isn't just about preventing attacks—it's about building trust with enterprise prospects
                 who evaluate your technical competence from the first interaction.
               </p>
 
@@ -241,7 +240,7 @@ export default function BlogPost() {
                 <h4 className="font-bold text-yellow-400 mb-4">1. Input Validation & Sanitization</h4>
                 <div className="bg-gray-900/50 p-4 rounded-lg mb-4">
                   <pre className="text-sm text-green-400 overflow-x-auto">
-{`// Zod schema for type-safe validation
+                    {`// Zod schema for type-safe validation
 const leadCaptureSchema = z.object({
   email: z.string().email('Invalid email format')
     .max(255, 'Email too long')
@@ -261,7 +260,7 @@ const leadCaptureSchema = z.object({
                 <h4 className="font-bold text-yellow-400 mb-4">2. CSRF Protection</h4>
                 <div className="bg-gray-900/50 p-4 rounded-lg mb-4">
                   <pre className="text-sm text-green-400 overflow-x-auto">
-{`// CSRF token implementation
+                    {`// CSRF token implementation
 const generateCSRFToken = () => {
   return crypto.randomBytes(32).toString('hex')
 }
@@ -282,7 +281,7 @@ const formData = { ...data, _csrf: csrfToken }`}
                 <h4 className="font-bold text-yellow-400 mb-4">3. Rate Limiting & Bot Protection</h4>
                 <div className="bg-gray-900/50 p-4 rounded-lg mb-4">
                   <pre className="text-sm text-green-400 overflow-x-auto">
-{`// Rate limiting with Redis
+                    {`// Rate limiting with Redis
 const rateLimiter = new Ratelimit({
   redis: Redis.fromEnv(),
   limiter: Ratelimit.slidingWindow(5, "1 m"), // 5 submissions per minute
@@ -306,9 +305,9 @@ const detectBot = (userAgent, formTimings) => {
                 <Lock className="w-8 h-8 text-purple-400" />
                 GDPR Compliance & Privacy by Design
               </h2>
-              
+
               <p className="text-lg mb-6">
-                With enterprise prospects increasingly scrutinizing data handling practices, 
+                With enterprise prospects increasingly scrutinizing data handling practices,
                 GDPR compliance isn't optional—it's a competitive advantage.
               </p>
 
@@ -351,9 +350,9 @@ const detectBot = (userAgent, formTimings) => {
                 <Code className="w-8 h-8 text-green-400" />
                 Complete React Implementation
               </h2>
-              
+
               <p className="text-lg mb-6">
-                Here's the complete React component that implements all security best practices 
+                Here's the complete React component that implements all security best practices
                 and progressive disclosure patterns:
               </p>
 
@@ -361,7 +360,7 @@ const detectBot = (userAgent, formTimings) => {
                 <h4 className="font-bold text-yellow-400 mb-4">LeadCaptureForm Component</h4>
                 <div className="bg-gray-900/50 p-4 rounded-lg mb-4 text-sm">
                   <pre className="text-green-400 overflow-x-auto">
-{`'use client'
+                    {`'use client'
 
 import { useState, useEffect } from 'react'
 import { z } from 'zod'
@@ -614,9 +613,9 @@ export default function LeadCaptureForm({
                 <Zap className="w-8 h-8 text-yellow-400" />
                 Testing & Conversion Optimization
               </h2>
-              
+
               <p className="text-lg mb-6">
-                The best security implementation means nothing if your forms don't convert. 
+                The best security implementation means nothing if your forms don't convert.
                 Here's how to test and optimize for maximum performance.
               </p>
 
@@ -647,7 +646,7 @@ export default function LeadCaptureForm({
                 <h4 className="font-bold text-yellow-400 mb-4">Performance Optimization</h4>
                 <div className="bg-gray-900/50 p-4 rounded-lg">
                   <pre className="text-sm text-green-400 overflow-x-auto">
-{`// Performance monitoring
+                    {`// Performance monitoring
 const trackFormPerformance = {
   startTime: Date.now(),
   
@@ -691,11 +690,11 @@ const trackFormPerformance = {
             {/* Conclusion */}
             <section className="mb-16">
               <h2 className="text-3xl font-bold mb-8 text-cyan-400">Key Takeaways</h2>
-              
+
               <div className="space-y-4 mb-8">
                 <div className="flex items-start gap-4">
                   <CheckCircle className="w-6 h-6 text-green-400 mt-1" />
-                  <p><strong>Progressive disclosure</strong> can increase conversion rates by up to 47% while improving lead quality</p>
+                  <p><strong>Progressive disclosure</strong> reduces upfront field friction while keeping schema boundaries clean</p>
                 </div>
                 <div className="flex items-start gap-4">
                   <CheckCircle className="w-6 h-6 text-green-400 mt-1" />
@@ -716,7 +715,7 @@ const trackFormPerformance = {
               </div>
 
               <p className="text-lg text-gray-300">
-                Remember: Your lead capture form is often the first technical impression prospects have of your product. 
+                Remember: Your lead capture form is often the first technical impression prospects have of your product.
                 Make it count by combining high-conversion UX patterns with enterprise-grade security from day one.
               </p>
             </section>

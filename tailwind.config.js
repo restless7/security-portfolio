@@ -9,11 +9,22 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Security-themed color palette
+        // Official SG Brand Palette: Obsidian / Metallic Silver / Electric Blue / Icy Blue
+        arch: {
+          obsidian: '#0B1119',
+          surface: '#101824',
+          graphite: '#1E2B3A',
+          electric: '#2F8CFF',
+          icy: '#8FD3FF',
+          silver: '#CBD5E1',
+          slate: '#94A3B8',
+          ivory: '#EFF2F2',
+        },
+        // Retained technical & security accent palette for secondary routes
         primary: {
           50: '#f0fdff',
           100: '#ccfbff',
-          400: '#00ffff', // Cyan - primary accent
+          400: '#00ffff',
           500: '#00e6e6',
           600: '#00cccc',
           700: '#009999',
@@ -21,7 +32,7 @@ module.exports = {
           900: '#003333',
         },
         secondary: {
-          400: '#00ff88', // Green - secondary accent
+          400: '#00ff88',
           500: '#00e675',
           600: '#00cc62',
           700: '#009944',
@@ -42,7 +53,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        mono: ['JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'monospace'],
+        sans: ['var(--font-sans)', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        mono: ['var(--font-jetbrains-mono)', 'JetBrains Mono', 'SF Mono', 'Monaco', 'monospace'],
       },
       animation: {
         'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
@@ -87,12 +99,12 @@ module.exports = {
         },
       },
       backgroundImage: {
-        'matrix-gradient': 'linear-gradient(180deg, #000000 0%, #001122 50%, #000000 100%)',
+        'matrix-gradient': 'linear-gradient(180deg, #0B1119 0%, #101824 50%, #0B1119 100%)',
       },
       boxShadow: {
-        'glow-cyan': '0 0 20px rgba(0, 255, 255, 0.3)',
-        'glow-green': '0 0 20px rgba(0, 255, 136, 0.3)',
-        'inner-glow': 'inset 0 0 20px rgba(0, 255, 255, 0.1)',
+        'glow-cyan': '0 0 22px rgba(47, 140, 255, 0.22)',
+        'glow-green': '0 0 20px rgba(0, 255, 136, 0.2)',
+        'inner-glow': 'inset 0 0 20px rgba(143, 211, 255, 0.1)',
       },
       backdropBlur: {
         xs: '2px',

@@ -1,141 +1,133 @@
-"use client"
+"use client";
 
-import { Shield, CheckCircle, AlertCircle } from "lucide-react"
-import { useState, useEffect } from "react"
-import { cn } from "@/app/lib/utils"
+import { Shield, CheckCircle, AlertCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { cn } from "@/app/lib/utils";
 
 interface SecurityScore {
-  score: number
-  grade: string
-  status: 'loading' | 'success' | 'error'
-  lastScanned?: Date
+  score: number;
+  grade: string;
+  status: "loading" | "success" | "error";
+  lastScanned?: Date;
 }
 
 export function SecurityScorecard() {
   const [securityData, setSecurityData] = useState<SecurityScore>({
     score: 0,
-    grade: 'Loading...',
-    status: 'loading'
-  })
-  const [isMounted, setIsMounted] = useState(false)
-  
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+    grade: "Checking",
+    status: "loading",
+  });
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    if (!isMounted) return
-    
-    let cancelled = false
-    
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
+    let cancelled = false;
+
     async function fetchSecurityScore() {
       try {
-        const res = await fetch('/api/security-posture', { cache: 'no-store' })
-        if (!res.ok) throw new Error('Failed to fetch security score')
-        
-        const data = await res.json()
-        
+        const res = await fetch("/api/security-posture", { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to fetch security score");
+
+        const data = await res.json();
+
         if (!cancelled) {
           setSecurityData({
             score: data.score,
             grade: data.grade,
-            status: 'success',
-            lastScanned: new Date(data.timestamp)
-          })
+            status: "success",
+            lastScanned: new Date(data.timestamp),
+          });
         }
-      } catch (error) {
-        console.error('Security score fetch error:', error)
+      } catch {
         if (!cancelled) {
           setSecurityData({
             score: 0,
-            grade: 'Error',
-            status: 'error'
-          })
+            grade: "Unavailable",
+            status: "error",
+          });
         }
       }
     }
-    
-    fetchSecurityScore()
-    
-    return () => { cancelled = true }
-  }, [isMounted])
+
+    fetchSecurityScore();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isMounted]);
 
   const getScoreColor = (score: number) => {
-    if (score >= 95) return 'text-[#00ff88]' // Green
-    if (score >= 90) return 'text-[#00ffff]' // Cyan  
-    if (score >= 80) return 'text-[#ffaa00]' // Warning
-    return 'text-[#ff4444]' // Danger
-  }
-
-  const getGradientColor = (score: number) => {
-    if (score >= 95) return 'from-[#00ff88]/20 to-[#00ff88]/5'
-    if (score >= 90) return 'from-[#00ffff]/20 to-[#00ffff]/5'
-    if (score >= 80) return 'from-[#ffaa00]/20 to-[#ffaa00]/5'
-    return 'from-[#ff4444]/20 to-[#ff4444]/5'
-  }
+    if (score >= 95) return "text-[#8FD3FF]";
+    if (score >= 90) return "text-[#2F8CFF]";
+    if (score >= 80) return "text-[#ffaa00]";
+    return "text-[#ff4444]";
+  };
 
   return (
-    <div className="inline-flex items-center justify-center">
-      <div className={cn(
-        "security-card p-6 bg-gradient-to-br",
-        securityData.status === 'success' ? getGradientColor(securityData.score) : "from-[#333333]/20 to-[#333333]/5"
-      )}>
-        <div className="flex items-center justify-center gap-4">
-          {securityData.status === 'loading' && (
-            <div className="flex items-center gap-3">
-              <div className="animate-spin rounded-full h-6 w-6 border-2 border-[#00ffff] border-t-transparent"></div>
-              <span className="text-sm text-[#888888]">Scanning security posture...</span>
-            </div>
-          )}
+    <div className="arch-panel px-5 py-4 w-full">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        {securityData.status === "loading" && (
+          <div className="flex items-center gap-3">
+            <div className="animate-spin rounded-full h-4 w-4 border-2 border-[#2F8CFF] border-t-transparent" />
+            <span className="font-mono text-xs text-[#94A3B8]">
+              Checking live posture endpoint...
+            </span>
+          </div>
+        )}
 
-          {securityData.status === 'success' && (
-            <>
-              <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-[#00ff88]" />
-                <span className="text-sm font-medium text-[#888888]">Security Score</span>
+        {securityData.status === "success" && (
+          <>
+            <div className="flex items-center gap-2.5">
+              <Shield className="w-4 h-4 text-[#2F8CFF]" />
+              <div>
+                <p className="font-mono text-xs uppercase tracking-wider text-[#CBD5E1]">
+                  Live Site Controls
+                </p>
+                <p className="text-xs text-[#94A3B8]">
+                  Checked via <span className="font-mono">/api/security-posture</span>
+                </p>
               </div>
-              
-              <div className="text-center">
-                <div className={cn("text-3xl font-bold", getScoreColor(securityData.score))}>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="flex flex-wrap gap-1.5">
+                {["CSP", "HSTS", "Zod", "Rate Limit"].map((badge) => (
+                  <span
+                    key={badge}
+                    className="font-mono text-[11px] px-2 py-0.5 rounded bg-[#0B1119] border border-[#1E2B3A] text-[#CBD5E1]"
+                  >
+                    {badge}
+                  </span>
+                ))}
+              </div>
+
+              <div className="text-right pl-3 border-l border-[#1E2B3A]">
+                <div className={cn("font-mono text-xl font-semibold leading-none", getScoreColor(securityData.score))}>
                   {securityData.grade}
                 </div>
-                <div className="text-sm text-[#888888]">
+                <div className="font-mono text-[11px] text-[#94A3B8] mt-1 inline-flex items-center gap-1">
+                  <CheckCircle className="w-3 h-3 text-[#2F8CFF]" />
                   {securityData.score}/100
                 </div>
               </div>
-
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-[#00ff88]" />
-                <span className="text-xs text-[#888888]">
-                  Scanned {securityData.lastScanned?.toLocaleTimeString()}
-                </span>
-              </div>
-            </>
-          )}
-
-          {securityData.status === 'error' && (
-            <div className="flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 text-[#ff4444]" />
-              <span className="text-sm text-[#888888]">Security scan failed</span>
             </div>
-          )}
-        </div>
+          </>
+        )}
 
-        {securityData.status === 'success' && (
-          <div className="mt-4 text-center">
-            <p className="text-xs text-[#888888] mb-2">
-              This site implements comprehensive security measures
-            </p>
-            <div className="flex justify-center gap-2">
-              <span className="px-2 py-1 bg-[#00ff88]/10 text-[#00ff88] text-xs rounded">CSP</span>
-              <span className="px-2 py-1 bg-[#00ffff]/10 text-[#00ffff] text-xs rounded">HSTS</span>
-              <span className="px-2 py-1 bg-[#00ff88]/10 text-[#00ff88] text-xs rounded">XSS Protection</span>
-              <span className="px-2 py-1 bg-[#00ffff]/10 text-[#00ffff] text-xs rounded">Rate Limiting</span>
-            </div>
+        {securityData.status === "error" && (
+          <div className="flex items-center gap-2.5">
+            <AlertCircle className="w-4 h-4 text-[#ffaa00]" />
+            <span className="font-mono text-xs text-[#94A3B8]">
+              Live posture check unavailable
+            </span>
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }

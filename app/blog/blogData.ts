@@ -5,7 +5,13 @@ export interface BlogPost {
   author: string;
   date: string;
   readTime: string;
-  category: string;
+  category:
+  | "Architecture Notes"
+  | "Applied AI"
+  | "Security Engineering"
+  | "Application Security"
+  | "Infrastructure"
+  | "Engineering Decisions";
   tags: string[];
   featured?: boolean;
 }
@@ -13,24 +19,26 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     slug: "saas-startups-fail-security",
-    title: "Why 90% of SaaS Startups Fail at Security (and the $4.88M Cost)",
-    excerpt: "Last month, a 50-person SaaS startup lost a $2M enterprise deal because of a single missing security header. Here's why security debt is killing SaaS companies and exactly how to fix it.",
-    author: "Sebastian Garcia",
+    title: "Architectural Security Debt in Early-Stage SaaS Systems",
+    excerpt:
+      "Why deferred security boundaries compound engineering cost, and the five structural layers—tenant authorization, cloud baselines, API validation, CI gates, and compliance readiness—that hold up under scrutiny.",
+    author: "Sebastián García",
     date: "December 2024",
-    readTime: "8 min read",
-    category: "Security Strategy",
-    tags: ["SaaS Security", "Startup Security", "Security Debt", "Compliance"],
-    featured: true
+    readTime: "7 min read",
+    category: "Security Engineering",
+    tags: ["SaaS Architecture", "Authorization", "Security Debt", "DevSecOps"],
+    featured: true,
   },
   {
     slug: "react-lead-capture-security-best-practices",
     title: "Building Secure React Lead Capture Forms with Progressive Disclosure",
-    excerpt: "A complete guide to building high-converting lead capture forms that prioritize security, user experience, and GDPR compliance. Includes ready-to-use React components and best practices.",
-    author: "Sebastian Garcia",
+    excerpt:
+      "Designing lead capture interfaces in React with progressive disclosure, schema validation, input sanitization, rate limiting, and explicit data-handling boundaries.",
+    author: "Sebastián García",
     date: "December 2024",
-    readTime: "12 min read",
+    readTime: "10 min read",
     category: "Application Security",
-    tags: ["React Security", "Form Security", "GDPR", "Progressive Disclosure"],
-    featured: true
-  }
+    tags: ["React", "Zod Validation", "Form Security", "Progressive Disclosure"],
+    featured: true,
+  },
 ];

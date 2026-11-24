@@ -1,108 +1,143 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Shield, Terminal, User, Briefcase, Award, Mail, Eye, Menu, X, Wrench, BookOpen } from "lucide-react"
-import { useState } from "react"
-import { cn } from "@/app/lib/utils"
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import { useState } from "react";
+import { cn } from "@/app/lib/utils";
 
 const navigationItems = [
-  { name: "Home", href: "/", icon: Terminal },
-  { name: "Services", href: "/services", icon: Wrench },
-  { name: "Skills", href: "/skills", icon: Shield },
-  { name: "Projects", href: "/projects", icon: Briefcase },
-  { name: "Blog", href: "/blog", icon: BookOpen },
-  { name: "Certifications", href: "/certifications", icon: Award },
-  { name: "Security Posture", href: "/security-posture", icon: Eye },
-  { name: "About", href: "/about", icon: User },
-  { name: "Contact", href: "/contact", icon: Mail },
-]
+  { name: "Home", href: "/" },
+  { name: "Work", href: "/projects" },
+  { name: "About", href: "/about" },
+  { name: "Writing", href: "/blog" },
+  { name: "Contact", href: "/contact" },
+];
 
 export function Navigation() {
-  const pathname = usePathname()
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const isActiveRoute = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname?.startsWith(`${href}/`);
+  };
 
   return (
-    <nav className="security-card border-b border-[#333333]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          {/* Logo/Brand */}
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-2 text-cyan-400 hover:text-green-400 transition-colors">
-              <Shield className="w-6 h-6" />
-              <span className="text-lg font-bold">SG Security</span>
-            </Link>
-          </div>
+    <header className="sticky top-0 z-40 border-b border-[#1E2B3A] bg-[#0B1119]/92 backdrop-blur-md">
+      <nav
+        aria-label="Primary"
+        className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8"
+      >
+        <div className="flex h-16 items-center justify-between gap-4">
+          {/* Primary Personal Identity + Official SG Monogram */}
+          <Link
+            href="/"
+            className="group flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2F8CFF] rounded"
+          >
+            <Image
+              src="/brand/sg-logo-web.png"
+              alt="Sebastián García SG monogram"
+              width={32}
+              height={32}
+              loading="eager"
+              priority
+              className="w-8 h-8 rounded-full shrink-0 transition-transform duration-200 group-hover:scale-[1.03]"
+            />
+            <div className="flex items-baseline gap-2.5">
+              <span className="text-base sm:text-lg font-semibold tracking-tight text-[#EFF2F2] group-hover:text-white transition-colors">
+                Sebastián García
+              </span>
+              <span className="hidden sm:inline-block font-mono text-xs text-[#94A3B8] border border-[#1E2B3A] bg-[#101824] px-2 py-0.5 rounded">
+                sentineldev.me
+              </span>
+            </div>
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center gap-1">
             {navigationItems.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href
-              
+              const active = isActiveRoute(item.href);
               return (
                 <Link
-                  key={item.name}
+                  key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
-                    isActive
-                      ? "bg-[#00ffff]/10 text-[#00ffff] border border-[#00ffff]/30"
-                      : "text-[#888888] hover:text-[#00ffff] hover:bg-[#333333]/50"
+                    "px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2F8CFF]",
+                    active
+                      ? "bg-[#101824] text-[#EFF2F2] border border-[#2F8CFF]/60 shadow-[0_0_12px_rgba(47,140,255,0.12)]"
+                      : "text-[#94A3B8] hover:text-[#EFF2F2] hover:bg-[#101824]"
                   )}
                 >
-                  <Icon className="w-4 h-4" />
                   {item.name}
                 </Link>
-              )
+              );
             })}
+
+            <span aria-hidden="true" className="mx-2 h-4 w-px bg-[#1E2B3A]" />
+
+            <a
+              href="https://www.apexaisolutions.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md font-mono text-xs text-[#CBD5E1] hover:text-[#EFF2F2] border border-[#1E2B3A] hover:border-[#2F8CFF]/60 transition-colors"
+            >
+              APEX
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#8FD3FF]" />
+            </a>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-[#888888] hover:text-[#00ffff] p-2 transition-colors"
-              aria-expanded="false"
+              type="button"
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+              className="text-[#94A3B8] hover:text-[#EFF2F2] p-2 rounded-md border border-transparent hover:border-[#1E2B3A] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#2F8CFF]"
+              aria-expanded={isMobileMenuOpen}
+              aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
-      </div>
+      </nav>
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-[#333333]">
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-[#111111]">
+        <div className="md:hidden border-t border-[#1E2B3A] bg-[#0B1119]">
+          <div className="px-4 py-3 space-y-1">
             {navigationItems.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href
-              
+              const active = isActiveRoute(item.href);
               return (
                 <Link
-                  key={item.name}
+                  key={item.href}
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
-                    "flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200",
-                    isActive
-                      ? "bg-[#00ffff]/10 text-[#00ffff] border border-[#00ffff]/30"
-                      : "text-[#888888] hover:text-[#00ffff] hover:bg-[#333333]/50"
+                    "block px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
+                    active
+                      ? "bg-[#101824] text-[#EFF2F2] border border-[#2F8CFF]/60"
+                      : "text-[#94A3B8] hover:text-[#EFF2F2] hover:bg-[#101824]"
                   )}
                 >
-                  <Icon className="w-5 h-5" />
                   {item.name}
                 </Link>
-              )
+              );
             })}
+            <a
+              href="https://www.apexaisolutions.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mt-2 flex items-center justify-between px-3 py-2.5 rounded-md font-mono text-xs text-[#CBD5E1] hover:text-[#EFF2F2] border border-[#1E2B3A]"
+            >
+              <span>APEX AI Solutions</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#8FD3FF]" />
+            </a>
           </div>
         </div>
       )}
-    </nav>
-  )
+    </header>
+  );
 }

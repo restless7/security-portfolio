@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 import Link from "next/link"
-import { ArrowLeft, Cloud, Shield, CheckCircle, Database, Server, Lock } from "lucide-react"
+import { ArrowLeft, Cloud, CheckCircle, Database, Server, Lock } from "lucide-react"
 import LeadCaptureForm from "@/app/components/LeadCaptureForm"
 
 export const metadata: Metadata = {
@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     "DevSecOps Playbook"
   ],
   authors: [{ name: "Sebastian García" }],
+  alternates: {
+    canonical: "/projects/cloud-hardening",
+  },
   openGraph: {
     title: "AWS Cloud Hardening Playbook | Free PDF Download",
     description: "Secure your AWS organization from Day 0 with this codified Terraform playbook.",
@@ -26,11 +29,11 @@ export default function CloudHardeningFunnel() {
   return (
     <div className="min-h-screen bg-black text-green-400 font-mono p-4 md:p-8 pt-24 selection:bg-green-400/30">
       <div className="max-w-6xl mx-auto">
-        
+
         {/* Navigation */}
         <div className="mb-8">
-          <Link 
-            href="/projects" 
+          <Link
+            href="/projects"
             className="inline-flex items-center text-cyan-400 hover:text-green-400 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -39,7 +42,7 @@ export default function CloudHardeningFunnel() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
+
           {/* Left Column - Sales Copy */}
           <div className="space-y-8">
             <div>
@@ -51,14 +54,14 @@ export default function CloudHardeningFunnel() {
                 Secure AWS from <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-green-400">Day Zero.</span>
               </h1>
               <p className="text-lg text-gray-400 mb-8 leading-relaxed">
-                A codified, opinionated, and production-ready AWS security baseline. Built with Terraform, 
+                A codified, opinionated, and production-ready AWS security baseline. Built with Terraform,
                 tightly aligned to the CIS Foundations Benchmark v1.5, and designed for multi-account AWS Organizations.
               </p>
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white mb-4">What's inside the Playbook?</h3>
-              
+              <h3 className="text-xl font-bold text-white mb-4">What&rsquo;s inside the Playbook?</h3>
+
               <div className="flex items-start gap-3">
                 <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
                 <div>
@@ -66,7 +69,7 @@ export default function CloudHardeningFunnel() {
                   <span className="text-sm text-gray-500">7-account best-practice architecture with strict Service Control Policies (SCPs) preventing public S3 buckets and Root user usage.</span>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
                 <div>
@@ -104,9 +107,9 @@ export default function CloudHardeningFunnel() {
           <div className="relative">
             {/* Decorative background blur */}
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-green-500 rounded-lg blur opacity-20 hidden lg:block"></div>
-            
+
             <div className="relative">
-              <LeadCaptureForm 
+              <LeadCaptureForm
                 type="whitepaper-download"
                 title="Get the Terraform Playbook"
                 description="Join our DevSecOps newsletter and grab the complete 35-page PDF playbook and Terraform source code references."

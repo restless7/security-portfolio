@@ -31,6 +31,11 @@ export default function SecurityPosturePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<SecurityPosture | null>(null)
+  const [origin, setOrigin] = useState("https://www.sentineldev.me")
+
+  useEffect(() => {
+    setOrigin(window.location.origin)
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -62,14 +67,14 @@ export default function SecurityPosturePage() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-12">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="inline-flex items-center gap-2 text-cyan-400 hover:text-green-400 transition-colors mb-6"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Home
             </Link>
-            
+
             <div className="flex items-center gap-3 mb-4">
               <span
                 className="cursor-pointer hover:text-green-400 transition-colors text-cyan-400"
@@ -83,9 +88,9 @@ export default function SecurityPosturePage() {
               </span>
               <h1 className="text-4xl font-bold">Security Posture Analysis</h1>
             </div>
-            
+
             <p className="text-lg text-gray-400 max-w-2xl">
-              Live security scanning and analysis of this portfolio website demonstrating 
+              Live security scanning and analysis of this portfolio website demonstrating
               real-world cybersecurity monitoring capabilities.
             </p>
           </div>
@@ -109,12 +114,12 @@ export default function SecurityPosturePage() {
                   )}
                 </div>
               </div>
-              
+
               <p className="text-gray-400 mb-6">
-                This website maintains an excellent security posture with comprehensive 
+                This website maintains an excellent security posture with comprehensive
                 defensive measures implemented.
               </p>
-              
+
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="p-3 bg-green-400/10 rounded">
                   <div className="text-xs text-green-400 font-medium">HTTPS</div>
@@ -210,7 +215,7 @@ export default function SecurityPosturePage() {
               <div>
                 <p className="font-semibold text-cyan-400 mb-1">Security Headers</p>
                 <code className="block bg-gray-900/60 border border-gray-700 rounded p-3 overflow-auto">
-                  curl -I {typeof window === 'undefined' ? 'http://localhost:3000' : window.location.origin}
+                  curl -I {origin}
                 </code>
               </div>
               <div>
@@ -219,10 +224,10 @@ export default function SecurityPosturePage() {
               </div>
             </div>
           </div>
-          <NextModuleCTA 
-            href="/contact" 
-            title="Secure Contact" 
-            description="Reach out securely to discuss your cybersecurity needs." 
+          <NextModuleCTA
+            href="/contact"
+            title="Secure Contact"
+            description="Reach out securely to discuss your cybersecurity needs."
           />
         </div>
       </div>

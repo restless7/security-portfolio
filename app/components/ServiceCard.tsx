@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle } from "lucide-react";
+import { ArrowRight, ArrowUpRight, CheckCircle } from "lucide-react";
 import type { Service } from "@/app/services/servicesData";
 
 interface ServiceCardProps {
@@ -8,53 +8,62 @@ interface ServiceCardProps {
 
 export function ServiceCard({ service }: ServiceCardProps) {
   return (
-    <div className="security-card p-8 h-full flex flex-col hover:border-[#00ffff]/50 transition-all duration-300 group">
-      {/* Header */}
-      <div className="mb-6">
-        <div className="text-5xl mb-4">{service.emoji}</div>
-        <h3 className="text-2xl font-bold mb-2 text-[#00ffff] group-hover:text-[#00ff88] transition-colors">
-          {service.title}
-        </h3>
-        <p className="text-base text-[#cccccc] mb-3">
-          {service.subtitle}
-        </p>
-        <p className="text-lg font-bold text-[#00ffff]">
-          {service.priceRange}
-        </p>
+    <div className="security-card p-6 sm:p-7 h-full flex flex-col justify-between">
+      <div>
+        <div className="mb-5">
+          <p className="font-mono text-xs text-[#8FD3FF] mb-2">{service.label}</p>
+          <h3 className="text-xl sm:text-2xl font-semibold mb-2 text-[#EFF2F2]">
+            {service.title}
+          </h3>
+          <p className="text-sm text-[#94A3B8] mb-3">{service.subtitle}</p>
+          <p className="font-mono text-[11px] inline-block px-2.5 py-1 rounded bg-[#0B1119] border border-[#1E2B3A] text-[#CBD5E1]">
+            {service.deliveryChannel}
+          </p>
+        </div>
+
+        <div className="mb-6">
+          <h4 className="font-mono text-xs uppercase tracking-wider text-[#8FD3FF] mb-3">
+            Scope &amp; Focus
+          </h4>
+          <ul className="space-y-2">
+            {service.packageFeatures.map((feature, index) => (
+              <li key={index} className="flex items-start gap-2.5 text-[#CBD5E1]">
+                <CheckCircle className="w-4 h-4 text-[#2F8CFF] mt-0.5 shrink-0" />
+                <span className="text-sm leading-relaxed">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      {/* Package Features */}
-      <div className="mb-6 flex-grow">
-        <h4 className="text-sm font-semibold text-[#00ff88] mb-3 uppercase tracking-wide">
-          Package Includes:
-        </h4>
-        <ul className="space-y-2">
-          {service.packageFeatures.map((feature, index) => (
-            <li key={index} className="flex items-start gap-2 text-[#cccccc]">
-              <CheckCircle className="w-4 h-4 text-[#00ff88] mt-0.5 flex-shrink-0" />
-              <span className="text-sm leading-relaxed">{feature}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <div className="space-y-4">
+        <div className="bg-[#0B1119] border border-[#1E2B3A] rounded-md p-4">
+          <h4 className="font-mono text-xs uppercase tracking-wider text-[#8FD3FF] mb-1.5">
+            Expected Outcome
+          </h4>
+          <p className="text-sm text-[#94A3B8] leading-relaxed">{service.outcome}</p>
+        </div>
 
-      {/* Outcome */}
-      <div className="mb-6 bg-[#00ffff]/5 border border-[#00ffff]/20 rounded-md p-4">
-        <h4 className="text-sm font-semibold text-[#00ffff] mb-2 flex items-center gap-2">
-          <span className="text-[#00ffff]">→</span> What You Get:
-        </h4>
-        <p className="text-sm text-[#cccccc] leading-relaxed">
-          {service.outcome}
-        </p>
+        {service.external ? (
+          <a
+            href={service.ctaLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-md border border-[#2F8CFF]/60 bg-[#101824] px-5 py-2.5 text-sm font-semibold text-[#EFF2F2] hover:bg-[#1E2B3A] transition-colors"
+          >
+            {service.ctaLabel}
+            <ArrowUpRight className="w-4 h-4 text-[#8FD3FF]" />
+          </a>
+        ) : (
+          <Link
+            href={service.ctaLink}
+            className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-[#EFF2F2] px-5 py-2.5 text-sm font-semibold text-[#0B1119] hover:bg-white transition-colors"
+          >
+            {service.ctaLabel}
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        )}
       </div>
-
-      {/* CTA Button */}
-      <Link
-        href={service.ctaLink}
-        className="terminal-border rounded-md bg-[#00ffff] px-6 py-3 text-center text-sm font-semibold text-black shadow-sm hover:bg-[#00ff88] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00ffff] transition-all duration-300"
-      >
-        Schedule Consultation
-      </Link>
     </div>
   );
 }

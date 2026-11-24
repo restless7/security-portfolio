@@ -1,150 +1,116 @@
-"use client"
-
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Shield, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Building2 } from "lucide-react";
 import { ServiceCard } from "@/app/components/ServiceCard";
 import { servicesData } from "./servicesData";
-import { openMatrix } from "@/app/lib/openMatrix";
 import { NextModuleCTA } from "@/app/components/NextModuleCTA";
+
+export const metadata: Metadata = {
+  title: "Collaboration & Advisory",
+  description:
+    "How Sebastián García collaborates on systems architecture, applied AI, and security engineering — and how commercial engagements run through APEX AI Solutions.",
+  alternates: {
+    canonical: "/services",
+  },
+};
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
-      {/* Hero Section */}
-      <section className="relative px-6 py-20 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          {/* Header */}
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <Shield className="w-12 h-12 text-[#00ffff] cyber-glow" />
+    <div className="min-h-screen bg-[#0B1119] text-[#EFF2F2] py-14 sm:py-20">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-12">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 font-mono text-xs text-[#94A3B8] hover:text-[#EFF2F2] transition-colors mb-6"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-[#2F8CFF]" />
+            Back to Home
+          </Link>
+
+          <p className="font-mono text-xs uppercase tracking-widest text-[#8FD3FF] mb-2">
+            Collaboration / Engineering Approach
+          </p>
+          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight text-[#EFF2F2] mb-4">
+            Collaboration &amp; Advisory
+          </h1>
+          <p className="text-base sm:text-lg text-[#94A3B8] max-w-3xl leading-relaxed">
+            How I work with teams on systems architecture, applied AI boundaries, and
+            security engineering — alongside the clear distinction between personal
+            advisory and commercial delivery through APEX AI Solutions.
+          </p>
+        </div>
+
+        {/* Boundary Banner: Personal vs APEX */}
+        <section className="arch-panel p-6 sm:p-8 mb-12 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="space-y-2 max-w-3xl">
+            <div className="inline-flex items-center gap-2 font-mono text-xs text-[#8FD3FF]">
+              <Building2 className="w-4 h-4 text-[#2F8CFF]" />
+              <span>Personal Identity vs. Commercial Organization</span>
             </div>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">
-              <span className="text-[#00ffff]">Cybersecurity Services</span>
-              <br />
-              <span className="text-[#00ff88]">Built for SMBs & Startups</span>
-            </h1>
-            <p className="mx-auto max-w-2xl text-lg leading-8 text-[#888888]">
-              Enterprise-grade security expertise without enterprise pricing. 
-              Protect your applications, secure your cloud infrastructure, and achieve 
-              compliance faster with battle-tested security implementations.
+            <h2 className="text-xl font-semibold text-[#EFF2F2]">
+              APEX AI Solutions — We engineer the systems modern businesses depend on.
+            </h2>
+            <p className="text-sm text-[#CBD5E1] leading-relaxed">
+              SentinelDev is my personal engineering portfolio and technical notebook. When
+              work moves into scoped commercial delivery, custom enterprise software, or
+              managed AI infrastructure, engagements are executed through{" "}
+              <strong className="font-semibold text-[#EFF2F2]">APEX AI Solutions</strong>{" "}
+              — secure by design, resilient by architecture, built for the real world.
             </p>
           </div>
 
-          {/* Value Proposition */}
-          <div className="max-w-4xl mx-auto mb-16">
-            <div className="security-card p-8 text-center">
-              <h2 className="text-2xl font-bold mb-4 text-[#00ffff]">
-                Why Companies Choose These Services
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                <div>
-                  <div className="text-3xl font-bold text-[#00ff88] mb-2">40%</div>
-                  <p className="text-sm text-[#888888]">Faster SOC2 compliance</p>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-[#00ffff] mb-2">$2M+</div>
-                  <p className="text-sm text-[#888888]">Enterprise deals secured</p>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-[#ffaa00] mb-2">95%</div>
-                  <p className="text-sm text-[#888888]">Vulnerability remediation</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+          <a
+            href="https://www.apexaisolutions.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-md border border-[#2F8CFF]/60 bg-[#0B1119] px-5 py-2.5 text-sm font-medium text-[#EFF2F2] hover:bg-[#1E2B3A] transition-colors shrink-0"
+          >
+            apexaisolutions.dev
+            <ArrowUpRight className="w-4 h-4 text-[#8FD3FF]" />
+          </a>
+        </section>
 
-      {/* Services Grid */}
-      <section className="px-6 py-16 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {servicesData.map((service) => (
-              <ServiceCard key={service.id} service={service} />
-            ))}
-          </div>
-        </div>
-      </section>
+        {/* Engagement Areas Grid */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-16">
+          {servicesData.map((service) => (
+            <ServiceCard key={service.id} service={service} />
+          ))}
+        </section>
 
-      {/* CTA Section */}
-      <section className="px-6 py-20 lg:px-8 bg-[#111111]/50">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight mb-6">
-            <span className="text-[#00ffff]">Ready to Secure</span>{" "}
-            <span className="text-[#00ff88]">Your Business?</span>
+        {/* Contact CTA */}
+        <section className="arch-panel p-8 text-center max-w-4xl mx-auto">
+          <h2 className="text-2xl font-semibold text-[#EFF2F2] mb-3">
+            Start with a concrete technical problem
           </h2>
-          <p className="text-lg text-[#888888] mb-8 max-w-2xl mx-auto">
-            Schedule a free 30-minute consultation to discuss your security needs and 
-            get a customized assessment plan tailored to your business.
+          <p className="text-sm sm:text-base text-[#94A3B8] mb-6 max-w-2xl mx-auto">
+            Share the system context, constraints, and goals. Scoping and pricing depend on
+            actual architecture complexity and delivery requirements rather than generic
+            tiered packages.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/contact"
-              className="terminal-border rounded-md bg-[#00ffff] px-8 py-4 text-base font-semibold text-black shadow-sm hover:bg-[#00ff88] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00ffff] transition-all duration-300 inline-flex items-center gap-2"
+              className="inline-flex items-center gap-2 rounded-md bg-[#EFF2F2] px-5 py-2.5 text-sm font-semibold text-[#0B1119] hover:bg-white transition-colors"
             >
-              Schedule Free Consultation
-              <ArrowRight className="w-5 h-5" />
+              Get in Touch
+              <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/projects"
-              className="security-card px-8 py-4 text-base font-semibold leading-6 text-[#00ffff] hover:text-[#00ff88] transition-colors duration-300 inline-flex items-center gap-2"
+              className="inline-flex items-center gap-2 rounded-md border border-[#1E2B3A] bg-[#0B1119] px-5 py-2.5 text-sm font-medium text-[#EFF2F2] hover:border-[#2F8CFF]/70 transition-colors"
             >
-              View Past Projects
-              <ArrowRight className="w-5 h-5" />
+              Review Implemented Work
             </Link>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Trust Indicators */}
-      <section className="px-6 py-16 lg:px-8 relative">
-        {/* Matrix Easter Egg - subtle corner */}
-        <span 
-          onClick={() => openMatrix("services")}
-          className="absolute bottom-8 left-8 text-[#00ffff]/30 hover:text-[#00ffff] transition-all duration-500 text-xl cursor-pointer"
-          title="Access restricted zone"
-          aria-label="Hidden access"
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openMatrix("services") }}
-        >
-          ⚡⊛⚡
-        </span>
-        <div className="mx-auto max-w-6xl">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl font-bold tracking-tight text-[#00ffff] mb-4">
-              Backed by Industry Certifications
-            </h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="security-card p-6 text-center">
-              <div className="text-3xl mb-2">🎓</div>
-              <p className="text-sm font-semibold text-[#00ffff]">CISSP</p>
-              <p className="text-xs text-[#888888]">Security Professional</p>
-            </div>
-            <div className="security-card p-6 text-center">
-              <div className="text-3xl mb-2">🔒</div>
-              <p className="text-sm font-semibold text-[#00ff88]">CEH</p>
-              <p className="text-xs text-[#888888]">Ethical Hacker</p>
-            </div>
-            <div className="security-card p-6 text-center">
-              <div className="text-3xl mb-2">⚔️</div>
-              <p className="text-sm font-semibold text-[#00ffff]">OSCP</p>
-              <p className="text-xs text-[#888888]">Penetration Tester</p>
-            </div>
-            <div className="security-card p-6 text-center">
-              <div className="text-3xl mb-2">🛡️</div>
-              <p className="text-sm font-semibold text-[#00ff88]">GSEC</p>
-              <p className="text-xs text-[#888888]">Security Essentials</p>
-            </div>
-          </div>
-          <NextModuleCTA 
-            href="/security-posture" 
-            title="Live Security Posture" 
-            description="See a real-time security assessment of this very portfolio to demonstrate my approach." 
-          />
-        </div>
-      </section>
+        <NextModuleCTA
+          href="/contact"
+          title="Contact"
+          description="Send a direct message or route commercial inquiries to APEX AI Solutions."
+        />
+      </div>
     </div>
   );
 }

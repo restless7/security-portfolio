@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     "Cybersecurity Portfolio"
   ],
   authors: [{ name: "Sebastian García" }],
+  alternates: {
+    canonical: "/projects/redteam",
+  },
   openGraph: {
     title: "Web App Red Team Engagement | PlanMaestro",
     description: "Detailed case study of a simulated adversary engagement against the PlanMaestro SaaS ecosystem.",
@@ -25,11 +28,11 @@ export default function RedTeamCaseStudy() {
   return (
     <div className="min-h-screen bg-black text-green-400 font-mono p-4 md:p-8 pt-24 selection:bg-green-400/30">
       <div className="max-w-4xl mx-auto">
-        
+
         {/* Navigation */}
         <div className="mb-8">
-          <Link 
-            href="/projects" 
+          <Link
+            href="/projects"
             className="inline-flex items-center text-cyan-400 hover:text-green-400 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -48,7 +51,7 @@ export default function RedTeamCaseStudy() {
               <p className="text-xl text-gray-400">Simulated Adversary Engagement</p>
             </div>
           </div>
-          
+
           <div className="flex flex-wrap gap-3 mt-6">
             <span className="px-3 py-1 bg-gray-800 text-cyan-400 rounded-full text-sm border border-gray-700">OWASP ASVS v4.0</span>
             <span className="px-3 py-1 bg-gray-800 text-cyan-400 rounded-full text-sm border border-gray-700">Burp Suite Pro</span>
@@ -64,16 +67,16 @@ export default function RedTeamCaseStudy() {
             1. Executive Summary
           </h2>
           <div className="security-card p-6 md:p-8 prose prose-invert max-w-none text-gray-300">
-            <h3 className="text-xl font-bold text-white mb-4">Engagement Overview</h3>
+            <h3 className="text-xl font-bold text-white mb-4">Blueprint Scope</h3>
             <p className="lead text-lg mb-4">
-              Between March 1 and March 29, 2024, our security team conducted a comprehensive grey-box penetration test against the PlanMaestro ecosystem. The scope included the APEX AI SaaS platform, the Tools Platform (Next.js/FastAPI), the PDF Generator microservice, and the underlying API infrastructure.
+              This reference case study outlines an internal gray-box application security assessment methodology modeled across multi-service Next.js and FastAPI architectures, including portal APIs and document-rendering microservices.
             </p>
             <p>
-              The primary objective was to evaluate the resilience of the ecosystem's access controls, session management, 
-              and input validation mechanisms under strict gray-box conditions. We operated with the mindset of an 
+              The primary objective was to evaluate the resilience of the ecosystem&rsquo;s access controls, session management,
+              and input validation mechanisms under strict gray-box conditions. We operated with the mindset of an
               authenticated adversary attempting vertical and horizontal privilege escalation.
             </p>
-            
+
             <h3 className="text-xl font-bold text-white mt-8 mb-4">Security Posture Assessment</h3>
             <p>
               The overall security posture of the PlanMaestro ecosystem is <strong className="text-cyan-400">MATURING</strong>. The application demonstrates strong baseline security controls, including excellent Next.js security headers (A+ on Mozilla Observatory), solid password hashing implementations, and comprehensive HTTPS enforcement.
@@ -131,7 +134,7 @@ export default function RedTeamCaseStudy() {
                 </li>
               </ol>
             </div>
-            
+
             <div className="security-card p-6 flex flex-col">
               <h3 className="text-xl font-bold text-white mb-4">Custom Tooling Developed</h3>
               <ul className="space-y-4 flex-grow">
@@ -157,7 +160,7 @@ export default function RedTeamCaseStudy() {
                   </div>
                 </li>
               </ul>
-              
+
               <div className="mt-6 p-4 bg-gray-900 rounded border border-gray-800 text-sm font-mono text-cyan-400">
                 <span className="text-gray-500">$</span> python idor-scanner.py --base-url api.tools.planmaestro.local --wordlist endpoints.txt
               </div>
@@ -171,7 +174,7 @@ export default function RedTeamCaseStudy() {
             <Bug className="w-6 h-6 mr-3 text-cyan-400" />
             3. Vulnerability Metrics
           </h2>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div className="bg-gray-900/50 border border-red-500/30 p-4 rounded-lg text-center">
               <div className="text-4xl font-bold text-red-500 mb-1">4</div>
@@ -292,16 +295,13 @@ export default function RedTeamCaseStudy() {
         {/* Conclusion / CTA */}
         <section className="text-center py-10 border-t border-gray-800 mt-12">
           <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-4">100% Critical Vulnerabilities Remediated</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Remediation-First Assessment Pattern</h2>
           <p className="text-gray-400 max-w-2xl mx-auto mb-8">
-            The engineering team resolved all high-severity findings within a two-week SLA. 
-            Automated regression testing was introduced in the CI pipeline to prevent future regressions.
+            Every documented finding maps directly to an architectural control—centralized authorization checks, template sandboxing, and regression tests in CI.
           </p>
-          <a target="_blank" href="https://github.com/planmaestro/redteam" className="inline-flex items-center justify-center p-[2px] rounded-lg bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-400 hover:to-orange-400 transition-all font-bold group cursor-pointer">
-            <span className="flex items-center gap-2 bg-black px-6 py-3 rounded-md group-hover:bg-opacity-80 transition-all text-white">
-              View Final Report Payload
-            </span>
-          </a>
+          <Link href="/projects" className="inline-flex items-center justify-center rounded-md border border-[#537E80] bg-[#111924] px-6 py-3 text-sm font-semibold text-white hover:bg-[#263440] transition-colors">
+            Back to Architecture Catalog
+          </Link>
         </section>
 
       </div>

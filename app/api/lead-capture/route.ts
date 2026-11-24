@@ -19,7 +19,7 @@ const leadCaptureSchema = z.object({
 // Lead scoring function
 function calculateLeadScore(data: z.infer<typeof leadCaptureSchema>): number {
   let score = 10 // Base score
-  
+
   // Lead magnet value
   const magnetValues = {
     "whitepaper-download": 25,
@@ -29,7 +29,7 @@ function calculateLeadScore(data: z.infer<typeof leadCaptureSchema>): number {
     "newsletter-signup": 10
   }
   score += magnetValues[data.leadMagnet]
-  
+
   // Role value
   const roleValues = {
     "cto": 30,
@@ -42,7 +42,7 @@ function calculateLeadScore(data: z.infer<typeof leadCaptureSchema>): number {
   if (data.role) {
     score += roleValues[data.role]
   }
-  
+
   // Company size value
   const sizeValues = {
     "51-200": 25,
@@ -54,105 +54,83 @@ function calculateLeadScore(data: z.infer<typeof leadCaptureSchema>): number {
   if (data.companySize) {
     score += sizeValues[data.companySize]
   }
-  
+
   // Additional data completeness bonus
   if (data.firstName && data.lastName) score += 5
   if (data.company) score += 5
-  
+
   return Math.min(score, 100) // Cap at 100
 }
 
 // Email content templates
 function getEmailContent(leadMagnet: string, firstName?: string) {
   const name = firstName ? firstName : "there"
-  
+
   const templates = {
     "security-assessment": {
-      subject: "Your SaaS Security Assessment Results",
+      subject: "Your Application Security Review Checklist",
       content: `Hi ${name},
 
-Thanks for taking the SaaS Security Assessment! 
+Thanks for requesting the Application Security Review Checklist.
 
-Here's your detailed assessment report and personalized recommendations:
-📊 Download your results: [Assessment Report Link]
+Key architectural areas to verify first:
+1. Security Headers & CSP Configuration
+2. API Authorization & Input Schema Validation
+3. Infrastructure & Secret Isolation Baselines
 
-Based on your responses, I've identified the top 3 areas where you can improve your security posture immediately:
-
-1. Security Headers Implementation
-2. API Authentication Hardening  
-3. Infrastructure Security Baseline
-
-Want to discuss your specific situation? Reply to this email - I read every response.
+If you want to discuss a concrete system review, reply directly or reach out via sentineldev.me/contact.
 
 Best regards,
-Sebastian Garcia
-Cybersecurity Consultant
-
-P.S. I'll be sending you practical security tips over the next few days. Keep an eye on your inbox!`
+Sebastián García`
     },
-    
+
     "whitepaper-download": {
-      subject: "Your Security-First SaaS Implementation Guide is ready",
+      subject: "Architecture & Application Security Reference Notes",
       content: `Hi ${name},
 
-Thank you for downloading the Security-First SaaS Implementation Guide!
+Thank you for your interest in the application security and architecture reference notes.
 
-📚 Download your whitepaper: [Whitepaper Link]
+Key topics covered:
+• Tenant isolation and object-level authorization boundaries
+• Strict Zod input validation and rate limiting
+• Transport security headers and CI regression checks
 
-This comprehensive 20-page guide includes:
-• The 7-pillar security framework that enabled $2M+ in enterprise deals
-• APEX AI case study with detailed implementation timeline
-• 90-day roadmap for security transformation
-• ROI calculation templates
-
-Want to see how other companies have transformed their security posture? I'll be sharing real case studies and implementation tips over the next week.
-
-Questions about implementing any of these strategies? Just reply - I'm here to help.
+Questions about implementing any of these patterns? Reply directly or visit sentineldev.me/projects.
 
 Best,
-Sebastian Garcia
-
-P.S. If you're facing urgent security requirements (SOC2, enterprise deals, etc.), I offer implementation consulting. Reply with "URGENT" and I'll prioritize your response.`
+Sebastián García`
     },
 
     "soc2-starter-kit": {
-      subject: "Your SOC2 Starter Kit is ready for download",
+      subject: "Security & Operational Readiness Checklist",
       content: `Hi ${name},
 
-Your SOC2 Starter Kit is ready! This has helped dozens of companies get SOC2 certified on their first audit.
+Thanks for requesting the operational security readiness checklist.
 
-🎯 Download your kit: [SOC2 Kit Link]
+Core areas to document early:
+• Access control & role boundaries
+• Secret lifecycle & environment isolation
+• Audit logging & incident response runbooks
+• Automated CI security verification gates
 
-What's included:
-• Complete SOC2 policy templates (13 policies)
-• Implementation checklists and timelines
-• Audit preparation checklist
-• Evidence collection automation scripts
-
-BONUS: I'm including a 30-minute consultation call to help you create your SOC2 roadmap. Book here: [Calendar Link]
-
-Most companies I work with get certified within 90 days using this exact framework. The average cost savings compared to hiring a compliance consultant is $35,000.
-
-Have questions about your specific compliance requirements? Reply to this email with your situation and I'll send personalized recommendations.
+For commercial compliance implementation or consulting engagements, inquiries are handled through APEX AI Solutions (apexaisolutions.dev).
 
 Best,
-Sebastian Garcia
-
-P.S. Need SOC2 certification fast? I offer done-with-you SOC2 implementation that guarantees first-audit success. Reply with "SOC2 FAST TRACK" for details.`
+Sebastián García`
     }
   }
-  
+
   return templates[leadMagnet as keyof typeof templates] || templates["security-assessment"]
 }
 
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting
-    const identifier = request.headers.get('x-forwarded-for') || 
-                      request.headers.get('x-real-ip') || 
-                      "127.0.0.1"
+    const identifier = request.headers.get('x-forwarded-for') ||
+      request.headers.get('x-real-ip') ||
+      "127.0.0.1"
     const { success } = await rateLimit(identifier, 10, 60000)
-    
+
     if (!success) {
       return NextResponse.json(
         { error: "Too many requests. Please try again later." },
@@ -163,10 +141,10 @@ export async function POST(request: NextRequest) {
     // Parse and validate request body
     const body = await request.json()
     const validatedData = leadCaptureSchema.parse(body)
-    
+
     // Calculate lead score
     const leadScore = calculateLeadScore(validatedData)
-    
+
     // Prepare lead data for storage
     const leadData = {
       ...validatedData,
@@ -175,7 +153,7 @@ export async function POST(request: NextRequest) {
       userAgent: request.headers.get("user-agent"),
       createdAt: new Date().toISOString()
     }
-    
+
     // TODO: Store lead data in your database/CRM
     // For now, we'll log it (in production, save to database)
     console.log("New Lead Captured:", {
@@ -185,39 +163,39 @@ export async function POST(request: NextRequest) {
       company: leadData.company,
       role: leadData.role
     })
-    
+
     // TODO: Add to email marketing automation
     // This would integrate with your email service (ConvertKit, Mailchimp, etc.)
-    
+
     // Send immediate email with lead magnet
     const emailContent = getEmailContent(validatedData.leadMagnet, validatedData.firstName)
-    
+
     // TODO: Send email via your email service
     // await sendEmail({
     //   to: validatedData.email,
     //   subject: emailContent.subject,
     //   content: emailContent.content
     // })
-    
+
     // Log successful lead capture for analytics
     console.log(`Lead captured: ${validatedData.email} - Score: ${leadScore} - Magnet: ${validatedData.leadMagnet}`)
-    
-    return NextResponse.json({ 
-      success: true, 
+
+    return NextResponse.json({
+      success: true,
       message: "Lead captured successfully",
       leadScore: leadScore
     })
-    
+
   } catch (error) {
     console.error("Lead capture error:", error)
-    
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: "Invalid form data", details: error.issues },
         { status: 400 }
       )
     }
-    
+
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

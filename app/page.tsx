@@ -1,283 +1,555 @@
-"use client"
+import Image from "next/image";
+import Link from "next/link";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BookOpen,
+  Cpu,
+  Layers,
+  Server,
+  Shield,
+  Terminal,
+} from "lucide-react";
+import { AnimatedTerminal } from "@/app/components/AnimatedTerminal";
+import { SecurityScorecard } from "@/app/components/SecurityScorecard";
+import { blogPosts } from "@/app/blog/blogData";
 
-import { Shield, Terminal, Lock, Eye, AlertTriangle } from "lucide-react"
-import Link from "next/link"
-import { SecurityScorecard } from "@/app/components/SecurityScorecard"
-import { AnimatedTerminal } from "@/app/components/AnimatedTerminal"
-import { openMatrix } from "@/app/lib/openMatrix"
-import { NextModuleCTA } from "@/app/components/NextModuleCTA"
+const practiceAreas = [
+  {
+    number: "01",
+    title: "Systems & Software Architecture",
+    icon: Layers,
+    summary:
+      "Modular monoliths, bounded contexts, tenant isolation, typed ports and adapters, and clean API contracts designed to remain maintainable under real operational load.",
+    focus: ["Domain Boundaries", "PostgreSQL & RLS", "Typed Contracts"],
+  },
+  {
+    number: "02",
+    title: "Applied AI & Agentic Systems",
+    icon: Cpu,
+    summary:
+      "Governed organizational memory, RAG retrieval pipelines with fail-closed access controls, decision lineage, and verifiable AI workflows anchored in deterministic state.",
+    focus: ["Governed RAG", "Decision Memory", "Agent Orchestration"],
+  },
+  {
+    number: "03",
+    title: "Security Engineering",
+    icon: Shield,
+    summary:
+      "Security treated as a structural property: strict CSP and transport headers, schema validation, rate limiting, kernel/SAST research, and zero-trust boundary verification.",
+    focus: ["AppSec & Headers", "Access Control", "Rust / eBPF R&D"],
+  },
+  {
+    number: "04",
+    title: "Infrastructure & Integration",
+    icon: Server,
+    summary:
+      "Process supervision, reverse proxies, isolated Unix-socket databases, asynchronous webhook decoupling, and resilient background workers built for real-world constraints.",
+    focus: ["Process Supervisors", "Async Pipelines", "Linux & Containers"],
+  },
+];
+
+const selectedSystems = [
+  {
+    id: "apex-platform",
+    title: "APEX Platform & Second Brain",
+    maturity: "Active Architecture · Internal Baseline",
+    domain: "Applied AI & Enterprise Architecture",
+    summary:
+      "Dual-engine architecture separating institutional Knowledge OS (pgvector retrieval, provenance, claim governance) from Operations OS (heartbeat telemetry, incident memory), paired with a modular-monolith Second Brain blueprint enforcing database-level tenant/ACL pre-filtering.",
+    stack: ["Next.js", "TypeScript", "PostgreSQL", "pgvector", "Prisma"],
+  },
+  {
+    id: "apex-intelligence",
+    title: "APEX Intelligence Workstation",
+    maturity: "Local Pilot",
+    domain: "Data & Sovereign Infrastructure",
+    summary:
+      "Standalone corporate registry analysis workstation running Next.js 16 against an isolated PostgreSQL 16 instance over Unix domain sockets with Force Row-Level Security, AES-256-GCM encryption, and a zero-dependency process supervisor.",
+    stack: ["Next.js 16", "PostgreSQL 16", "FORCE RLS", "Node Supervisor"],
+  },
+  {
+    id: "apex-cyber-core",
+    title: "Apex Cyber Core Engine",
+    maturity: "R&D Prototype",
+    domain: "Security Engineering & Systems",
+    summary:
+      "Native Rust security daemon combining Aya eBPF syscall tracepoint interception, tree-sitter and petgraph control-flow taint tracking, Blake3 PII masking, and Tonic gRPC over Unix domain sockets.",
+    stack: ["Rust", "Aya eBPF", "petgraph", "Blake3", "gRPC / UDS"],
+  },
+  {
+    id: "ice-ecosystem",
+    title: "ICE Colombia Automation & Portal",
+    maturity: "Production",
+    domain: "Infrastructure & Applied AI",
+    summary:
+      "Client-facing web platform, administrative program portal, and WhatsApp AI RAG pipeline decoupled via immediate HTTP acknowledgment and asynchronous webhook processing behind Nginx, systemd, and PostgreSQL.",
+    stack: ["Next.js 15", "Prisma", "PostgreSQL", "Nginx", "systemd"],
+  },
+  {
+    id: "sentineldev-portfolio",
+    title: "SentinelDev Security-First Site",
+    maturity: "Production",
+    domain: "Security Engineering",
+    summary:
+      "This platform (sentineldev.me): hardened App Router application pairing editorial clarity with strict CSP, HSTS, Zod input validation, sliding-window rate limiting, and live posture diagnostics.",
+    stack: ["Next.js 15", "React 19", "TypeScript", "Zod", "Tailwind CSS"],
+  },
+];
+
+const principles = [
+  {
+    title: "Architecture before complexity",
+    body: "Start with explicit module boundaries, clear ownership, and reversible interfaces before introducing distributed machinery.",
+  },
+  {
+    title: "Security as a system property",
+    body: "Enforce authorization, input schemas, and isolation inside the data and runtime boundaries rather than bolting checks onto the edge.",
+  },
+  {
+    title: "Evidence before deployment",
+    body: "Distinguish prototypes, local pilots, and production workloads honestly. Validate assumptions with tests, telemetry, and reproducible checks.",
+  },
+  {
+    title: "AI under deliberate control",
+    body: "Ground retrieval in access-controlled sources, preserve decision provenance, and keep deterministic validation ahead of model output.",
+  },
+  {
+    title: "Maintainability over spectacle",
+    body: "Prefer clear code, durable primitives, and predictable operations over clever abstractions that fail silently under pressure.",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black">
-      {/* Hero Section */}
-      <section className="relative px-6 py-20 sm:py-32 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          {/* Terminal-style greeting */}
-          <div className="mb-8">
-            <div className="security-card p-4 max-w-2xl mx-auto">
-              <div className="flex items-center mb-2">
-                <Terminal className="w-4 h-4 text-cyan-400 mr-2" />
-                <span className="text-sm text-gray-500">guardian@security:~$</span>
+    <div className="min-h-screen bg-[#0B1119] text-[#EFF2F2]">
+      {/* 01 — Identity Hero */}
+      <section className="border-b border-[#1E2B3A] bg-[radial-gradient(ellipse_at_top,_rgba(47,140,255,0.14),_transparent_58%)]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-4 sm:gap-5 mb-7">
+              <Image
+                src="/brand/sg-logo-web.png"
+                alt="Sebastián García official SG monogram"
+                width={64}
+                height={64}
+                loading="eager"
+                priority
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full shrink-0 shadow-[0_0_24px_rgba(47,140,255,0.2)]"
+              />
+              <div>
+                <p className="text-lg sm:text-xl font-semibold tracking-tight text-[#EFF2F2]">
+                  Sebastián García
+                </p>
+                <p className="font-mono text-xs sm:text-sm text-[#8FD3FF]">
+                  Systems Architect · Applied AI &amp; Security Engineering
+                </p>
+                <p className="font-mono text-xs text-[#94A3B8] mt-0.5">
+                  Founder,{" "}
+                  <a
+                    href="https://www.apexaisolutions.dev/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#CBD5E1] underline decoration-[#2F8CFF]/70 underline-offset-4 hover:text-white"
+                  >
+                    APEX AI Solutions
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-7">
+              {[
+                "Software & Systems Architecture",
+                "Applied AI",
+                "Security Engineering",
+                "Infrastructure",
+              ].map((discipline) => (
+                <span
+                  key={discipline}
+                  className="font-mono text-xs px-2.5 py-1 rounded bg-[#101824] border border-[#1E2B3A] text-[#CBD5E1]"
+                >
+                  {discipline}
+                </span>
+              ))}
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-[#EFF2F2] leading-[1.08] mb-5">
+              Engineering Beyond the Prototype.
+            </h1>
+
+            <p className="text-lg sm:text-xl text-[#CBD5E1] leading-relaxed mb-3 max-w-2xl">
+              From architectural thinking to disciplined execution.
+            </p>
+            <p className="text-base sm:text-lg text-[#94A3B8] leading-relaxed mb-8 max-w-2xl">
+              I work across software architecture, applied AI, security engineering, and
+              infrastructure — turning complex technical ideas into dependable systems.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-12">
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-2 rounded-md bg-[#EFF2F2] px-5 py-2.5 text-sm font-semibold text-[#0B1119] hover:bg-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2F8CFF]"
+              >
+                Explore Selected Work
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-2 rounded-md border border-[#1E2B3A] bg-[#101824] px-5 py-2.5 text-sm font-medium text-[#EFF2F2] hover:border-[#2F8CFF]/70 transition-colors"
+              >
+                About Me
+              </Link>
+
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-[#94A3B8] hover:text-[#EFF2F2] transition-colors"
+              >
+                Engineering Notes
+              </Link>
+
+              <a
+                href="https://www.apexaisolutions.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 font-mono text-xs text-[#CBD5E1] hover:text-[#EFF2F2] transition-colors ml-auto sm:ml-2"
+              >
+                APEX AI Solutions
+                <ArrowUpRight className="w-3.5 h-3.5 text-[#8FD3FF]" />
+              </a>
+            </div>
+          </div>
+
+          {/* Subordinate Technical Signature: Terminal Prompt + Live Posture */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch pt-5 border-t border-[#1E2B3A]">
+            <div className="lg:col-span-6 arch-panel px-5 py-4 flex flex-col justify-center">
+              <div className="flex items-center gap-2 mb-1.5">
+                <Terminal className="w-3.5 h-3.5 text-[#2F8CFF]" />
+                <span className="font-mono text-xs text-[#94A3B8]">
+                  sebastian@sentineldev:~$
+                </span>
               </div>
               <AnimatedTerminal />
             </div>
+
+            <div className="lg:col-span-6 flex items-stretch">
+              <SecurityScorecard />
+            </div>
           </div>
+        </div>
+      </section>
 
-          {/* Main title */}
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">
-            <span className="text-[#00ffff] cyber-glow">Sebastian García</span>
-            <br />
-            <span className="text-[#00ff88]">Cybersecurity</span> &{" "}
-            <span className="text-[#00ffff]">AppSec</span> Specialist
-          </h1>
-
-          {/* Rotating subtitle */}
-          <div className="mx-auto max-w-2xl mb-10">
-            <p className="text-lg leading-8 text-[#888888]">
-              Securing digital assets through{" "}
-              <span className="text-[#00ff88] font-semibold">penetration testing</span>,{" "}
-              <span className="text-[#00ffff] font-semibold">secure code review</span>, and{" "}
-              <span className="text-[#00ff88] font-semibold">cloud security architecture</span>.
-              Every line of code is a potential entry point&mdash;I make sure it&rsquo;s not.
-            </p>
-          </div>
-
-          {/* Live Security Scorecard */}
-          <div className="mb-10">
-            <SecurityScorecard />
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-4">
+      {/* 02 — Areas of Practice */}
+      <section className="py-16 sm:py-20 border-b border-[#1E2B3A]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-widest text-[#8FD3FF] mb-2">
+                02 / Areas of Practice
+              </p>
+              <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#EFF2F2]">
+                Disciplines across the full stack
+              </h2>
+            </div>
             <Link
-              href="/services"
-              className="terminal-border rounded-md bg-[#00ffff] px-6 py-3 text-sm font-semibold text-black shadow-sm hover:bg-[#00ff88] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00ffff] transition-all duration-300"
+              href="/skills"
+              className="inline-flex items-center gap-1.5 font-mono text-xs text-[#CBD5E1] hover:text-[#EFF2F2] transition-colors"
             >
-              View Services
+              View full capability matrix
+              <ArrowRight className="w-3.5 h-3.5 text-[#2F8CFF]" />
             </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {practiceAreas.map((area) => {
+              const Icon = area.icon;
+              return (
+                <div key={area.number} className="security-card p-6 sm:p-7 flex flex-col">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-md bg-[#0B1119] border border-[#1E2B3A]">
+                        <Icon className="w-5 h-5 text-[#2F8CFF]" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-[#EFF2F2]">
+                        {area.title}
+                      </h3>
+                    </div>
+                    <span className="font-mono text-xs text-[#8FD3FF]">
+                      {area.number}
+                    </span>
+                  </div>
+
+                  <p className="text-sm text-[#94A3B8] leading-relaxed mb-5 flex-grow">
+                    {area.summary}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2">
+                    {area.focus.map((item) => (
+                      <span
+                        key={item}
+                        className="font-mono text-[11px] px-2.5 py-1 rounded bg-[#0B1119] border border-[#1E2B3A] text-[#CBD5E1]"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 03 — Selected Engineering Work */}
+      <section className="py-16 sm:py-20 border-b border-[#1E2B3A]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-widest text-[#8FD3FF] mb-2">
+                03 / Selected Engineering Work
+              </p>
+              <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#EFF2F2]">
+                Systems designed, built, and verified
+              </h2>
+            </div>
             <Link
               href="/projects"
-              className="security-card px-6 py-3 text-sm font-semibold leading-6 text-[#00ffff] hover:text-[#00ff88] transition-colors duration-300"
+              className="inline-flex items-center gap-1.5 font-mono text-xs text-[#CBD5E1] hover:text-[#EFF2F2] transition-colors"
             >
-              Security Projects <span aria-hidden="true">→</span>
+              Browse full catalog
+              <ArrowRight className="w-3.5 h-3.5 text-[#2F8CFF]" />
             </Link>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {selectedSystems.map((project, index) => (
+              <article
+                key={project.id}
+                className={
+                  index === 0
+                    ? "security-card p-6 sm:p-7 lg:col-span-2 flex flex-col justify-between"
+                    : "security-card p-6 sm:p-7 flex flex-col justify-between"
+                }
+              >
+                <div>
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <span className="font-mono text-xs text-[#8FD3FF]">
+                      {project.domain}
+                    </span>
+                    <span className="font-mono text-[11px] px-2.5 py-0.5 rounded-full bg-[#0B1119] border border-[#1E2B3A] text-[#CBD5E1]">
+                      {project.maturity}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-semibold text-[#EFF2F2] mb-3">
+                    {project.title}
+                  </h3>
+
+                  <p className="text-sm text-[#94A3B8] leading-relaxed mb-5">
+                    {project.summary}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#1E2B3A]">
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.stack.map((tech) => (
+                      <span
+                        key={tech}
+                        className="font-mono text-[11px] px-2 py-0.5 rounded bg-[#0B1119] border border-[#1E2B3A] text-[#CBD5E1]"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <Link
+                    href="/projects"
+                    className="inline-flex items-center gap-1.5 font-mono text-xs text-[#EFF2F2] hover:text-[#8FD3FF] transition-colors shrink-0"
+                  >
+                    Inspect architecture
+                    <ArrowRight className="w-3.5 h-3.5 text-[#2F8CFF]" />
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 04 — Engineering Philosophy */}
+      <section className="py-16 sm:py-20 border-b border-[#1E2B3A] bg-[#101824]/45">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mb-10">
+            <p className="font-mono text-xs uppercase tracking-widest text-[#8FD3FF] mb-2">
+              04 / Engineering Philosophy
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#EFF2F2]">
+              Working principles across every layer
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {principles.map((principle, idx) => (
+              <div key={principle.title} className="arch-panel p-6">
+                <span className="font-mono text-xs text-[#2F8CFF] block mb-2">
+                  0{idx + 1}
+                </span>
+                <h3 className="text-base font-semibold text-[#EFF2F2] mb-2">
+                  {principle.title}
+                </h3>
+                <p className="text-sm text-[#94A3B8] leading-relaxed">
+                  {principle.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 05 — Selected Writing / Engineering Notes */}
+      <section className="py-16 sm:py-20 border-b border-[#1E2B3A]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-widest text-[#8FD3FF] mb-2">
+                05 / Engineering Notes
+              </p>
+              <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#EFF2F2]">
+                Notes on architecture, security &amp; implementation
+              </h2>
+            </div>
             <Link
-              href="/security-posture"
-              className="security-card px-6 py-3 text-sm font-semibold leading-6 text-[#00ffff] hover:text-[#00ff88] transition-colors duration-300 flex items-center gap-2"
+              href="/blog"
+              className="inline-flex items-center gap-1.5 font-mono text-xs text-[#CBD5E1] hover:text-[#EFF2F2] transition-colors"
             >
-              <Shield className="w-4 h-4" />
-              Security Analysis <span aria-hidden="true">→</span>
+              All engineering notes
+              <ArrowRight className="w-3.5 h-3.5 text-[#2F8CFF]" />
             </Link>
           </div>
-        </div>
-      </section>
 
-      {/* Key Features Section */}
-      <section className="py-16 px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight text-[#00ffff] mb-4">
-              Security-First Approach
-            </h2>
-            <p className="text-lg text-[#888888] max-w-2xl mx-auto">
-              This portfolio itself demonstrates security best practices. Every component
-              is hardened, every input validated, every header secured.
-            </p>
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {blogPosts.map((post) => (
+              <article key={post.slug} className="security-card p-6 sm:p-7 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between gap-3 mb-3">
+                    <span className="font-mono text-xs text-[#8FD3FF]">
+                      {post.category}
+                    </span>
+                    <span className="font-mono text-xs text-[#94A3B8]">
+                      {post.readTime}
+                    </span>
+                  </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Feature 1 */}
-            <div className="security-card p-6 text-center">
-              <div className="w-12 h-12 mx-auto mb-4 bg-[#00ffff]/10 rounded-lg flex items-center justify-center">
-                <Lock className="w-6 h-6 text-[#00ffff]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-[#00ffff]">Secure by Design</h3>
-              <p className="text-[#888888] leading-relaxed">
-                Built with security headers, CSP policies, input validation, and rate limiting.
-                View the live security analysis to see how.
-              </p>
-            </div>
+                  <h3 className="text-lg font-semibold text-[#EFF2F2] mb-3">
+                    <Link href={`/blog/${post.slug}`} className="hover:text-white transition-colors">
+                      {post.title}
+                    </Link>
+                  </h3>
 
-            {/* Feature 2 */}
-            <div className="security-card p-6 text-center">
-              <div className="w-12 h-12 mx-auto mb-4 bg-[#00ff88]/10 rounded-lg flex items-center justify-center">
-                <Eye className="w-6 h-6 text-[#00ff88]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-[#00ff88]">Threat Detection</h3>
-              <p className="text-[#888888] leading-relaxed">
-                Specialized in OWASP Top 10, vulnerability assessment, and penetration testing
-                across web applications and cloud infrastructure.
-              </p>
-            </div>
+                  <p className="text-sm text-[#94A3B8] leading-relaxed mb-5">
+                    {post.excerpt}
+                  </p>
+                </div>
 
-            {/* Feature 3 */}
-            <div className="security-card p-6 text-center">
-              <div className="w-12 h-12 mx-auto mb-4 bg-[#ffaa00]/10 rounded-lg flex items-center justify-center">
-                <AlertTriangle className="w-6 h-6 text-[#ffaa00]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-[#ffaa00]">Risk Mitigation</h3>
-              <p className="text-[#888888] leading-relaxed">
-                From secure coding practices to incident response planning.
-                Every vulnerability is an opportunity to strengthen defenses.
-              </p>
-            </div>
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="inline-flex items-center gap-1.5 font-mono text-xs text-[#EFF2F2] hover:text-[#8FD3FF] transition-colors"
+                >
+                  <BookOpen className="w-3.5 h-3.5 text-[#2F8CFF]" />
+                  Read note
+                  <ArrowRight className="w-3.5 h-3.5 text-[#2F8CFF]" />
+                </Link>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Recent Work Preview */}
-      <section className="py-16 px-6 lg:px-8 bg-[#111111]/50 relative group">
-        {/* Matrix Easter Egg */}
-        <span 
-          onClick={() => openMatrix("home")}
-          className="absolute top-4 right-4 text-[#00ff88] hover:text-[#00ffff] transition-colors duration-300 text-2xl font-mono animate-pulse cursor-pointer"
-          style={{
-            textShadow: '0 0 10px rgba(0, 255, 136, 0.8), 0 0 20px rgba(0, 255, 136, 0.5), 0 0 30px rgba(0, 255, 136, 0.3)'
-          }}
-          title="Enter the matrix"
-          aria-label="Enter the matrix"
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openMatrix("home") }}
-        >
-          ⎔⎓⎔
-        </span>
-        
-        <div className="mx-auto max-w-6xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight mb-4">
-              Recent Security Projects
-            </h2>
-            <p className="text-lg text-[#888888] max-w-2xl mx-auto">
-              A selection of applications and systems I&rsquo;ve secured, analyzed, and hardened.
-            </p>
-          </div>
+      {/* 06 — Personal Introduction & 07 — Collaboration / APEX */}
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* 06 — Personal Introduction */}
+            <div className="lg:col-span-6 arch-panel p-7 sm:p-8 flex flex-col justify-between">
+              <div>
+                <p className="font-mono text-xs uppercase tracking-widest text-[#8FD3FF] mb-2">
+                  06 / Personal Introduction
+                </p>
+                <h2 className="text-2xl font-semibold text-[#EFF2F2] mb-4">
+                  Building cohesive systems end to end
+                </h2>
+                <p className="text-sm sm:text-base text-[#CBD5E1] leading-relaxed mb-4">
+                  I am a systems architect based in Colombia. My work connects full-stack
+                  software architecture, governed AI orchestration, application security, and
+                  production infrastructure — moving from architectural thinking to
+                  disciplined, verifiable execution.
+                </p>
+                <p className="text-sm text-[#94A3B8] leading-relaxed mb-6">
+                  SentinelDev serves as my personal engineering notebook and system catalog:
+                  a place for architectural experimentation, security demonstrations, and
+                  documented work without generic agency packaging.
+                </p>
+              </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Project 1 - APEX AI */}
-            <div className="security-card p-6">
-              <div className="flex items-center mb-4">
-                <Shield className="w-5 h-5 text-[#00ffff] mr-2" />
-                <span className="text-sm font-medium text-[#00ffff]">FULL-STACK SAAS SECURITY</span>
+              <div>
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-[#EFF2F2] hover:text-[#8FD3FF] transition-colors"
+                >
+                  Read the complete About narrative
+                  <ArrowRight className="w-4 h-4 text-[#2F8CFF]" />
+                </Link>
               </div>
-              <h3 className="text-xl font-semibold mb-3">APEX AI Solutions</h3>
-              <p className="text-[#888888] mb-4 leading-relaxed">
-                Secured a complete SaaS application from the ground up. Implemented authentication
-                with Clerk, protected 40+ API endpoints with middleware validation, and established
-                comprehensive security headers and CSP policies.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="px-2 py-1 bg-[#00ffff]/10 text-[#00ffff] text-xs rounded">Zod Validation</span>
-                <span className="px-2 py-1 bg-[#00ff88]/10 text-[#00ff88] text-xs rounded">Rate Limiting</span>
-                <span className="px-2 py-1 bg-[#00ffff]/10 text-[#00ffff] text-xs rounded">CSP Headers</span>
-                <span className="px-2 py-1 bg-[#00ff88]/10 text-[#00ff88] text-xs rounded">Input Sanitization</span>
-              </div>
-              <Link
-                href="/projects"
-                className="inline-flex items-center text-sm text-[#00ffff] hover:text-[#00ff88] transition-colors"
-              >
-                View security details <span className="ml-1">→</span>
-              </Link>
             </div>
 
-            {/* Project 2 - Portfolio Meta-Security */}
-            <div className="security-card p-6">
-              <div className="flex items-center mb-4">
-                <Terminal className="w-5 h-5 text-[#00ff88] mr-2" />
-                <span className="text-sm font-medium text-[#00ff88]">META-SECURITY SHOWCASE</span>
+            {/* 07 — Collaboration / APEX AI Solutions */}
+            <div className="lg:col-span-6 security-card p-7 sm:p-8 flex flex-col justify-between">
+              <div>
+                <p className="font-mono text-xs uppercase tracking-widest text-[#8FD3FF] mb-2">
+                  07 / Collaboration &amp; APEX AI Solutions
+                </p>
+                <h2 className="text-2xl font-semibold text-[#EFF2F2] mb-4">
+                  We engineer the systems modern businesses depend on.
+                </h2>
+                <p className="text-sm sm:text-base text-[#CBD5E1] leading-relaxed mb-3">
+                  While <strong className="font-semibold text-[#EFF2F2]">sentineldev.me</strong>{" "}
+                  presents my personal engineering judgment and technical work,{" "}
+                  <strong className="font-semibold text-[#EFF2F2]">APEX AI Solutions</strong>{" "}
+                  is the commercial organization I founded for client delivery and enterprise
+                  systems.
+                </p>
+                <p className="font-mono text-xs text-[#8FD3FF] mb-6">
+                  Secure by design. Resilient by architecture. Built for the real world.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold mb-3">This Portfolio Site</h3>
-              <p className="text-[#888888] mb-4 leading-relaxed">
-                This website itself is a security project. Every header, validation rule,
-                and component demonstrates cybersecurity best practices. Click below to see
-                the live security analysis.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="px-2 py-1 bg-[#00ff88]/10 text-[#00ff88] text-xs rounded">Security Headers</span>
-                <span className="px-2 py-1 bg-[#00ffff]/10 text-[#00ffff] text-xs rounded">XSS Prevention</span>
-                <span className="px-2 py-1 bg-[#00ff88]/10 text-[#00ff88] text-xs rounded">CSRF Protection</span>
-                <span className="px-2 py-1 bg-[#00ffff]/10 text-[#00ffff] text-xs rounded">Live Monitoring</span>
-              </div>
-              <Link
-                href="/security-posture"
-                className="inline-flex items-center text-sm text-[#00ff88] hover:text-[#00ffff] transition-colors"
-              >
-                Run security scan <span className="ml-1">→</span>
-              </Link>
-            </div>
 
-            {/* Project 3 - Apex Cyber Core */}
-            <div className="security-card p-6">
-              <div className="flex items-center mb-4">
-                <Terminal className="w-5 h-5 text-[#ffaa00] mr-2" />
-                <span className="text-sm font-medium text-[#ffaa00]">LOW-LEVEL SYSTEMS & EBPF</span>
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 rounded-md bg-[#EFF2F2] px-4 py-2.5 text-sm font-semibold text-[#0B1119] hover:bg-white transition-colors"
+                >
+                  Get in Touch
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="/services"
+                  className="inline-flex items-center gap-2 rounded-md border border-[#1E2B3A] bg-[#0B1119] px-4 py-2.5 text-sm font-medium text-[#EFF2F2] hover:border-[#2F8CFF]/70 transition-colors"
+                >
+                  Collaboration Approach
+                </Link>
+                <a
+                  href="https://www.apexaisolutions.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 font-mono text-xs text-[#CBD5E1] hover:text-[#EFF2F2] transition-colors px-2 py-2"
+                >
+                  apexaisolutions.dev
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#8FD3FF]" />
+                </a>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Apex Cyber Core Engine</h3>
-              <p className="text-[#888888] mb-4 leading-relaxed">
-                A native, low-latency security kernel built in Rust. Intercepts kernel-level telemetry via eBPF, performs deterministic SAST, and executes cryptographic zero-knowledge data masking.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="px-2 py-1 bg-[#ffaa00]/10 text-[#ffaa00] text-xs rounded">Rust & eBPF</span>
-                <span className="px-2 py-1 bg-[#00ffff]/10 text-[#00ffff] text-xs rounded">gRPC / UDS</span>
-                <span className="px-2 py-1 bg-[#00ff88]/10 text-[#00ff88] text-xs rounded">Ring 0</span>
-                <span className="px-2 py-1 bg-[#ffaa00]/10 text-[#ffaa00] text-xs rounded">SIMD</span>
-              </div>
-              <Link
-                href="/projects"
-                className="inline-flex items-center text-sm text-[#ffaa00] hover:text-[#00ffff] transition-colors"
-              >
-                View technical details <span className="ml-1">→</span>
-              </Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Blog & Services CTA Section */}
-      <section className="py-16 px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Services CTA */}
-            <div className="security-card p-8">
-              <h3 className="text-2xl font-bold mb-4 text-[#00ffff]">
-                Professional Security Services
-              </h3>
-              <p className="text-[#888888] mb-6 leading-relaxed">
-                From penetration testing to cloud security reviews, get enterprise-grade 
-                security expertise tailored for SMBs and startups.
-              </p>
-              <Link
-                href="/services"
-                className="inline-flex items-center text-[#00ff88] hover:text-[#00ffff] font-semibold transition-colors"
-              >
-                Explore Services <span className="ml-1">→</span>
-              </Link>
-            </div>
-
-            {/* Blog CTA */}
-            <div className="security-card p-8">
-              <h3 className="text-2xl font-bold mb-4 text-[#00ff88]">
-                Security Insights & Best Practices
-              </h3>
-              <p className="text-[#888888] mb-6 leading-relaxed">
-                Learn from real-world security implementations and get practical guides 
-                for securing modern web applications.
-              </p>
-              <Link
-                href="/blog"
-                className="inline-flex items-center text-[#00ffff] hover:text-[#00ff88] font-semibold transition-colors"
-              >
-                Read the Blog <span className="ml-1">→</span>
-              </Link>
-            </div>
-          </div>
-          
-          <NextModuleCTA 
-            href="/about" 
-            title="About Me" 
-            description="Learn about my professional journey, security philosophy, and core principles." 
-          />
         </div>
       </section>
     </div>

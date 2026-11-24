@@ -1,93 +1,84 @@
 export interface Service {
   id: string;
-  emoji: string;
+  label: string;
   title: string;
   subtitle: string;
-  priceRange: string;
+  deliveryChannel: string;
   packageFeatures: string[];
   outcome: string;
   ctaLink: string;
+  ctaLabel: string;
+  external?: boolean;
 }
 
 export const servicesData: Service[] = [
   {
-    id: "application-security",
-    emoji: "🎯",
-    title: "Application Security Assessment",
-    subtitle: "Find and fix vulnerabilities before attackers do",
-    priceRange: "$3,000 – $15,000",
+    id: "systems-architecture",
+    label: "01 / Architecture Advisory",
+    title: "Systems & Software Architecture Review",
+    subtitle: "Clarify domain boundaries, data ownership, and scaling tradeoffs",
+    deliveryChannel: "Technical advisory · Individual or via APEX AI Solutions",
     packageFeatures: [
-      "Static and Dynamic code analysis",
-      "API security testing and validation",
-      "Authentication & authorization review",
-      "Security headers and configuration audit",
-      "DevSecOps pipeline security recommendations"
+      "Bounded-context and modular monolith boundary review",
+      "PostgreSQL isolation, Row-Level Security (RLS), and schema design",
+      "API contract and error-discipline alignment",
+      "Architecture Decision Records (ADRs) for key technical tradeoffs",
     ],
-    outcome: "Get a comprehensive security report with prioritized fixes and clear remediation steps. Most clients close critical vulnerabilities within 2 weeks.",
-    ctaLink: "/contact"
+    outcome:
+      "A clear, documented architectural blueprint highlighting structural bottlenecks, boundary risks, and pragmatic next steps.",
+    ctaLink: "/contact",
+    ctaLabel: "Discuss Architecture",
   },
   {
-    id: "cloud-security",
-    emoji: "☁️",
-    title: "Cloud Security Posture Review",
-    subtitle: "Secure your cloud infrastructure before it costs you",
-    priceRange: "$5,000 – $20,000",
+    id: "applied-ai-governance",
+    label: "02 / Applied AI Systems",
+    title: "Governed AI & Agentic Orchestration",
+    subtitle: "Build retrieval and agent workflows with deterministic boundaries",
+    deliveryChannel: "Architecture & implementation · APEX AI Solutions",
     packageFeatures: [
-      "AWS/Azure/GCP security configuration audit",
-      "IAM and access control optimization",
-      "Compliance readiness assessment (SOC2, HIPAA, PCI-DSS)",
-      "Monitoring and alerting implementation",
-      "Incident response plan development"
+      "Tenant and ACL pre-filtering prior to vector similarity ranking",
+      "Citation provenance and abstention policies for RAG systems",
+      "Async webhook decoupling and queue-backed model orchestration",
+      "Evaluation baselines separating prototype behavior from rollout readiness",
     ],
-    outcome: "Reduce your cloud attack surface by 70%+ and accelerate compliance certification. Includes a detailed roadmap with quick wins and long-term improvements.",
-    ctaLink: "/contact"
+    outcome:
+      "AI integrations engineered around real access controls, observable failure modes, and bounded model permissions.",
+    ctaLink: "/contact",
+    ctaLabel: "Explore AI Systems",
   },
   {
-    id: "penetration-testing",
-    emoji: "🔍",
-    title: "Penetration Testing",
-    subtitle: "See your security through an attacker's eyes",
-    priceRange: "$8,000 – $25,000",
+    id: "security-engineering",
+    label: "03 / Security Engineering",
+    title: "Application Security & Hardening",
+    subtitle: "Treat security as an inherent property of the codebase and runtime",
+    deliveryChannel: "Security review · Individual or via APEX AI Solutions",
     packageFeatures: [
-      "External network and web application testing",
-      "Internal security assessment",
-      "Social engineering simulations (optional)",
-      "Detailed findings with proof-of-concept",
-      "Executive and technical reports"
+      "Authentication vs. object-level authorization boundary review",
+      "Strict CSP, HSTS, CORS, and transport header configuration",
+      "Schema validation, input sanitization, and rate-limiting controls",
+      "CI/CD security checks and environment isolation hygiene",
     ],
-    outcome: "Satisfy compliance requirements and identify real-world attack vectors. Includes step-by-step remediation guidance your team can implement immediately.",
-    ctaLink: "/contact"
+    outcome:
+      "Actionable code-level remediations and hardened defaults verified against concrete threat paths rather than generic checklists.",
+    ctaLink: "/contact",
+    ctaLabel: "Request Security Review",
   },
   {
-    id: "devsecops-pipeline",
-    emoji: "🚀",
-    title: "DevSecOps Pipeline Security",
-    subtitle: "Build security into your development workflow",
-    priceRange: "$4,000 – $12,000",
+    id: "apex-commercial-delivery",
+    label: "04 / Commercial Delivery",
+    title: "Custom Software & Enterprise Delivery",
+    subtitle: "Full-lifecycle commercial product and infrastructure execution",
+    deliveryChannel: "Delivered commercially through APEX AI Solutions",
     packageFeatures: [
-      "CI/CD pipeline security assessment",
-      "SAST/DAST tool selection and integration",
-      "Infrastructure-as-Code security scanning",
-      "Secrets management implementation",
-      "Container and Kubernetes hardening"
+      "End-to-end web platforms, client portals, and internal tooling",
+      "Production Linux deployment, reverse proxies, and service supervision",
+      "Structured project scoping, milestones, and commercial contracting",
+      "Dedicated follow-through managed under APEX AI Solutions",
     ],
-    outcome: "Catch vulnerabilities before production and reduce security debt. Most teams see a 60% reduction in production security issues within the first quarter.",
-    ctaLink: "/contact"
+    outcome:
+      "Commercial delivery handled by APEX AI Solutions while keeping sentineldev.me focused on personal engineering work.",
+    ctaLink: "https://www.apexaisolutions.dev/",
+    ctaLabel: "Visit APEX AI Solutions",
+    external: true,
   },
-  {
-    id: "security-compliance",
-    emoji: "📋",
-    title: "Security Compliance Consulting",
-    subtitle: "Get SOC2 certified without the headache",
-    priceRange: "$2,000 – $8,000/month retainer",
-    packageFeatures: [
-      "SOC2 Type I/II readiness assessment",
-      "Security policies and procedures creation",
-      "Employee security training programs",
-      "Ongoing compliance monitoring",
-      "Audit preparation and support"
-    ],
-    outcome: "Achieve SOC2 certification 40% faster with our streamlined approach. Win enterprise deals and build a security program that scales with your business.",
-    ctaLink: "/contact"
-  }
 ];

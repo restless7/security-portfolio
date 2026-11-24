@@ -1,25 +1,35 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Sebastian García - Cybersecurity & AppSec Specialist",
-    description: "Professional cybersecurity portfolio showcasing secure development practices, penetration testing expertise, and application security solutions. Built with security-first architecture.",
-    keywords: "cybersecurity, application security, penetration testing, secure coding, OWASP, vulnerability assessment, security audit",
-    authors: [{ name: "Sebastian García" }],
-    creator: "Sebastian García",
-    robots: "index, follow",
-    openGraph: {
-        title: "Sebastian García - Cybersecurity Professional",
-        description: "Secure by Design portfolio demonstrating cybersecurity expertise through practical implementation.",
-        type: "website",
-        locale: "en_US",
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Sebastian García - Cybersecurity Specialist",
-        description: "Professional cybersecurity portfolio with security-first architecture",
-    },
+  title: "Sebastián García — Systems Architect · Applied AI & Security Engineering",
+  description:
+    "Engineering Beyond the Prototype. From architectural thinking to disciplined execution. Personal portfolio of Sebastián García, Systems Architect and Founder of APEX AI Solutions.",
+  keywords: [
+    "Sebastián García",
+    "Systems Architect",
+    "Applied AI",
+    "Security Engineering",
+    "Software Architecture",
+    "APEX AI Solutions",
+  ],
+  authors: [{ name: "Sebastián García", url: "https://www.sentineldev.me" }],
+  creator: "Sebastián García",
+  robots: "index, follow",
+  openGraph: {
+    title: "Sebastián García — Systems Architect · Applied AI & Security Engineering",
+    description:
+      "Engineering Beyond the Prototype. Designing and building dependable systems across software architecture, applied AI, security engineering, and infrastructure.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sebastián García — Systems Architect",
+    description:
+      "Engineering Beyond the Prototype. Systems Architect and Founder of APEX AI Solutions.",
+  },
 };
 
 export default function HomePage({ children }: { children: React.ReactNode }) {
-    return children;
+  return children;
 }

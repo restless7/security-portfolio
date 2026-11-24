@@ -2,7 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Guardian Silent - Cybersecurity Professional Theme */
+/* SentinelDev — Sebastián García | Obsidian, Metallic Silver & Electric Blue Theme */
+
+:root {
+  --arch-obsidian: #0B1119;
+  --arch-surface: #101824;
+  --arch-graphite: #1E2B3A;
+  --arch-electric: #2F8CFF;
+  --arch-icy: #8FD3FF;
+  --arch-silver: #CBD5E1;
+  --arch-slate: #94A3B8;
+  --arch-ivory: #EFF2F2;
+}
 
 /* Base styles */
 html {
@@ -10,52 +21,74 @@ html {
 }
 
 body {
-  background-color: #000000;
-  color: #e5e5e5;
-  font-family: ui-monospace, 'JetBrains Mono', 'Fira Code', Monaco, Menlo, monospace;
-  line-height: 1.6;
+  background-color: var(--arch-obsidian);
+  color: var(--arch-ivory);
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
 }
 
-/* Terminal-like scrollbar */
+/* Architectural scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: var(--arch-obsidian);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #00ffff;
+  background: var(--arch-graphite);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00ff88;
+  background: var(--arch-electric);
 }
 
-/* Security-focused utility classes */
+/* Editorial & security utility classes (backward-compatible across existing routes) */
 .terminal-border {
-  border: 1px solid #00ffff;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  border: 1px solid rgba(47, 140, 255, 0.55);
+  box-shadow: 0 0 18px rgba(47, 140, 255, 0.16);
 }
 
 .security-card {
-  background-color: #111111;
-  border: 1px solid #333333;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  background-color: rgba(16, 24, 36, 0.9);
+  border: 1px solid #1E2B3A;
+  border-radius: 10px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
 }
 
 .security-card:hover {
-  border-color: #00ffff;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+  border-color: rgba(47, 140, 255, 0.65);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(143, 211, 255, 0.14);
+}
+
+.arch-panel {
+  background-color: rgba(16, 24, 36, 0.72);
+  border: 1px solid #1E2B3A;
+  border-radius: 12px;
 }
 
 .cyber-glow {
-  text-shadow: 0 0 10px currentColor;
+  text-shadow: 0 0 14px rgba(143, 211, 255, 0.28);
 }
 
 .matrix-bg {
-  background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
+  background: radial-gradient(circle at top center, rgba(47, 140, 255, 0.1) 0%, rgba(11, 17, 25, 1) 58%),
+    linear-gradient(180deg, #0B1119 0%, #0E1622 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
