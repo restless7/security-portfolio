@@ -1,7 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from "zod"
-import rateLimit from "@/app/lib/rate-limit"
+import { UpstashRateLimit } from "@/app/lib/upstash-rate-limit"
+import { sendLeadMagnetEmail } from "@/app/lib/email"
+import { getPrismaClient } from "@/app/lib/prisma"
+
+export const dynamic = 'force-dynamic'
+
+const leadRateLimiter = new UpstashRateLimit('sentineldev_lead')
 
 // Lead capture validation schema
 const leadCaptureSchema = z.object({
@@ -126,10 +131,13 @@ Sebastián García`
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting
-    const identifier = request.headers.get('x-forwarded-for') ||
-      request.headers.get('x-real-ip') ||
+    const identifier = request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+      request.headers.get('x-real-ip')?.trim() ||
       "127.0.0.1"
-    const { success } = await rateLimit(identifier, 10, 60000)
+    const { success } = await leadRateLimiter.limit(identifier, {
+      limit: 10,
+      window: '1m',
+    })
 
     if (!success) {
       return NextResponse.json(
@@ -144,41 +152,53 @@ export async function POST(request: NextRequest) {
 
     // Calculate lead score
     const leadScore = calculateLeadScore(validatedData)
-
-    // Prepare lead data for storage
-    const leadData = {
-      ...validatedData,
-      leadScore,
-      ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || "127.0.0.1",
-      userAgent: request.headers.get("user-agent"),
-      createdAt: new Date().toISOString()
-    }
-
-    // TODO: Store lead data in your database/CRM
-    // For now, we'll log it (in production, save to database)
-    console.log("New Lead Captured:", {
-      email: leadData.email,
-      leadMagnet: leadData.leadMagnet,
-      leadScore: leadData.leadScore,
-      company: leadData.company,
-      role: leadData.role
-    })
-
-    // TODO: Add to email marketing automation
-    // This would integrate with your email service (ConvertKit, Mailchimp, etc.)
+    const userAgent = request.headers.get("user-agent")?.substring(0, 200) || null
 
     // Send immediate email with lead magnet
     const emailContent = getEmailContent(validatedData.leadMagnet, validatedData.firstName)
+    const emailResult = await sendLeadMagnetEmail({
+      to: validatedData.email,
+      subject: emailContent.subject,
+      content: emailContent.content,
+      leadMagnet: validatedData.leadMagnet,
+      leadScore,
+      company: validatedData.company,
+      role: validatedData.role,
+    })
 
-    // TODO: Send email via your email service
-    // await sendEmail({
-    //   to: validatedData.email,
-    //   subject: emailContent.subject,
-    //   content: emailContent.content
-    // })
+    // Persist lead to Vercel Postgres (if configured)
+    let persisted = false
+    const prisma = getPrismaClient()
+    if (prisma) {
+      try {
+        await prisma.leadCapture.create({
+          data: {
+            email: validatedData.email,
+            firstName: validatedData.firstName || null,
+            lastName: validatedData.lastName || null,
+            company: validatedData.company || null,
+            role: validatedData.role || null,
+            companySize: validatedData.companySize || null,
+            leadMagnet: validatedData.leadMagnet,
+            leadScore,
+            source: validatedData.source,
+            ipAddress: identifier,
+            userAgent,
+            emailSent: emailResult.sent,
+          },
+        })
+        persisted = true
+      } catch (dbError) {
+        console.error("Lead DB error:", dbError)
+      }
+    }
 
-    // Log successful lead capture for analytics
-    console.log(`Lead captured: ${validatedData.email} - Score: ${leadScore} - Magnet: ${validatedData.leadMagnet}`)
+    if (!emailResult.sent && !persisted) {
+      return NextResponse.json(
+        { error: "Lead delivery service is temporarily unavailable." },
+        { status: 503 }
+      )
+    }
 
     return NextResponse.json({
       success: true,
@@ -205,10 +225,15 @@ export async function POST(request: NextRequest) {
 
 // Handle OPTIONS for CORS
 export async function OPTIONS() {
+  const allowedOrigin =
+    process.env.NODE_ENV === 'production'
+      ? process.env.NEXT_PUBLIC_SITE_URL || 'https://www.sentineldev.me'
+      : 'http://localhost:3000'
+
   return new NextResponse(null, {
     status: 200,
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": allowedOrigin,
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
     },

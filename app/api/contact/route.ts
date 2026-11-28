@@ -1,133 +1,149 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { contactFormSchema } from '@/app/lib/validations'
-import { security } from '@/app/lib/utils'
+import { UpstashRateLimit } from '@/app/lib/upstash-rate-limit'
+import { sendContactEmails } from '@/app/lib/email'
+import { getPrismaClient } from '@/app/lib/prisma'
 
-/**
- * Secure Contact Form API Endpoint
- * Demonstrates cybersecurity best practices in API development
- */
+export const dynamic = 'force-dynamic'
 
-// Rate limiting configuration (stub - would use Redis in production)
-const rateLimitStore = new Map<string, { count: number; resetTime: number }>()
-const RATE_LIMIT_WINDOW = 15 * 60 * 1000 // 15 minutes
-const RATE_LIMIT_MAX = 5 // 5 requests per window
+const contactRateLimiter = new UpstashRateLimit('sentineldev_contact')
+const RATE_LIMIT_MAX = 5
+const RATE_LIMIT_WINDOW = '15m'
 
-function getRateLimitKey(request: NextRequest): string {
+function getClientIp(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for')
-  const ip = forwarded?.split(',')[0] || 'unknown'
-  return `contact_${ip}`
-}
-
-function isRateLimited(key: string): boolean {
-  const now = Date.now()
-  const entry = rateLimitStore.get(key)
-
-  if (!entry) {
-    rateLimitStore.set(key, { count: 1, resetTime: now + RATE_LIMIT_WINDOW })
-    return false
+  if (forwarded) {
+    return forwarded.split(',')[0].trim()
   }
-
-  if (now > entry.resetTime) {
-    // Reset the window
-    rateLimitStore.set(key, { count: 1, resetTime: now + RATE_LIMIT_WINDOW })
-    return false
-  }
-
-  if (entry.count >= RATE_LIMIT_MAX) {
-    return true
-  }
-
-  entry.count++
-  return false
+  return request.headers.get('x-real-ip')?.trim() || 'unknown'
 }
 
 export async function POST(request: NextRequest) {
+  const clientIp = getClientIp(request)
+
   try {
-    // Step 1: Rate Limiting
-    const rateLimitKey = getRateLimitKey(request)
-    if (isRateLimited(rateLimitKey)) {
+    // Step 1: Distributed Rate Limiting (Upstash Redis with in-memory fallback)
+    const rateResult = await contactRateLimiter.limit(clientIp, {
+      limit: RATE_LIMIT_MAX,
+      window: RATE_LIMIT_WINDOW,
+    })
+
+    if (!rateResult.success) {
+      const retryAfter = rateResult.retryAfter ?? 900
       return NextResponse.json(
         {
           error: 'Rate limit exceeded',
           message: 'Too many contact form submissions. Please try again later.',
-          retryAfter: 900 // 15 minutes
+          retryAfter,
         },
-        { 
+        {
           status: 429,
           headers: {
-            'Retry-After': '900',
-            'X-RateLimit-Limit': RATE_LIMIT_MAX.toString(),
+            'Retry-After': retryAfter.toString(),
+            'X-RateLimit-Limit': rateResult.limit.toString(),
             'X-RateLimit-Remaining': '0',
-          }
+          },
         }
       )
     }
 
-    // Step 2: Parse and validate request body
+    // Step 2: Parse request body
     const body = await request.json()
 
-    // Step 3: Zod validation with comprehensive error handling
+    // Step 3: Honeypot anti-spam check
+    if (typeof body?.website === 'string' && body.website.trim().length > 0) {
+      return NextResponse.json(
+        { error: 'Validation failed', message: 'Invalid submission.' },
+        { status: 400 }
+      )
+    }
+
+    // Step 4: Zod schema validation
     const validationResult = contactFormSchema.safeParse(body)
-    
     if (!validationResult.success) {
       return NextResponse.json(
         {
           error: 'Validation failed',
-          message: 'Invalid input data provided',
-          details: validationResult.error.issues.map(err => ({
+          message: 'Please check your form inputs and try again.',
+          details: validationResult.error.issues.map((err) => ({
             field: err.path.join('.'),
             message: err.message,
-            code: err.code
-          }))
+            code: err.code,
+          })),
         },
         { status: 400 }
       )
     }
 
     const validatedData = validationResult.data
+    const timestamp = new Date().toISOString()
+    const userAgent = request.headers.get('user-agent')?.substring(0, 200) || 'unknown'
+    const ticketId = `SEC-${Date.now().toString(36).toUpperCase()}`
 
-    // Step 4: Additional security sanitization
-    const sanitizedData = {
-      name: security.sanitizeInput(validatedData.name).trim(),
-      email: validatedData.email.toLowerCase().trim(),
-      company: validatedData.company ? security.sanitizeInput(validatedData.company).trim() : undefined,
-      subject: security.sanitizeInput(validatedData.subject).trim(),
-      message: security.sanitizeInput(validatedData.message).trim(),
-      timestamp: new Date().toISOString(),
-      ip: getRateLimitKey(request).replace('contact_', ''),
-      userAgent: request.headers.get('user-agent')?.substring(0, 200) || 'unknown'
-    }
-
-    // Step 5: Security logging (in production, log to secure system)
-    console.log(`[SECURITY LOG] Contact form submission:`, {
-      timestamp: sanitizedData.timestamp,
-      ip: sanitizedData.ip,
-      name: sanitizedData.name,
-      subject: sanitizedData.subject,
-      messageLength: sanitizedData.message.length,
-      hasCompany: !!sanitizedData.company,
-      userAgent: sanitizedData.userAgent
+    // Step 5: Send email via Resend
+    const emailResult = await sendContactEmails({
+      ticketId,
+      name: validatedData.name,
+      email: validatedData.email,
+      company: validatedData.company || undefined,
+      subject: validatedData.subject,
+      message: validatedData.message,
+      timestamp,
+      ip: clientIp,
     })
 
-    // Step 6: Simulate processing delay (prevents timing attacks)
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 500))
+    // Step 6: Persist to Vercel Postgres (if configured)
+    let persisted = false
+    const prisma = getPrismaClient()
+    if (prisma) {
+      try {
+        await prisma.contactSubmission.create({
+          data: {
+            ticketId,
+            name: validatedData.name,
+            email: validatedData.email,
+            company: validatedData.company || null,
+            subject: validatedData.subject,
+            message: validatedData.message,
+            ipAddress: clientIp,
+            userAgent,
+            emailSent: emailResult.sent,
+          },
+        })
+        persisted = true
+      } catch (dbError) {
+        console.error('[CONTACT DB ERROR] Failed to persist submission:', {
+          ticketId,
+          error: dbError instanceof Error ? dbError.message : 'Unknown DB error',
+        })
+      }
+    }
 
-    // Step 7: In production, this would:
-    // - Send email using secure email service (SendGrid, AWS SES, etc.)
-    // - Store in database with encryption
-    // - Trigger notification workflow
-    // - Generate case/ticket ID for tracking
+    // Fail closed if email delivery failed and nothing was persisted
+    if (!emailResult.sent && !persisted) {
+      console.error('[CONTACT DELIVERY ERROR]', {
+        ticketId,
+        error: emailResult.error,
+      })
+      return NextResponse.json(
+        {
+          error: 'Delivery unavailable',
+          message:
+            'Unable to deliver your message right now. Please email aisolutionsapex@gmail.com directly.',
+        },
+        { status: 503 }
+      )
+    }
 
-    // Mock success response
-    const mockTicketId = `SEC-${Date.now().toString(36).toUpperCase()}`
-
-    // Step 8: Return success response with security headers
+    // Step 7: Return success response with security headers
     return NextResponse.json(
       {
         success: true,
-        message: 'Message sent successfully. You will receive a confirmation email shortly.',
-        ticketId: mockTicketId,
-        estimatedResponse: '24 hours'
+        message: emailResult.confirmationSent
+          ? 'Message sent successfully. You will receive a confirmation email shortly.'
+          : 'Message received successfully. I will follow up within 24 hours.',
+        ticketId,
+        estimatedResponse: '24 hours',
       },
       {
         status: 200,
@@ -136,64 +152,67 @@ export async function POST(request: NextRequest) {
           'X-Frame-Options': 'DENY',
           'Cache-Control': 'no-cache, no-store, must-revalidate',
           'Pragma': 'no-cache',
-          'Expires': '0'
-        }
+          'Expires': '0',
+          'X-RateLimit-Limit': rateResult.limit.toString(),
+          'X-RateLimit-Remaining': rateResult.remaining.toString(),
+        },
       }
     )
-
   } catch (error) {
-    // Step 9: Error handling with security considerations
-    console.error(`[SECURITY ERROR] Contact form error:`, {
+    console.error('[SECURITY ERROR] Contact form error:', {
       error: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString(),
-      ip: getRateLimitKey(request).replace('contact_', '')
+      ip: clientIp,
     })
 
-    // Return generic error message (don't leak implementation details)
     return NextResponse.json(
       {
         error: 'Internal server error',
         message: 'An unexpected error occurred. Please try again later.',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       },
       { status: 500 }
     )
   }
 }
 
-// OPTIONS handler for CORS preflight
 export async function OPTIONS() {
-  return NextResponse.json({}, {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production' 
-        ? 'https://your-domain.com' 
-        : 'http://localhost:3000',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Access-Control-Max-Age': '86400',
+  const allowedOrigin =
+    process.env.NODE_ENV === 'production'
+      ? process.env.NEXT_PUBLIC_SITE_URL || 'https://www.sentineldev.me'
+      : 'http://localhost:3000'
+
+  return NextResponse.json(
+    {},
+    {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': allowedOrigin,
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Max-Age': '86400',
+      },
     }
-  })
+  )
 }
 
-// Reject all other HTTP methods
 export async function GET() {
   return NextResponse.json(
     { error: 'Method not allowed', message: 'GET method not supported for this endpoint' },
-    { status: 405, headers: { 'Allow': 'POST, OPTIONS' } }
+    { status: 405, headers: { Allow: 'POST, OPTIONS' } }
   )
 }
 
 export async function PUT() {
   return NextResponse.json(
     { error: 'Method not allowed', message: 'PUT method not supported for this endpoint' },
-    { status: 405, headers: { 'Allow': 'POST, OPTIONS' } }
+    { status: 405, headers: { Allow: 'POST, OPTIONS' } }
   )
 }
 
 export async function DELETE() {
   return NextResponse.json(
     { error: 'Method not allowed', message: 'DELETE method not supported for this endpoint' },
-    { status: 405, headers: { 'Allow': 'POST, OPTIONS' } }
+    { status: 405, headers: { Allow: 'POST, OPTIONS' } }
   )
 }

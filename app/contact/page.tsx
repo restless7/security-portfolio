@@ -57,6 +57,7 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [submitMessage, setSubmitMessage] = useState("");
+  const [ticketId, setTicketId] = useState<string | null>(null);
 
   const {
     register,
@@ -75,6 +76,7 @@ export default function ContactPage() {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     setSubmitStatus("idle");
+    setTicketId(null);
 
     try {
       const response = await fetch("/api/contact", {
@@ -85,19 +87,27 @@ export default function ContactPage() {
         body: JSON.stringify(data),
       });
 
+      const payload = await response.json().catch(() => ({}));
+
       if (response.ok) {
         setSubmitStatus("success");
+        setTicketId(payload.ticketId || null);
         setSubmitMessage(
-          "Your message has been received. I will follow up as soon as possible."
+          payload.message ||
+            "Your message has been received. I will follow up as soon as possible."
         );
         reset();
       } else {
-        throw new Error("Failed to send message");
+        setSubmitStatus("error");
+        setSubmitMessage(
+          payload.message ||
+            "Unable to send message right now. Please email aisolutionsapex@gmail.com directly."
+        );
       }
     } catch {
       setSubmitStatus("error");
       setSubmitMessage(
-        "Unable to send message right now. Please email sebastian.garciacasanova@gmail.com directly."
+        "Unable to send message right now. Please email aisolutionsapex@gmail.com directly."
       );
     } finally {
       setIsSubmitting(false);
@@ -156,6 +166,17 @@ export default function ContactPage() {
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                {/* Honeypot anti-spam field */}
+                <div className="sr-only" aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    {...register("website")}
+                    type="text"
+                    id="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {/* Name Field */}
                   <div>
@@ -331,7 +352,7 @@ export default function ContactPage() {
                     <CheckCircle className="w-5 h-5 text-[#8FD3FF] mt-0.5 shrink-0" />
                     <div>
                       <p className="text-sm font-semibold text-[#EFF2F2]">
-                        Message sent
+                        Message sent{ticketId ? ` · ${ticketId}` : ""}
                       </p>
                       <p className="text-xs text-[#CBD5E1] mt-0.5">{submitMessage}</p>
                     </div>

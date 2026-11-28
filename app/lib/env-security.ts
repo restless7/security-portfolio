@@ -17,11 +17,18 @@ const envSchema = z.object({
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
   
-  // Email service (server-only, if added later)
+  // Email service (server-only)
+  RESEND_API_KEY: z.string().min(1).optional(),
+  CONTACT_TO_EMAIL: z.string().email().optional(),
+  CONTACT_FROM_EMAIL: z.string().optional(),
   SMTP_HOST: z.string().optional(),
   SMTP_PORT: z.string().optional(),
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
+
+  // Database (Vercel Postgres / Prisma, server-only)
+  DATABASE_URL: z.string().optional(),
+  POSTGRES_PRISMA_URL: z.string().optional(),
   
   // Analytics (server-only)
   VERCEL_ANALYTICS_ID: z.string().optional(),

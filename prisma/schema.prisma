@@ -108,3 +108,50 @@ enum CampaignStatus {
   COMPLETED
   DRAFT
 }
+
+model ContactSubmission {
+  id          String           @id @default(uuid())
+  ticketId    String           @unique
+  name        String
+  email       String
+  company     String?
+  subject     String
+  message     String
+  ipAddress   String?
+  userAgent   String?
+  status      SubmissionStatus @default(NEW)
+  emailSent   Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([email])
+  @@index([createdAt])
+  @@map("contact_submissions")
+}
+
+model LeadCapture {
+  id          String   @id @default(uuid())
+  email       String
+  firstName   String?
+  lastName    String?
+  company     String?
+  role        String?
+  companySize String?
+  leadMagnet  String
+  leadScore   Int      @default(0)
+  source      String
+  ipAddress   String?
+  userAgent   String?
+  emailSent   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([email])
+  @@index([createdAt])
+  @@map("lead_captures")
+}
+
+enum SubmissionStatus {
+  NEW
+  REPLIED
+  ARCHIVED
+}

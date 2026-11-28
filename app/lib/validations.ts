@@ -7,30 +7,36 @@ import { z } from "zod"
 export const contactFormSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(2, "Name must be at least 2 characters")
     .max(50, "Name must not exceed 50 characters")
-    .regex(/^[a-zA-Z\s'-]+$/, "Name can only contain letters, spaces, hyphens, and apostrophes"),
+    .regex(/^[\p{L}\s'.-]+$/u, "Name can only contain letters, spaces, hyphens, periods, and apostrophes"),
   
   email: z
     .string()
+    .trim()
     .email("Please enter a valid email address")
     .max(100, "Email must not exceed 100 characters")
     .toLowerCase(),
   
   company: z
     .string()
+    .trim()
     .max(100, "Company name must not exceed 100 characters")
-    .regex(/^[a-zA-Z0-9\s&.-]+$/, "Company name contains invalid characters")
-    .optional(),
+    .regex(/^[\p{L}\p{N}\s&.,'()-]*$/u, "Company name contains invalid characters")
+    .optional()
+    .or(z.literal("")),
   
   subject: z
     .string()
+    .trim()
     .min(5, "Subject must be at least 5 characters")
     .max(200, "Subject must not exceed 200 characters")
-    .regex(/^[a-zA-Z0-9\s.,-?!]+$/, "Subject contains invalid characters"),
+    .regex(/^[\p{L}\p{N}\s.,\-?!:;()/&+]+$/u, "Subject contains invalid characters"),
   
   message: z
     .string()
+    .trim()
     .min(10, "Message must be at least 10 characters")
     .max(2000, "Message must not exceed 2000 characters")
     .refine(
@@ -48,7 +54,10 @@ export const contactFormSchema = z.object({
         return !maliciousPatterns.some(pattern => pattern.test(value))
       },
       "Message contains potentially unsafe content"
-    )
+    ),
+
+  // Honeypot anti-spam field (must remain empty)
+  website: z.string().max(0).optional().or(z.literal("")),
 })
 
 export type ContactFormData = z.infer<typeof contactFormSchema>
